@@ -4,6 +4,7 @@
     ViewData["Title"] = "Registro";
     Layout = null;
 }
+
 <!DOCTYPE html>
 <head>
     <title>Registro de Usuarios</title>
@@ -15,8 +16,7 @@
         <div class="card p-4">
             <h1 class="text-center">Registra un Nuevo Usuario</h1>
             <br />
-            <form method="post" asp-action="RegistrarUsuario" class="w-100">
-           
+            <form method="post" asp-action="RegistrarUsuario" class="w-100" id="registro-form">
                 <div class="mb-3">
                     <label asp-for="Nombre" class="form-label">Nombre del Usuario</label>
                     <input asp-for="Nombre" type="text" class="form-control" id="Nombre" name="Nombre" required />
@@ -34,8 +34,8 @@
                     <div class="input-group">
                         <input asp-for="Contraseña" type="password" class="form-control" id="password" required />
                         <button type="button" class="btn btn-outline-secondary" id="ver-password">Ver contraseña</button>
-                        <span asp-validation-for="Contraseña" class="text-danger"></span>
                     </div>
+                    <span asp-validation-for="Contraseña" class="text-danger"></span>
                     <div id="password-feedback"></div>
                 </div>
 
@@ -53,36 +53,20 @@
                 </div>
                 <br />
                 <button type="submit" class="btn btn-primary w-100">Registrar Usuario</button>
-            </form>         
+            </form>
         </div>
-
     </div>
 
     <form method="post" asp-controller="Usuario" asp-action="Logout" id="logout-form" class="text-center">
         <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
     </form>
 
-
     <!--Scripts-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
-    @* script que ve la contraseña *@
     <script>
-        document.getElementById('ver-password').addEventListener('click', function () {
-            var contrasenaInput = document.getElementById('password');
-            if (contrasenaInput.type === 'password') {
-                contrasenaInput.type = 'text';
-            } else {
-                contrasenaInput.type = 'password';
-            }
-        });
-    </script>
-    @* script que valida contrasñea *@
-    <script>
-        const contraseñaInput = document.getElementById('password');
-        const passwordFeedback = document.getElementById('password-feedback');
-
-        contraseñaInput.addEventListener('input', function () {
+        function validarContraseña() {
+            const contraseñaInput = document.getElementById('password');
+            const passwordFeedback = document.getElementById('password-feedback');
             const contraseña = contraseñaInput.value;
 
             const regex = /^(?=.*[A-Z])(?=.*\d).{5,}$/;
@@ -91,15 +75,16 @@
                 passwordFeedback.textContent = 'Contraseña válida';
                 passwordFeedback.classList.add('text-success');
                 passwordFeedback.classList.remove('text-danger');
+                return true;
             } else {
                 passwordFeedback.textContent = 'Debe tener al menos 5 caracteres, una letra mayúscula y un número';
                 passwordFeedback.classList.remove('text-success');
                 passwordFeedback.classList.add('text-danger');
+                return false;
             }
-        });
-    </script>
-    <script>
-        document.querySelector('form').addEventListener('submit', function (e) {
+        }
+
+        document.querySelector('#registro-form').addEventListener('submit', function (e) {
             var radios = document.querySelectorAll('input[name="TipoUsuario"]');
             var checked = false;
             radios.forEach(function (radio) {
@@ -107,16 +92,39 @@
                     checked = true;
                 }
             });
+
+            if (!validarContraseña()) {
+                e.preventDefault();
+                alert('La contraseña no cumple con los requisitos.');
+                return;
+            }
+
             if (!checked) {
-                e.preventDefault(); // Evita que el formulario se envíe
+                e.preventDefault();
                 alert('Por favor, seleccione Docente o Estudiante.');
+            }
+        });
+
+        document.getElementById('ver-password').addEventListener('click', function () {
+            const contraseñaInput = document.getElementById('password');
+            contraseñaInput.type = contraseñaInput.type === 'password' ? 'text' : 'password';
+            validarContraseña();
+        });
+
+        document.getElementById('password').addEventListener('input', function () {
+            const passwordFeedback = document.getElementById('password-feedback');
+            passwordFeedback.textContent = ''; // Limpiar el mensaje de error
+        });
+
+        // Validar la contraseña al hacer clic en "Registrar Usuario"
+        document.getElementById('btn-registrar').addEventListener('click', function (e) {
+            if (!validarContraseña()) {
+                e.preventDefault();
+                alert('La contraseña no cumple con los requisitos.');
             }
         });
     </script>
 
+
 </body>
 </html>
-
-            
-                            
-

@@ -82,35 +82,56 @@ namespace TrabajoFinalMulti.Controllers
                     objUsuario.Estudiante.Any(e => e.Estudiante_Correo == viewModel.Correo))
                 {
                     ModelState.AddModelError("Correo", "El correo ya está en uso.");
-                    return View(viewModel);
                 }
-
-                //Guardar
-                if (viewModel.TipoUsuario == "docente")
+                else if (!CumpleRequisitosContraseña(viewModel.Contraseña))
                 {
-                    var docente = new Docente
-                    {
-                        Docente_Nombre = viewModel.Nombre,
-                        Docente_Correo = viewModel.Correo,
-                        Docente_Contraseña = viewModel.Contraseña,
-                    };
-                    objUsuario.Docente.Add(docente);
+                    
                 }
-                else if (viewModel.TipoUsuario == "estudiante")
+                else
                 {
-                    var estudiante = new Estudiante
+                    //Guardar
+                    if (viewModel.TipoUsuario == "docente")
                     {
-                        Estudiante_Nombre = viewModel.Nombre,
-                        Estudiante_Correo = viewModel.Correo,
-                        Estudiante_Contraseña = viewModel.Contraseña,
-                    };
-                    objUsuario.Estudiante.Add(estudiante);
-                }
+                        var docente = new Docente
+                        {
+                            Docente_Nombre = viewModel.Nombre,
+                            Docente_Correo = viewModel.Correo,
+                            Docente_Contraseña = viewModel.Contraseña,
+                        };
+                        objUsuario.Docente.Add(docente);
+                    }
+                    else if (viewModel.TipoUsuario == "estudiante")
+                    {
+                        var estudiante = new Estudiante
+                        {
+                            Estudiante_Nombre = viewModel.Nombre,
+                            Estudiante_Correo = viewModel.Correo,
+                            Estudiante_Contraseña = viewModel.Contraseña,
+                        };
+                        objUsuario.Estudiante.Add(estudiante);
+                    }
 
-                objUsuario.SaveChanges();
-                return RedirectToAction("RegistrarUsuario");
+                    objUsuario.SaveChanges();
+                    return RedirectToAction("RegistrarUsuario");
+                }
             }
+
             return View(viewModel);
+        }
+
+
+
+        // Función para verificar si la contraseña cumple con los requisitos
+        private bool CumpleRequisitosContraseña(string contraseña)
+        {
+            const int longitudMinima = 5;
+            if (contraseña.Length < longitudMinima)
+            {
+                return false;
+            }
+
+            // Verificar si contiene al menos una letra mayúscula y un número
+            return contraseña.Any(char.IsUpper) && contraseña.Any(char.IsDigit);
         }
     }
 }
