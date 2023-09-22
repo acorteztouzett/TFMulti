@@ -1,8 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Soy el Docente</h1>
+    <br />
+    <img src="https://static-cse.canva.com/blob/599068/16Lascompetenciasdeldocente.gif" alt="Imagen del Docente" height="200" />
 </div>
+<br />
+<form method="post" asp-controller="Usuario" asp-action="Logout" id="logout-form" class="text-center">
+    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+</form>

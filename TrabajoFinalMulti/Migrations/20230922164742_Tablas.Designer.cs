@@ -11,8 +11,8 @@ using TrabajoFinalMulti.Data;
 namespace TrabajoFinalMulti.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230922054657_TablaDocenteyEstudiante")]
-    partial class TablaDocenteyEstudiante
+    [Migration("20230922164742_Tablas")]
+    partial class Tablas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,27 @@ namespace TrabajoFinalMulti.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("TrabajoFinalMulti.Models.Administrador", b =>
+                {
+                    b.Property<int>("Admin_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Admin_Id"));
+
+                    b.Property<string>("Admin_Contraseña")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Admin_Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Admin_Id");
+
+                    b.ToTable("Administrador");
+                });
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Docente", b =>
                 {

@@ -10,5 +10,7 @@ namespace TrabajoFinalMulti.Data
         //Escribir los modelos
         public DbSet<Docente> Docente { get; set; }
         public DbSet<Estudiante> Estudiante { get; set; }
+
+        public DbSet<Administrador> Administrador { get; set; }
     }
 }

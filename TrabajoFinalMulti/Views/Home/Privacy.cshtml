@@ -1,6 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privacy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="text-center">
+    <h1 class="display-4">Soy el Estudiante</h1>
+    <br />
+    <img src="https://i.gifer.com/7BN3.gif" alt="Imagen del Docente" height="200" />
+</div>
+<br />
+<form method="post" asp-controller="Usuario" asp-action="Logout" id="logout-form" class="text-center">
+    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+</form>
+
+

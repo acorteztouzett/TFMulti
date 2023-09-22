@@ -21,6 +21,27 @@ namespace TrabajoFinalMulti.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("TrabajoFinalMulti.Models.Administrador", b =>
+                {
+                    b.Property<int>("Admin_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Admin_Id"));
+
+                    b.Property<string>("Admin_Contraseña")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Admin_Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Admin_Id");
+
+                    b.ToTable("Administrador");
+                });
+
             modelBuilder.Entity("TrabajoFinalMulti.Models.Docente", b =>
                 {
                     b.Property<int>("Docente_Id")
