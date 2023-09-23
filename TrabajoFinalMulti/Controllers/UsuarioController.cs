@@ -133,5 +133,6 @@ namespace TrabajoFinalMulti.Controllers
             // Verificar si contiene al menos una letra mayúscula y un número
             return contraseña.Any(char.IsUpper) && contraseña.Any(char.IsDigit);
         }
+
     }
 }

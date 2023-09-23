@@ -11,7 +11,7 @@ using TrabajoFinalMulti.Data;
 namespace TrabajoFinalMulti.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230922203009_Tablas")]
+    [Migration("20230923142139_Tablas")]
     partial class Tablas
     {
         /// <inheritdoc />
