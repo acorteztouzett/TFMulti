@@ -34,10 +34,12 @@
             </form>
             <br />
             <div class="alert alert-danger" id="error-message" style="display: none;">
-                Correo y/o contraseña incorrectos.
+                @{var error = TempData["Error"] as string;}
+                @error
             </div>
         </div>
     </div>
+
     @if (ViewBag.ShowError != null && ViewBag.ShowError)
     {
         <script>

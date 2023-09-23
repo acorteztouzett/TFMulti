@@ -1,0 +1,21 @@
+﻿@model Estudiante
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="text-center">
+    <h1 class="display-4">Soy el Estudiante</h1>
+    <br />
+    <img src="https://i.gifer.com/7BN3.gif" alt="Imagen del Docente" height="200" />
+</div>
+<p>
+    @Model.Estudiante_Nombre
+</p>
+<br />
+<form method="post" asp-controller="Usuario" asp-action="Logout" id="logout-form" class="text-center">
+    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+</form>
+
+
