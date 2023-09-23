@@ -123,15 +123,29 @@ namespace TrabajoFinalMulti.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditarDocente(Docente docente)
         {
-            // Agregar líneas de registro o depuración para verificar el estado del modelo
-            System.Diagnostics.Debug.WriteLine("Contraseña actual: " + docente.Docente_Contraseña);
-            System.Diagnostics.Debug.WriteLine("Nombre actual: " + docente.Docente_Nombre);
-            System.Diagnostics.Debug.WriteLine("Correo actual: " + docente.Docente_Correo);
 
             if (ModelState.IsValid)
             {
+                var docenteBD = objUsuario.Docente.SingleOrDefault(d => d.Docente_Id == docente.Docente_Id);
+
+                if (docenteBD != null)
+                {
+                    docenteBD.Docente_Nombre = docente.Docente_Nombre;
+                    docenteBD.Docente_Correo = docente.Docente_Correo;
+                    if(docente.Docente_Contraseña != null)
+                        docenteBD.Docente_Contraseña = docente.Docente_Contraseña;
+
+                    objUsuario.Docente.Update(docenteBD);
+                    objUsuario.SaveChanges();
+
+                    return RedirectToAction(nameof(ListaUsuarios));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(ListaUsuarios));
+                }
                 // Realizar la actualización solo si los campos tienen valores válidos
-                if (!string.IsNullOrEmpty(docente.Docente_Contraseña) && !string.IsNullOrEmpty(docente.Docente_Nombre) && !string.IsNullOrEmpty(docente.Docente_Correo))
+                /*if (!string.IsNullOrEmpty(docente.Docente_Contraseña) && !string.IsNullOrEmpty(docente.Docente_Nombre) && !string.IsNullOrEmpty(docente.Docente_Correo))
                 {
                     objUsuario.Docente.Update(docente);
                     objUsuario.SaveChanges();
@@ -141,7 +155,7 @@ namespace TrabajoFinalMulti.Controllers
                 {
                     // Manejar el caso en el que al menos uno de los campos está vacío
                     ModelState.AddModelError("", "Todos los campos son obligatorios.");
-                }
+                }*/
             }
             return View(docente);
         }
