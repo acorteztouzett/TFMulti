@@ -9,9 +9,13 @@
 <head>
     <title>Edición</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="@Url.Content("~/Content/VistaIniciarSesión/vista_iniciar_estilo.css")" />
 </head>
 <body>
-
+    <div class="wrapper">
+        <div class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVRGJNSB3s4UgRP2q9xWxuCIkKFlDD20dqkO8VG6Y&s" alt="">
+        </div>
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="card p-4">
             <h1 class="text-center">Editar Docente</h1>
@@ -21,19 +25,19 @@
                 <div asp-validation-summary="ModelOnly" class="tetx-danger"> </div>
 
                 <div class="mb-3">
-                    <label asp-for="Docente_Nombre" class="form-label">Nombre del Usuario</label>
+                    <label asp-for="Docente_Nombre" class="form-label">Nombre del Docente</label>
                     <input asp-for="Docente_Nombre" type="text" class="form-control" id="Nombre" name="Nombre" required />
                     <span asp-validation-for="Docente_Nombre" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Docente_Correo" class="form-label">Correo Electrónico del Usuario</label>
+                    <label asp-for="Docente_Correo" class="form-label">Correo Electrónico del Docente</label>
                     <input asp-for="Docente_Correo" type="email" class="form-control" id="Correo" name="Correo" required />
                     <span asp-validation-for="Docente_Correo" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Docente_Contraseña" class="form-label">Contraseña del Usuario</label>
+                    <label asp-for="Docente_Contraseña" class="form-label">Contraseña del Docente</label>
                     <div class="input-group">
                         <input asp-for="Docente_Contraseña" type="password" class="form-control" id="password" required />
                         <button type="button" class="btn btn-outline-secondary" id="ver-password">Ver contraseña</button>
@@ -42,19 +46,6 @@
                     <div id="password-feedback"></div>
                 </div>
 
-
-                <!-- Tipo de usuario -->
-                <br />
-                <label class="form-label">Elige el tipo de Usuario</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="EsDocente" checked disabled>
-                    <label class="form-check-label" for="EsDocente">Docente</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="EsEstudiante" disabled>
-                    <label class="form-check-label" for="EsEstudiante">Estudiante</label>
-                </div>
 
 
                 <br />
