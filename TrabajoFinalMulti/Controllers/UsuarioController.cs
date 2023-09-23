@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
 using TrabajoFinalMulti.ViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrabajoFinalMulti.Controllers
 {
@@ -43,13 +44,13 @@ namespace TrabajoFinalMulti.Controllers
             if (HttpContext.Session.GetInt32("Key") == null || HttpContext.Session.GetInt32("Key") < 3)
             {
                 // Verificar las credenciales ingresadas en la tabla de Administrador
-                var admin = objUsuario.Administrador.SingleOrDefault(a => a.Admin_Correo == viewModel.Correo && a.Admin_Contraseña == viewModel.Contraseña);
+                var admin = objUsuario.Administrador.SingleOrDefault(a => a.Admin_Correo == viewModel.Correo && EF.Functions.Collate(a.Admin_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
 
                 // Verificar las credenciales ingresadas en la tabla de Docente
-                var docente = objUsuario.Docente.SingleOrDefault(d => d.Docente_Correo == viewModel.Correo && d.Docente_Contraseña == viewModel.Contraseña);
+                var docente = objUsuario.Docente.SingleOrDefault(d => d.Docente_Correo == viewModel.Correo && EF.Functions.Collate(d.Docente_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
 
                 // Verificar las credenciales ingresadas en la tabla de Estudiante
-                var estudiante = objUsuario.Estudiante.SingleOrDefault(e => e.Estudiante_Correo == viewModel.Correo && e.Estudiante_Contraseña == viewModel.Contraseña);
+                var estudiante = objUsuario.Estudiante.SingleOrDefault(e => e.Estudiante_Correo == viewModel.Correo && EF.Functions.Collate(e.Estudiante_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
 
                 // Comprobar si las credenciales coinciden en alguna de las tablas
                 if (admin != null)
