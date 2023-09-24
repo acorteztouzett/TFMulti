@@ -61,6 +61,8 @@ namespace TrabajoFinalMulti.Controllers
                 else if (docente != null)
                 {
                     // Credenciales válidas para Docente, redirigir a la página correspondiente
+
+                    HttpContext.Session.SetString("SDocente", JsonConvert.SerializeObject(docente));
                     return RedirectToAction("Index", "Home");
                 }
                 else if (estudiante != null)
@@ -193,6 +195,26 @@ namespace TrabajoFinalMulti.Controllers
             }
             return RedirectToAction("Privacy", "Home");
         }
+
+        public IActionResult ActualizarDocente(ActualizarViewModel viewmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                var objeto = JsonConvert.DeserializeObject<Docente>(HttpContext.Session.GetString("SDocente"));
+                var docente = objUsuario.Docente.SingleOrDefault(a => a.Docente_Id == objeto.Docente_Id);
+                docente.Docente_Nombre = viewmodel.Nombre;
+                docente.Docente_Correo = viewmodel.Correo;
+                docente.Docente_Contraseña = viewmodel.Contraseña;
+
+                objUsuario.Docente.Update(docente);
+                objUsuario.SaveChanges();
+
+                HttpContext.Session.Clear();
+                HttpContext.Session.SetString("SDocente", JsonConvert.SerializeObject(docente));
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
 
     }
 }
