@@ -509,7 +509,7 @@
                                 <!-- focus-within sets the color for the icon when input is focused -->
                                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                                     <input asp-for="Estudiante_Nombre" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                                           placeholder="Nombre del docente"
+                                           placeholder="Nombre del estudiante"
                                            type="text"
                                            id="Nombre" required />
                                     <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
@@ -536,7 +536,7 @@
                                 <!-- focus-within sets the color for the icon when input is focused -->
                                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                                     <input asp-for="Estudiante_Correo" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                                           placeholder="Correo del docente "
+                                           placeholder="Correo del estudiante "
                                            type="email"
                                            id="Correo" required />
                                     <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
@@ -562,7 +562,7 @@
                                 <!-- focus-within sets the color for the icon when input is focused -->
                                 <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                                     <input asp-for="Estudiante_Contraseña" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                                           placeholder="Correo del docente"
+                                           placeholder="Contraseña del Estudiante"
                                            type="password"
                                            id="password" required />
                                     <span class="absolute inset-y-0 right-0 py-2     px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-r-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -586,8 +586,8 @@
 
 
                                 </div>
-                                <span asp-validation-for="Estudiante_Contraseña" class="text-danger"></span>
-                                <div id="password-feedback"></div>
+                                <span asp-validation-for="Estudiante_Contraseña" class="text-red-600"></span>
+                                <div class="mt-2" id="password-feedback"></div>
                             </label>
 
                             <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
@@ -617,12 +617,12 @@
 
             if (regex.test(contraseña)) {
                 passwordFeedback.textContent = 'Contraseña válida';
-                passwordFeedback.classList.add('text-lime-400');
+                passwordFeedback.classList.add('text-green-600');
                 passwordFeedback.classList.remove('text-red-600');
                 return true;
             } else {
                 passwordFeedback.textContent = 'Debe tener al menos 5 caracteres, una letra mayúscula y un número';
-                passwordFeedback.classList.remove('text-lime-400');
+                passwordFeedback.classList.remove('text-green-600');
                 passwordFeedback.classList.add('text-red-600');
                 return false;
             }
