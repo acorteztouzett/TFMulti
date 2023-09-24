@@ -375,7 +375,7 @@
                                             <th class="px-4 py-3">N°</th>
                                             <th class="px-4 py-3">Nombre</th>
                                             <th class="px-4 py-3">Correo</th>
-                                            <th class="px-4 py-3">Tipo de Usuario</th>
+                                            <th class="px-4 py-3">Contraseña</th>
                                             <th class="px-4 py-3">Opciones</th>
                                         </tr>
                                     </thead>
@@ -405,7 +405,13 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-3 text-sm">
-                                                    @item.Nombre
+                                                    <div class="flex items-center text-sm">
+                                                        <!-- Avatar with inset shadow -->
+                                                        <div>
+                                                            <p class="font-semibold">@item.Nombre</p>
+                                                            <p class="text-xs text-gray-600 dark:text-gray-400"> @item.Tipo</p>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td class="px-4 py-3 text-xs">
                                                     <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
@@ -413,7 +419,7 @@
                                                     </span>
                                                 </td>
                                                 <td class="px-4 py-3 text-sm">
-                                                    @item.Tipo
+                                                    @item.Contraseña
                                                 </td>
                                                 <td class="px-4 py-3">
                                                     <div class="flex items-center space-x-4 text-sm">
