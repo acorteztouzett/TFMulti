@@ -17,23 +17,23 @@
             <h1 class="text-center">Editar Docente</h1>
             <br />
             <form method="post" asp-controller="VistasUsuarios" asp-action="EditarDocente" class="w-100" id="registro-form">
-                <input type="hidden" asp-for="Docente_Id" value = "@Model.Docente_Id"/>
-                <div asp-validation-summary="ModelOnly" class="tetx-danger"> </div>
+                <input type="hidden" asp-for="Docente_Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 
                 <div class="mb-3">
-                    <label asp-for="Docente_Nombre" class="form-label">Nombre del Usuario</label>
-                    <input asp-for="Docente_Nombre" type="text" class="form-control" id="Nombre" name="Nombre" value ="@Model.Docente_Nombre" required />
+                    <label asp-for="Docente_Nombre" class="form-label">Nombre del Docente</label>
+                    <input asp-for="Docente_Nombre" type="text" class="form-control" id="Nombre" required />
                     <span asp-validation-for="Docente_Nombre" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Docente_Correo" class="form-label">Correo Electrónico del Usuario</label>
-                    <input asp-for="Docente_Correo" type="email" class="form-control" id="Correo" name="Correo" value="@Model.Docente_Correo" required />
+                    <label asp-for="Docente_Correo" class="form-label">Correo Electrónico del Docente</label>
+                    <input asp-for="Docente_Correo" type="email" class="form-control" id="Correo" required />
                     <span asp-validation-for="Docente_Correo" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Docente_Contraseña" class="form-label">Contraseña del Usuario</label>
+                    <label asp-for="Docente_Contraseña" class="form-label">Contraseña del Docente</label>
                     <div class="input-group">
                         <input asp-for="Docente_Contraseña" type="password" class="form-control" id="password" required />
                         <button type="button" class="btn btn-outline-secondary" id="ver-password">Ver contraseña</button>
@@ -42,26 +42,11 @@
                     <div id="password-feedback"></div>
                 </div>
 
-
-                <!-- Tipo de usuario -->
-                <br />
-                <label class="form-label">Elige el tipo de Usuario</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="EsDocente" checked disabled>
-                    <label class="form-check-label" for="EsDocente">Docente</label>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="EsEstudiante" disabled>
-                    <label class="form-check-label" for="EsEstudiante">Estudiante</label>
-                </div>
-
-
                 <br />
                 <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+            </form>
                 <br />
                 <a asp-controller="VistasUsuarios" asp-action="ListaUsuarios" class="btn btn-success">Regresar</a>
-            </form>
         </div>
     </div>
 
@@ -87,15 +72,6 @@
                 return false;
             }
         }
-
-        document.querySelector('#registro-form').addEventListener('submit', function (e) {
-
-            if (!validarContraseña()) {
-                e.preventDefault();
-                alert('La contraseña no cumple con los requisitos.');
-                return;
-            }
-        });
 
         document.getElementById('ver-password').addEventListener('click', function () {
             const contraseñaInput = document.getElementById('password');

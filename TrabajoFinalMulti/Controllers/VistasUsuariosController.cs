@@ -126,26 +126,8 @@ namespace TrabajoFinalMulti.Controllers
 
             if (ModelState.IsValid)
             {
-                var docenteBD = objUsuario.Docente.SingleOrDefault(d => d.Docente_Id == docente.Docente_Id);
-
-                if (docenteBD != null)
-                {
-                    docenteBD.Docente_Nombre = docente.Docente_Nombre;
-                    docenteBD.Docente_Correo = docente.Docente_Correo;
-                    if(docente.Docente_Contraseña != null)
-                        docenteBD.Docente_Contraseña = docente.Docente_Contraseña;
-
-                    objUsuario.Docente.Update(docenteBD);
-                    objUsuario.SaveChanges();
-
-                    return RedirectToAction(nameof(ListaUsuarios));
-                }
-                else
-                {
-                    return RedirectToAction(nameof(ListaUsuarios));
-                }
                 // Realizar la actualización solo si los campos tienen valores válidos
-                /*if (!string.IsNullOrEmpty(docente.Docente_Contraseña) && !string.IsNullOrEmpty(docente.Docente_Nombre) && !string.IsNullOrEmpty(docente.Docente_Correo))
+                if (!string.IsNullOrEmpty(docente.Docente_Contraseña) && !string.IsNullOrEmpty(docente.Docente_Nombre) && !string.IsNullOrEmpty(docente.Docente_Correo))
                 {
                     objUsuario.Docente.Update(docente);
                     objUsuario.SaveChanges();
@@ -155,7 +137,7 @@ namespace TrabajoFinalMulti.Controllers
                 {
                     // Manejar el caso en el que al menos uno de los campos está vacío
                     ModelState.AddModelError("", "Todos los campos son obligatorios.");
-                }*/
+                }
             }
             return View(docente);
         }
@@ -169,10 +151,45 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            var estudiante = objUsuario.Estudiante.FirstOrDefault
-                (d => d.Estudiante_Id == id);
+            var estudiante = objUsuario.Estudiante.FirstOrDefault(e => e.Estudiante_Id == id);
+
+            if (estudiante == null)
+            {
+                // Manejar el caso en el que no se encuentre el docente
+                return RedirectToAction("Error", "Shared");
+            }
+
+            // Obtener la contraseña actual del docente
+            string contraseñaActual = estudiante.Estudiante_Contraseña;
+
+            // Establecer la contraseña actual en el modelo
+            estudiante.Estudiante_Contraseña= contraseñaActual;
+
             return View(estudiante);
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarEstudiante(Estudiante estudiante)
+        {
+
+            if (ModelState.IsValid)
+            {
+                // Realizar la actualización solo si los campos tienen valores válidos
+                if (!string.IsNullOrEmpty(estudiante.Estudiante_Contraseña) && !string.IsNullOrEmpty(estudiante.Estudiante_Nombre) && !string.IsNullOrEmpty(estudiante.Estudiante_Correo))
+                {
+                    objUsuario.Estudiante.Update(estudiante);
+                    objUsuario.SaveChanges();
+                    return RedirectToAction(nameof(ListaUsuarios));
+                }
+                else
+                {
+                    // Manejar el caso en el que al menos uno de los campos está vacío
+                    ModelState.AddModelError("", "Todos los campos son obligatorios.");
+                }
+            }
+            return View(estudiante);
+        }
+
     }
 }
