@@ -5,11 +5,11 @@ using TrabajoFinalMulti.ViewModel;
 
 namespace TrabajoFinalMulti.Controllers
 {
-    public class VistasUsuariosController : Controller
+    public class AdministradorController : Controller
     {
         public readonly ApplicationDbContext objUsuario;
 
-        public VistasUsuariosController(ApplicationDbContext dbContext)
+        public AdministradorController(ApplicationDbContext dbContext)
         {
             objUsuario = dbContext;
         }
@@ -63,7 +63,7 @@ namespace TrabajoFinalMulti.Controllers
                 return RedirectToAction("Error");
             }
 
-            return RedirectToAction("ListaUsuarios", "VistasUsuarios");
+            return RedirectToAction("ListaUsuarios", "Administrador");
         }
 
 
@@ -108,7 +108,7 @@ namespace TrabajoFinalMulti.Controllers
             if (docente == null)
             {
                 // Manejar el caso en el que no se encuentre el docente
-                return RedirectToAction("Error","Shared");
+                return RedirectToAction("Error", "Shared");
             }
 
             // Obtener la contraseña actual del docente
@@ -163,7 +163,7 @@ namespace TrabajoFinalMulti.Controllers
             string contraseñaActual = estudiante.Estudiante_Contraseña;
 
             // Establecer la contraseña actual en el modelo
-            estudiante.Estudiante_Contraseña= contraseñaActual;
+            estudiante.Estudiante_Contraseña = contraseñaActual;
 
             return View(estudiante);
         }
@@ -189,6 +189,74 @@ namespace TrabajoFinalMulti.Controllers
                 }
             }
             return View(estudiante);
+        }
+
+        //REGISTRAR USUARIO:
+        [HttpGet]
+        public IActionResult RegistrarUsuario()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrarUsuario(RegistroViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // Verificar si el correo ya está en uso
+                if (objUsuario.Docente.Any(d => d.Docente_Correo == viewModel.Correo) ||
+                    objUsuario.Estudiante.Any(e => e.Estudiante_Correo == viewModel.Correo))
+                {
+                    ModelState.AddModelError("Correo", "El correo ya está en uso.");
+                }
+                else if (!CumpleRequisitosContraseña(viewModel.Contraseña))
+                {
+
+                }
+                else
+                {
+                    //Guardar
+                    if (viewModel.TipoUsuario == "docente")
+                    {
+                        var docente = new Docente
+                        {
+                            Docente_Nombre = viewModel.Nombre,
+                            Docente_Correo = viewModel.Correo,
+                            Docente_Contraseña = viewModel.Contraseña,
+                        };
+                        objUsuario.Docente.Add(docente);
+                    }
+                    else if (viewModel.TipoUsuario == "estudiante")
+                    {
+                        var estudiante = new Estudiante
+                        {
+                            Estudiante_Nombre = viewModel.Nombre,
+                            Estudiante_Correo = viewModel.Correo,
+                            Estudiante_Contraseña = viewModel.Contraseña,
+                        };
+                        objUsuario.Estudiante.Add(estudiante);
+                    }
+
+                    objUsuario.SaveChanges();
+                    return RedirectToAction("ListaUsuarios", "Administrador");
+                }
+            }
+
+            return View(viewModel);
+        }
+
+        // Función para verificar si la contraseña cumple con los requisitos
+        private bool CumpleRequisitosContraseña(string contraseña)
+        {
+            const int longitudMinima = 5;
+            if (contraseña.Length < longitudMinima)
+            {
+                return false;
+            }
+
+            // Verificar si contiene al menos una letra mayúscula y un número
+            return contraseña.Any(char.IsUpper) && contraseña.Any(char.IsDigit);
         }
 
     }

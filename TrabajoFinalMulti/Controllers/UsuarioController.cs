@@ -56,7 +56,7 @@ namespace TrabajoFinalMulti.Controllers
                 if (admin != null)
                 {
                     // Credenciales válidas para Administrador, redirigir a la página correspondiente
-                    return RedirectToAction("ListaUsuarios", "VistasUsuarios");
+                    return RedirectToAction("ListaUsuarios", "Administrador");
                 }
                 else if (docente != null)
                 {
@@ -104,78 +104,7 @@ namespace TrabajoFinalMulti.Controllers
         {
             // Redirige al usuario a la página de inicio o a donde desees después de cerrar sesión.
             return RedirectToAction("Login");
-        }
-
-        //REGISTRAR USUARIO:
-        [HttpGet]
-        public IActionResult RegistrarUsuario()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RegistrarUsuario(RegistroViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                // Verificar si el correo ya está en uso
-                if (objUsuario.Docente.Any(d => d.Docente_Correo == viewModel.Correo) ||
-                    objUsuario.Estudiante.Any(e => e.Estudiante_Correo == viewModel.Correo))
-                {
-                    ModelState.AddModelError("Correo", "El correo ya está en uso.");
-                }
-                else if (!CumpleRequisitosContraseña(viewModel.Contraseña))
-                {
-                    
-                }
-                else
-                {
-                    //Guardar
-                    if (viewModel.TipoUsuario == "docente")
-                    {
-                        var docente = new Docente
-                        {
-                            Docente_Nombre = viewModel.Nombre,
-                            Docente_Correo = viewModel.Correo,
-                            Docente_Contraseña = viewModel.Contraseña,
-                        };
-                        objUsuario.Docente.Add(docente);
-                    }
-                    else if (viewModel.TipoUsuario == "estudiante")
-                    {
-                        var estudiante = new Estudiante
-                        {
-                            Estudiante_Nombre = viewModel.Nombre,
-                            Estudiante_Correo = viewModel.Correo,
-                            Estudiante_Contraseña = viewModel.Contraseña,
-                        };
-                        objUsuario.Estudiante.Add(estudiante);
-                    }
-
-                    objUsuario.SaveChanges();
-                    return RedirectToAction("ListaUsuarios", "VistasUsuarios");
-                }
-            }
-
-            return View(viewModel);
-        }
-
-
-
-        // Función para verificar si la contraseña cumple con los requisitos
-        private bool CumpleRequisitosContraseña(string contraseña)
-        {
-            const int longitudMinima = 5;
-            if (contraseña.Length < longitudMinima)
-            {
-                return false;
-            }
-
-            // Verificar si contiene al menos una letra mayúscula y un número
-            return contraseña.Any(char.IsUpper) && contraseña.Any(char.IsDigit);
-        }
-
+        }      
 
         public IActionResult ActualizarUsuario(ActualizarViewModel viewmodel)
         {
