@@ -178,6 +178,27 @@ namespace TrabajoFinalMulti.Controllers
             return RedirectToAction("ListaEstudiantes", "Administrador");
         }
 
+        [HttpGet]
+        public IActionResult BuscarDocente(string term)
+        {
+            // Realiza la búsqueda en tu base de datos y obtiene los resultados
+            var resultados = objUsuario.Docente
+                .Where(u => u.Docente_Nombre.Contains(term))
+                .ToList();
+
+            return PartialView("_TablaDocentes", resultados);
+        }
+
+        [HttpGet]
+        public IActionResult BuscarEstudiante(string term)
+        {
+            // Realiza la búsqueda en tu base de datos y obtiene los resultados
+            var resultados = objUsuario.Estudiante
+                .Where(u => u.Estudiante_Nombre.Contains(term))
+                .ToList();
+
+            return PartialView("_TablaEstudiantes", resultados);
+        }
 
     }
 }

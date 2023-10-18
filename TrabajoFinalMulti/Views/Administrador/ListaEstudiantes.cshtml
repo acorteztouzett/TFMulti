@@ -191,10 +191,16 @@
                                           clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+                            <input id="searchInput" class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                                    type="text"
                                    placeholder="Buscar persona"
                                    aria-label="Search" />
+                        </div>
+                        <div>
+                            <button id="buscarBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-purple">
+                                Buscar
+                            </button>
+
                         </div>
                     </div>
                     <ul class="flex items-center flex-shrink-0 space-x-6">
@@ -366,7 +372,7 @@
                             {
                                 var numeroSecuencial = 1; // Inicializa el número secuencial en 1
 
-                                <table class="w-full whitespace-no-wrap">
+                                <table id="dataTable" class="w-full whitespace-no-wrap">
                                     <thead>
                                         <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                             <th class="px-4 py-3">N°</th>
@@ -518,6 +524,35 @@
             </main>
         </div>
     </div>
+    <script>
+        // Obtén referencias a elementos HTML
+        const searchInput = document.getElementById('searchInput');
+        const buscarBtn = document.getElementById('buscarBtn');
+        const dataTable = document.getElementById('dataTable');
+
+        buscarBtn.addEventListener('click', function () {
+            const searchTerm = searchInput.value;
+
+            // Realiza una solicitud Ajax al controlador para buscar docentes
+            fetch(`/Administrador/BuscarEstudiante?term=${searchTerm}`)
+                .then(response => response.text())
+                .then(data => {
+                    // Crea un elemento div para contener la nueva tabla
+                    const newTableContainer = document.createElement('div');
+                    newTableContainer.innerHTML = data;
+
+                    // Obtén la nueva tabla desde el div
+                    const newTable = newTableContainer.querySelector('table');
+
+                    // Reemplaza la tabla original con la nueva tabla
+                    dataTable.innerHTML = newTable.outerHTML;
+
+                })
+                .catch(error => {
+                    console.error('Error al realizar la búsqueda:', error);
+                });
+        });
+    </script>
 </body>
 </html>
 
