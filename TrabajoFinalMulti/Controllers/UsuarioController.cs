@@ -56,7 +56,7 @@ namespace TrabajoFinalMulti.Controllers
                 if (admin != null)
                 {
                     // Credenciales válidas para Administrador, redirigir a la página correspondiente
-                    return RedirectToAction("ListaUsuarios", "Administrador");
+                    return RedirectToAction("RegistrarUsuario", "Administrador");
                 }
                 else if (docente != null)
                 {

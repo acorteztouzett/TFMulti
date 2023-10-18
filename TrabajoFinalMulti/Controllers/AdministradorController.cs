@@ -14,183 +14,7 @@ namespace TrabajoFinalMulti.Controllers
             objUsuario = dbContext;
         }
 
-        //LISTAR USUARIOS:
-        public IActionResult ListaUsuarios()
-        {
-            var docentes = objUsuario.Docente.ToList();
-            var estudiantes = objUsuario.Estudiante.ToList();
-
-            var viewModel = new UsuariosViewModel
-            {
-                ListaDocente = docentes,
-                ListaEstudiante = estudiantes
-            };
-
-            return View(viewModel);
-        }
-
-        //ELIMINAR DOCENTE O ESTUDIANTE:
-        [HttpGet]
-        public IActionResult EliminarUsuario(int? id, string tipo)
-        {
-            if (id == null || string.IsNullOrEmpty(tipo))
-            {
-                // Maneja la falta de ID o tipo de usuario como un error o redirecciona a una página de error
-                return RedirectToAction("Error");
-            }
-
-            if (tipo == "Docente")
-            {
-                var docente = objUsuario.Docente.FirstOrDefault(d => d.Docente_Id == id);
-                if (docente != null)
-                {
-                    objUsuario.Docente.Remove(docente);
-                    objUsuario.SaveChanges();
-                }
-            }
-            else if (tipo == "Estudiante")
-            {
-                var estudiante = objUsuario.Estudiante.FirstOrDefault(e => e.Estudiante_Id == id);
-                if (estudiante != null)
-                {
-                    objUsuario.Estudiante.Remove(estudiante);
-                    objUsuario.SaveChanges();
-                }
-            }
-            else
-            {
-                // Maneja el tipo de usuario desconocido como un error o redirecciona a una página de error
-                return RedirectToAction("Error");
-            }
-
-            return RedirectToAction("ListaUsuarios", "Administrador");
-        }
-
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditarUsuario(string tipo, int id)
-        {
-            if (string.IsNullOrEmpty(tipo) || id <= 0)
-            {
-                // Manejar el error de tipo inválido o ID no válido
-                return RedirectToAction("Error");
-            }
-
-            if (tipo == "Docente")
-            {
-                // Redirigir a la vista de edición de Docente
-                return RedirectToAction("EditarDocente", new { id });
-            }
-            else if (tipo == "Estudiante")
-            {
-                // Redirigir a la vista de edición de Estudiante
-                return RedirectToAction("EditarEstudiante", new { id });
-            }
-            else
-            {
-                // Manejar el tipo de usuario desconocido como un error o redirecciona a una página de error
-                return RedirectToAction("Error");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult EditarDocente(int? id)
-        {
-            if (id == null)
-            {
-                return View();
-            }
-
-            var docente = objUsuario.Docente.FirstOrDefault(d => d.Docente_Id == id);
-
-            if (docente == null)
-            {
-                // Manejar el caso en el que no se encuentre el docente
-                return RedirectToAction("Error", "Shared");
-            }
-
-            // Obtener la contraseña actual del docente
-            string contraseñaActual = docente.Docente_Contraseña;
-
-            // Establecer la contraseña actual en el modelo
-            docente.Docente_Contraseña = contraseñaActual;
-
-            return View(docente);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditarDocente(Docente docente)
-        {
-
-            if (ModelState.IsValid)
-            {
-                // Realizar la actualización solo si los campos tienen valores válidos
-                if (!string.IsNullOrEmpty(docente.Docente_Contraseña) && !string.IsNullOrEmpty(docente.Docente_Nombre) && !string.IsNullOrEmpty(docente.Docente_Correo))
-                {
-                    objUsuario.Docente.Update(docente);
-                    objUsuario.SaveChanges();
-                    return RedirectToAction(nameof(ListaUsuarios));
-                }
-                else
-                {
-                    // Manejar el caso en el que al menos uno de los campos está vacío
-                    ModelState.AddModelError("", "Todos los campos son obligatorios.");
-                }
-            }
-            return View(docente);
-        }
-
-
-
-        [HttpGet]
-        public IActionResult EditarEstudiante(int? id)
-        {
-            if (id == null)
-            {
-                return View();
-            }
-            var estudiante = objUsuario.Estudiante.FirstOrDefault(e => e.Estudiante_Id == id);
-
-            if (estudiante == null)
-            {
-                // Manejar el caso en el que no se encuentre el docente
-                return RedirectToAction("Error", "Shared");
-            }
-
-            // Obtener la contraseña actual del docente
-            string contraseñaActual = estudiante.Estudiante_Contraseña;
-
-            // Establecer la contraseña actual en el modelo
-            estudiante.Estudiante_Contraseña = contraseñaActual;
-
-            return View(estudiante);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditarEstudiante(Estudiante estudiante)
-        {
-
-            if (ModelState.IsValid)
-            {
-                // Realizar la actualización solo si los campos tienen valores válidos
-                if (!string.IsNullOrEmpty(estudiante.Estudiante_Contraseña) && !string.IsNullOrEmpty(estudiante.Estudiante_Nombre) && !string.IsNullOrEmpty(estudiante.Estudiante_Correo))
-                {
-                    objUsuario.Estudiante.Update(estudiante);
-                    objUsuario.SaveChanges();
-                    return RedirectToAction(nameof(ListaUsuarios));
-                }
-                else
-                {
-                    // Manejar el caso en el que al menos uno de los campos está vacío
-                    ModelState.AddModelError("", "Todos los campos son obligatorios.");
-                }
-            }
-            return View(estudiante);
-        }
-
+        /*-------------------REGISTRAR USUARIOS (DOCENTE O ESTUDIANTE)-------------------------------*/
         //REGISTRAR USUARIO:
         [HttpGet]
         public IActionResult RegistrarUsuario()
@@ -226,6 +50,9 @@ namespace TrabajoFinalMulti.Controllers
                             Docente_Contraseña = viewModel.Contraseña,
                         };
                         objUsuario.Docente.Add(docente);
+                        objUsuario.SaveChanges();
+
+                        return RedirectToAction("ListaDocentes", "Administrador");
                     }
                     else if (viewModel.TipoUsuario == "estudiante")
                     {
@@ -236,10 +63,10 @@ namespace TrabajoFinalMulti.Controllers
                             Estudiante_Contraseña = viewModel.Contraseña,
                         };
                         objUsuario.Estudiante.Add(estudiante);
-                    }
+                        objUsuario.SaveChanges();
 
-                    objUsuario.SaveChanges();
-                    return RedirectToAction("ListaUsuarios", "Administrador");
+                        return RedirectToAction("ListaEstudiantes", "Administrador");
+                    }
                 }
             }
 
@@ -258,6 +85,99 @@ namespace TrabajoFinalMulti.Controllers
             // Verificar si contiene al menos una letra mayúscula y un número
             return contraseña.Any(char.IsUpper) && contraseña.Any(char.IsDigit);
         }
+
+        /*------------------------DOCENTES--------------------------------------*/
+        //LISTAR DOCENTES:
+        public IActionResult ListaDocentes()
+        {
+            List<Docente> listaDocentes = objUsuario.Docente.ToList();
+            return View(listaDocentes);
+        }
+
+        [HttpGet]
+        public IActionResult EditarDocente(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            var docente = objUsuario.Docente.FirstOrDefault(c => c.Docente_Id == id);
+            return View(docente);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarDocente(Docente docente)
+        {
+            if (ModelState.IsValid)
+            {
+                if (objUsuario.Docente.Any(d => d.Docente_Correo == docente.Docente_Correo && d.Docente_Id != docente.Docente_Id))
+                {
+                    ModelState.AddModelError("Docente_Correo", "El correo ya está en uso.");
+                    return View(docente); // Devuelve la vista con el modelo para que el usuario pueda corregir
+                }
+                objUsuario.Docente.Update(docente);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaDocentes));
+            }
+            return View(docente);
+        }
+
+        [HttpGet]
+        public IActionResult EliminarDocente(int? id)
+        {
+            var docente = objUsuario.Docente.FirstOrDefault(c => c.Docente_Id == id);
+            objUsuario.Docente.Remove(docente);
+            objUsuario.SaveChanges();
+            return RedirectToAction("ListaDocentes", "Administrador");
+        }
+
+        /*------------------------ESTUDIANTES--------------------------------------*/
+        //LISTAR ESTUDIANTES:
+        public IActionResult ListaEstudiantes()
+        {
+            List<Estudiante> listaEstudiantes = objUsuario.Estudiante.ToList();
+            return View(listaEstudiantes);
+        }
+
+        [HttpGet]
+        public IActionResult EditarEstudiante(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            var estudiante = objUsuario.Estudiante.FirstOrDefault(c => c.Estudiante_Id == id);
+            return View(estudiante);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarEstudiante(Estudiante estudiante)
+        {
+            if (ModelState.IsValid)
+            {
+                if (objUsuario.Estudiante.Any(d => d.Estudiante_Correo == estudiante.Estudiante_Correo && d.Estudiante_Id != estudiante.Estudiante_Id))
+                {
+                    ModelState.AddModelError("Estudiante_Correo", "El correo ya está en uso.");
+                    return View(estudiante); // Devuelve la vista con el modelo para que el usuario pueda corregir
+                }
+                objUsuario.Estudiante.Update(estudiante);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaEstudiantes));
+            }
+            return View(estudiante);
+        }
+
+        [HttpGet]
+        public IActionResult EliminarEstudiante(int? id)
+        {
+            var estudiante = objUsuario.Estudiante.FirstOrDefault(c => c.Estudiante_Id == id);
+            objUsuario.Estudiante.Remove(estudiante);
+            objUsuario.SaveChanges();
+            return RedirectToAction("ListaEstudiantes", "Administrador");
+        }
+
 
     }
 }
