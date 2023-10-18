@@ -1,0 +1,50 @@
+﻿@model TrabajoFinalMulti.ViewModel.CursoDocenteVM
+@{
+    ViewData["Title"] = "Registrar Curso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<h3 class="text-center">Crear un nuevo curso</h3>
+<form method="post" asp-action="RegistrarCurso">
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-12 mt-4">
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Curso.Curso_Nombre">Nombre del Curso</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Curso.Curso_Nombre" class="form-control" />
+                    <span asp-validation-for="Curso.Curso_Nombre" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Curso.Docente"></label>
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(u => u.Curso.Docente_Id, Model.ListaDocentes, "--Lista de docentes--",
+                    new {@class = "form-control"})
+                    <span asp-validation-for="Curso.Docente_Id" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-grid gap-2 d-md-block">
+            <button type="submit" class="btn btn-primary">Crear curso</button>
+            <a asp-controller="Administrador" asp-action="ListaCursos" class="btn btn-success">Regresar</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
 using TrabajoFinalMulti.ViewModel;
@@ -178,6 +180,7 @@ namespace TrabajoFinalMulti.Controllers
             return RedirectToAction("ListaEstudiantes", "Administrador");
         }
 
+        /*------------------------BUSQUEDA EN DOCENTES Y ESTUDIANTES--------------------------------------*/
         [HttpGet]
         public IActionResult BuscarDocente(string term)
         {
@@ -200,5 +203,152 @@ namespace TrabajoFinalMulti.Controllers
             return PartialView("_TablaEstudiantes", resultados);
         }
 
+
+        /*------------------------CREAR CURSOS Y ASIGNARLOS A UN DOCENTE--------------------------------------*/
+        /*public IActionResult ListaCursos()
+        {
+            List<Curso> listaCursos = objUsuario.Curso.ToList();
+            return View(listaCursos);
+        }*/
+
+        public IActionResult ListaCursos()
+        {
+            var cursos = objUsuario.Curso
+                .Include(c => c.Docente) // Esto carga el docente relacionado
+                .ToList();
+
+            return View(cursos);
+        }
+
+        [HttpGet]
+        public IActionResult RegistrarCurso()
+        {
+            CursoDocenteVM cursoDocente = new CursoDocenteVM();
+            cursoDocente.ListaDocentes = objUsuario.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = i.Docente_Nombre,
+                Value = i.Docente_Id.ToString()
+            });
+            return View(cursoDocente);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrarCurso(Curso curso)
+        {
+            if (ModelState.IsValid)
+            {
+                objUsuario.Curso.Add(curso);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaCursos));
+            }
+            CursoDocenteVM cursoDocente = new CursoDocenteVM();
+            cursoDocente.ListaDocentes = objUsuario.Docente.Select(i => new SelectListItem
+            {
+                Text = i.Docente_Nombre,
+                Value = i.Docente_Id.ToString()
+            });
+            return View(cursoDocente);
+        }
+        public IActionResult EditarCurso(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            CursoDocenteVM cursoDocente = new CursoDocenteVM();
+            cursoDocente.ListaDocentes = objUsuario.Docente.Select(i => new SelectListItem
+            {
+                Text = i.Docente_Nombre,
+                Value = i.Docente_Id.ToString()
+            });
+
+            cursoDocente.Curso = objUsuario.Curso.FirstOrDefault(c => c.Curso_Id == id);
+            if (cursoDocente == null)
+            {
+                return NotFound();
+            }
+            return View(cursoDocente);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarCurso(CursoDocenteVM cursoDocenteVM)
+        {
+            if (cursoDocenteVM.Curso.Curso_Id == 0)
+            {
+                return View(cursoDocenteVM.Curso);
+            }
+            else
+            {
+                objUsuario.Curso.Update(cursoDocenteVM.Curso);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaCursos));
+            }
+        }
+
+        [HttpGet]
+        public IActionResult BorrarCurso(int? id)
+        {
+            var curso = objUsuario.Curso.FirstOrDefault(c => c.Curso_Id == id);
+            objUsuario.Curso.Remove(curso);
+            objUsuario.SaveChanges();
+            return RedirectToAction(nameof(ListaCursos));
+        }
+
+        /*------------------------ANUNCIOS INFORMATIVOS--------------------------------------*/
+        public IActionResult ListaAnuncioInformativo()
+        {
+            List<AnuncioInformativo> listaAnuncioInformativo = objUsuario.AnuncioInformativo.ToList();
+            return View(listaAnuncioInformativo);
+        }
+        [HttpGet]
+        public IActionResult RegistrarAnuncioInformativo()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrarAnuncioInformativo(AnuncioInformativo anuncio)
+        {
+            if (ModelState.IsValid)
+            {
+                objUsuario.AnuncioInformativo.Add(anuncio);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaAnuncioInformativo));
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditarAnuncioInformativo(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            var anuncio = objUsuario.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
+            return View(anuncio);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarAnuncioInformativo(AnuncioInformativo anuncio)
+        {
+            if (ModelState.IsValid)
+            {
+                objUsuario.AnuncioInformativo.Update(anuncio);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaAnuncioInformativo));
+            }
+            return View(anuncio);
+        }
+
+        [HttpGet]
+        public IActionResult BorrarAnuncioInformativo(int? id)
+        {
+            var anuncio = objUsuario.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
+            objUsuario.AnuncioInformativo.Remove(anuncio);
+            objUsuario.SaveChanges();
+            return RedirectToAction(nameof(ListaAnuncioInformativo));
+        }
     }
 }

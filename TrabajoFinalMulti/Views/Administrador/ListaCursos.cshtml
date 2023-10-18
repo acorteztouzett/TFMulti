@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TrabajoFinalMulti.Models.Curso>
+@{
+    ViewData["Title"] = "Lista de cursos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-4">
+        <h3>Lista de cursos</h3>
+    </div>
+    <div class="col-3">
+        <a asp-action="RegistrarCurso" class="btn btn-primary form-control">Crear curso</a>
+    </div>
+</div>
+<br />
+
+<div>
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-striped border">
+            <tr>
+                <th>Curso ID</th>
+                <th>Nombre</th>
+                <th>Docente ID</th>
+                <th>Nombre del docente</th>
+                <th>Opciones</th>
+            </tr>
+            @foreach (var curso in Model)
+            {
+                <tr>
+                    <td>@curso.Curso_Id</td>
+                    <td>@curso.Curso_Nombre</td>
+                    <td>@curso.Docente_Id</td>
+                    <td>@curso.Docente.Docente_Nombre</td>
+                    <td>
+                        <a class="btn btn-primary text-white" asp-action="EditarCurso" asp-route-id="@curso.Curso_Id">Editar</a>
+                        <a class="btn btn-danger text-white" asp-action="BorrarCurso" asp-route-id="@curso.Curso_Id">Borrar</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>No hay cursos</p>
+    }
+</div>

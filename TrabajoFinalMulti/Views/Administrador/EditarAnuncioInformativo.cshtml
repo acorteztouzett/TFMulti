@@ -1,0 +1,40 @@
+﻿@model TrabajoFinalMulti.Models.AnuncioInformativo
+@{
+    ViewData["Title"] = "Editar Anuncio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h3>Editar un Anuncio</h3>
+</div>
+<br />
+<form method="post" asp-action="EditarAnuncioInformativo">
+    <!--Importante para editar-->
+    <input type="hidden" asp-for="Anuncio_Id" />
+
+    <div class="text-center">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    </div>
+    <div class="text-center mt-4">
+        <div class="d-flex align-items-center text-center">
+            <label asp-for="Anuncio_URL" style="font-weight:bold">URL del anuncio:  </label>
+            <div style="width: 500px;">
+                <input asp-for="Anuncio_URL" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        @if (!string.IsNullOrWhiteSpace(Model.Anuncio_URL))
+        {
+            <img src="@Model.Anuncio_URL" alt="Imagen del anuncio" class="img-fluid" width="350" height="350" />
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary" style="max-width: 200px;">Guardar cambios</button>
+            <a asp-controller="Administrador" asp-action="ListaAnuncioInformativo" class="btn btn-success mx-2" style="max-width: 200px;">Regresar</a>
+        </div>
+    </div>
+</form>

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrabajoFinalMulti.Data;
 
@@ -10,9 +11,11 @@ using TrabajoFinalMulti.Data;
 namespace TrabajoFinalMulti.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231018205630_TablaAnuncios")]
+    partial class TablaAnuncios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,28 +60,6 @@ namespace TrabajoFinalMulti.Migrations
                     b.HasKey("Anuncio_Id");
 
                     b.ToTable("AnuncioInformativo");
-                });
-
-            modelBuilder.Entity("TrabajoFinalMulti.Models.Curso", b =>
-                {
-                    b.Property<int>("Curso_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Curso_Id"));
-
-                    b.Property<string>("Curso_Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Docente_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Curso_Id");
-
-                    b.HasIndex("Docente_Id");
-
-                    b.ToTable("Curso");
                 });
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Docente", b =>
@@ -129,22 +110,6 @@ namespace TrabajoFinalMulti.Migrations
                     b.HasKey("Estudiante_Id");
 
                     b.ToTable("Estudiante");
-                });
-
-            modelBuilder.Entity("TrabajoFinalMulti.Models.Curso", b =>
-                {
-                    b.HasOne("TrabajoFinalMulti.Models.Docente", "Docente")
-                        .WithMany("Curso")
-                        .HasForeignKey("Docente_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Docente");
-                });
-
-            modelBuilder.Entity("TrabajoFinalMulti.Models.Docente", b =>
-                {
-                    b.Navigation("Curso");
                 });
 #pragma warning restore 612, 618
         }

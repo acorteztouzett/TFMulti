@@ -17,5 +17,7 @@ namespace TrabajoFinalMulti.Models
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).{5,}$", ErrorMessage = "La contraseña debe tener al menos 5 caracteres, una letra mayúscula y un número.")]
         public string Docente_Contraseña { get; set; }
+
+        public List<Curso> Curso { get; set; }
     }
 }

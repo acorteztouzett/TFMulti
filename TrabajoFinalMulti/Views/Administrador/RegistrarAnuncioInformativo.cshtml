@@ -1,0 +1,26 @@
+﻿@model TrabajoFinalMulti.Models.AnuncioInformativo
+@{
+    ViewData["Title"] = "Registrar Anuncio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-action="RegistrarAnuncioInformativo">
+    <div class="border-bottom p-3">
+        <div class="form-group row">
+            <h2 class="text-info p-lg-3">Nuevo Anuncio Informativo</h2>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6"></div>
+                <label asp-for="Anuncio_URL" class="form-label">URL del anuncio</label>
+                <input asp-for="Anuncio_URL" class="form-control" />
+                <span asp-validation-for="Anuncio_URL" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="d-grid gap-2 d-md-block">
+            <button type="submit" class="btn btn-primary">Crear nuevo anuncio</button>
+            <a asp-controller="Administrador" asp-action="ListaAnuncioInformativo" class="btn btn-success">Regresar</a>
+        </div>
+    </div>
+</form>
