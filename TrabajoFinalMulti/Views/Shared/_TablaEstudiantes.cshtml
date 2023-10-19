@@ -12,6 +12,7 @@
                     <th class="px-4 py-3">Nombre</th>
                     <th class="px-4 py-3">Correo</th>
                     <th class="px-4 py-3">Contraseña</th>
+                    <th class="px-4 py-3">Apoderado</th>
                     <th class="px-4 py-3">Opciones</th>
                 </tr>
             </thead>
@@ -45,6 +46,9 @@
                         </td>
                         <td class="px-4 py-3 text-sm">
                             @item.Estudiante_Contraseña
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            <a class="btn btn-info text-black" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id" style="background-color: yellow;">Ver Información</a>
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center space-x-4 text-sm">

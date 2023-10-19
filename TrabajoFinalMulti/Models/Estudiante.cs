@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrabajoFinalMulti.Models
 {
@@ -17,5 +18,10 @@ namespace TrabajoFinalMulti.Models
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).{5,}$", ErrorMessage = "La contraseña debe tener al menos 5 caracteres, una letra mayúscula y un número.")]
         public string Estudiante_Contraseña { get; set; }
+
+
+        [ForeignKey("Apoderado")]
+        public int? Apoderado_Id { get; set; }
+        public Apoderado Apoderado { get; set; }
     }
 }

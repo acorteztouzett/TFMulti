@@ -1,0 +1,75 @@
+﻿@model TrabajoFinalMulti.Models.Apoderado
+@{
+    ViewData["Title"] = "Editar Apoderado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<h3 class="text-center"> Editar Apoderado del estudiante</h3>
+<form method="post" asp-action="EditarApoderado">
+    <input type="hidden" asp-for="Apoderado_Id" />
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-12 mt-4">
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado_Nombre">Nombre del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado_Nombre" class="form-control" />
+                    <span asp-validation-for="Apoderado_Nombre" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado_Parentesco">Parentesco del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Apoderado_Parentesco" asp-items="@(new SelectList(new List<string> { "Padre", "Madre", "Abuelo", "Abuela", "Tío", "Tía", "Hermano", "Hermana", "Otros" }))" class="form-control">
+                        <option value="">Selecciona un parentesco</option>
+                    </select>
+                    <span asp-validation-for="Apoderado_Parentesco" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado_DNI">DNI del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado_DNI" class="form-control" />
+                    <span asp-validation-for="Apoderado_DNI" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado_Celular">Celular del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado_Celular" class="form-control" />
+                    <span asp-validation-for="Apoderado_Celular" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado_Correo">Correo del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado_Correo" class="form-control" />
+                    <span asp-validation-for="Apoderado_Correo" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+        </div>
+    </div>
+    <div class="d-grid gap-2 d-md-block">
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a asp-controller="Administrador" asp-action="ListaEstudiantes" class="btn btn-success">Regresar</a>
+    </div>
+</form>

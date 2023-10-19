@@ -180,6 +180,86 @@ namespace TrabajoFinalMulti.Controllers
             return RedirectToAction("ListaEstudiantes", "Administrador");
         }
 
+        /*------------------------APODERADOS PARA CADA ESTUDIANTE--------------------------------------*/
+        [HttpGet]
+        public IActionResult RegistrarApoderado(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            var estudiante = objUsuario.Estudiante.Include(d => d.Apoderado).FirstOrDefault(u => u.Estudiante_Id == id);
+            if (estudiante == null)
+            {
+                return NotFound();
+            }
+            return View(estudiante);
+        }
+
+        [HttpPost]
+        public IActionResult RegistrarApoderado(Estudiante estudiante)
+        {
+            if (estudiante.Apoderado.Apoderado_Id == 0)
+            {
+                //Creamos los detalles para ese usuario
+                objUsuario.Apoderado.Add(estudiante.Apoderado);
+                objUsuario.SaveChanges();
+                //Después de crear el detalle del usuario, obtenemos el usuario de la base
+                //de datos y le actualizamos el campo "DetalleUsuario_Id"
+                var estudianteBd = objUsuario.Estudiante.FirstOrDefault(u => u.Estudiante_Id == estudiante.Estudiante_Id);
+                estudianteBd.Apoderado_Id = estudiante.Apoderado.Apoderado_Id;
+                objUsuario.SaveChanges();
+
+            }
+            return RedirectToAction(nameof(ListaEstudiantes));
+        }
+
+        [HttpGet]
+        public IActionResult EditarApoderado(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            var apoderado = objUsuario.Apoderado.FirstOrDefault(c => c.Apoderado_Id == id);
+            return View(apoderado);
+        }
+
+        [HttpPost]
+        public IActionResult EditarApoderado(Apoderado apoderado)
+        {
+            if (ModelState.IsValid)
+            {
+                objUsuario.Apoderado.Update(apoderado);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaEstudiantes));
+            }
+
+            return View(apoderado);
+        }
+
+        [HttpGet]
+        public IActionResult EliminarApoderado(int? id)
+        {
+            var apoderado = objUsuario.Apoderado.FirstOrDefault(c => c.Apoderado_Id == id);
+
+            if (apoderado != null)
+            {
+                // Obten los estudiantes relacionados y establece Apoderado_Id a null
+                var estudiantesRelacionados = objUsuario.Estudiante.Where(e => e.Apoderado_Id == id);
+                foreach (var estudiante in estudiantesRelacionados)
+                {
+                    estudiante.Apoderado_Id = null;
+                }
+
+                objUsuario.Apoderado.Remove(apoderado);
+                objUsuario.SaveChanges();
+            }
+
+            return RedirectToAction("ListaEstudiantes", "Administrador");
+        }
+
+
         /*------------------------BUSQUEDA EN DOCENTES Y ESTUDIANTES--------------------------------------*/
         [HttpGet]
         public IActionResult BuscarDocente(string term)

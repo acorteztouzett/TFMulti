@@ -13,5 +13,6 @@ namespace TrabajoFinalMulti.Data
         public DbSet<Administrador> Administrador { get; set; }
         public DbSet<AnuncioInformativo> AnuncioInformativo { get; set; }
         public DbSet<Curso> Curso { get; set; }
+        public DbSet<Apoderado> Apoderado { get; set; }
     }
 }

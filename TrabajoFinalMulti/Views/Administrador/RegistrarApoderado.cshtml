@@ -1,0 +1,102 @@
+﻿@model TrabajoFinalMulti.Models.Estudiante
+@{
+    ViewData["Title"] = "Apoderado del estudiante";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<h3 class="text-center">Apoderado del estudiante</h3>
+<form method="post" asp-action="RegistrarApoderado">
+    <input type="hidden" asp-for="Estudiante_Id" />
+    <input type="hidden" asp-for="Apoderado.Apoderado_Id" />
+
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-12 mt-4">
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Estudiante_Nombre">Nombre del Estudiante</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Estudiante_Nombre" class="form-control" disabled />
+                    <span asp-validation-for="Estudiante_Nombre" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado.Apoderado_Nombre">Nombre del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado.Apoderado_Nombre" class="form-control" />
+                    <span asp-validation-for="Apoderado.Apoderado_Nombre" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado.Apoderado_Parentesco">Parentesco del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Apoderado.Apoderado_Parentesco" asp-items="@(new SelectList(new List<string> { "Padre", "Madre", "Abuelo", "Abuela", "Tío", "Tía", "Hermano", "Hermana", "Otros" }))" class="form-control">
+                        <option value="">Selecciona un parentesco</option>
+                    </select>
+                    <span asp-validation-for="Apoderado.Apoderado_Parentesco" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado.Apoderado_DNI">DNI del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado.Apoderado_DNI" class="form-control" />
+                    <span asp-validation-for="Apoderado.Apoderado_DNI" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado.Apoderado_Celular">Celular del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado.Apoderado_Celular" class="form-control" />
+                    <span asp-validation-for="Apoderado.Apoderado_Celular" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Apoderado.Apoderado_Correo">Correo del Apoderado</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Apoderado.Apoderado_Correo" class="form-control" />
+                    <span asp-validation-for="Apoderado.Apoderado_Correo" class="text-danger"></span>
+                </div>
+            </div>﻿
+            <br />
+        </div>
+    </div>
+    <div class="d-grid gap-2 d-md-block">
+        @if (Model.Apoderado == null)
+        {
+            <button type="submit" class="btn btn-primary">Registrar apoderado</button>
+        }
+        else if (string.IsNullOrEmpty(Model.Apoderado.Apoderado_Nombre) || string.IsNullOrEmpty(Model.Apoderado.Apoderado_Parentesco) || string.IsNullOrEmpty(Model.Apoderado.Apoderado_DNI) || string.IsNullOrEmpty(Model.Apoderado.Apoderado_Celular) || string.IsNullOrEmpty(Model.Apoderado.Apoderado_Correo))
+        {
+            <button type="submit" class="btn btn-primary">Registrar apoderado</button>
+        }
+        else
+        {
+            <a asp-controller="Administrador" asp-action="EditarApoderado" asp-route-id="@Model.Apoderado.Apoderado_Id" class="btn btn-secondary">Editar datos</a>
+            <a asp-controller="Administrador" asp-action="EliminarApoderado" asp-route-id="@Model.Apoderado.Apoderado_Id" class="btn btn-danger text-white">Borrar datos</a>
+        }
+
+        <a asp-controller="Administrador" asp-action="ListaEstudiantes" class="btn btn-success">Regresar</a>
+        
+    </div>
+
+
+</form>
