@@ -197,22 +197,23 @@ namespace TrabajoFinalMulti.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult RegistrarApoderado(Estudiante estudiante)
         {
             if (estudiante.Apoderado.Apoderado_Id == 0)
             {
-                //Creamos los detalles para ese usuario
+                // Agrega el apoderado a la base de datos
                 objUsuario.Apoderado.Add(estudiante.Apoderado);
                 objUsuario.SaveChanges();
-                //Después de crear el detalle del usuario, obtenemos el usuario de la base
-                //de datos y le actualizamos el campo "DetalleUsuario_Id"
+
+                // Actualiza la referencia del apoderado en el estudiante
                 var estudianteBd = objUsuario.Estudiante.FirstOrDefault(u => u.Estudiante_Id == estudiante.Estudiante_Id);
                 estudianteBd.Apoderado_Id = estudiante.Apoderado.Apoderado_Id;
-                objUsuario.SaveChanges();
-
+                objUsuario.SaveChanges();             
             }
             return RedirectToAction(nameof(ListaEstudiantes));
-        }
+        }  
+
 
         [HttpGet]
         public IActionResult EditarApoderado(int? id)
