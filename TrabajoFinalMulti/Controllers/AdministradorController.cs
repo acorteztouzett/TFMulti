@@ -5,6 +5,7 @@ using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
 using TrabajoFinalMulti.ViewModel;
 
+
 namespace TrabajoFinalMulti.Controllers
 {
     public class AdministradorController : Controller
@@ -42,14 +43,37 @@ namespace TrabajoFinalMulti.Controllers
                 }
                 else
                 {
+
+                    string carpetaUsuarios = "FotosUsuarios";
+                    string subcarpeta = viewModel.TipoUsuario == "docente" ? "FotosDocentes" : "FotosEstudiantes";
+                    string nombreArchivo = $"{viewModel.Nombre}_{viewModel.Apellido}".ToLower() + ".jpg"; // O la extensión de archivo correcta
+
+                    string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
+                    string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
+
+                    // Guardar la foto si se proporciona
+                    if (viewModel.Foto != null)
+                    {
+                        using (var fileStream = new FileStream(rutaCompleta, FileMode.Create))
+                        {
+                            viewModel.Foto.CopyTo(fileStream);
+                        }
+                    }
+
                     //Guardar
                     if (viewModel.TipoUsuario == "docente")
                     {
                         var docente = new Docente
                         {
                             Docente_Nombre = viewModel.Nombre,
+                            Docente_Apellido = viewModel.Apellido,
+                            Docente_FechaNacimiento = viewModel.FechaNacimiento,
+                            Docente_DNI = viewModel.DNI,
+                            Docente_Celular = viewModel.Celular,
                             Docente_Correo = viewModel.Correo,
                             Docente_Contraseña = viewModel.Contraseña,
+                            Docente_Foto = rutaRelativa,
+                            Docente_Estado = "Activo",
                         };
                         objUsuario.Docente.Add(docente);
                         objUsuario.SaveChanges();
@@ -61,8 +85,14 @@ namespace TrabajoFinalMulti.Controllers
                         var estudiante = new Estudiante
                         {
                             Estudiante_Nombre = viewModel.Nombre,
+                            Estudiante_Apellido = viewModel.Apellido,
+                            Estudiante_FechaNacimiento = viewModel.FechaNacimiento,
+                            Estudiante_DNI = viewModel.DNI,
+                            Estudiante_Celular = viewModel.Celular,
                             Estudiante_Correo = viewModel.Correo,
                             Estudiante_Contraseña = viewModel.Contraseña,
+                            Estudiante_Foto = rutaRelativa,
+                            Estudiante_Estado = "Activo",
                         };
                         objUsuario.Estudiante.Add(estudiante);
                         objUsuario.SaveChanges();

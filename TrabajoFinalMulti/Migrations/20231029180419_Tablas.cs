@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace TrabajoFinalMulti.Migrations
 {
     /// <inheritdoc />
-    public partial class DatabaseUpdate : Migration
+    public partial class Tablas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,8 +62,14 @@ namespace TrabajoFinalMulti.Migrations
                     Docente_Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Docente_Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Docente_Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Docente_FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Docente_DNI = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Docente_Celular = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Docente_Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Docente_Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Docente_Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Docente_Foto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Docente_Estado = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,8 +83,14 @@ namespace TrabajoFinalMulti.Migrations
                     Estudiante_Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Estudiante_Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estudiante_Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estudiante_FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Estudiante_DNI = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estudiante_Celular = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Estudiante_Correo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Estudiante_Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estudiante_Foto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estudiante_Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apoderado_Id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
