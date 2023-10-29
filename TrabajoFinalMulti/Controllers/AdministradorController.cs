@@ -58,6 +58,9 @@ namespace TrabajoFinalMulti.Controllers
                         {
                             viewModel.Foto.CopyTo(fileStream);
                         }
+                    } else
+                    {
+                        rutaRelativa = null;
                     }
 
                     //Guardar
