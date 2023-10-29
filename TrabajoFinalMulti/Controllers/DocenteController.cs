@@ -43,6 +43,18 @@ namespace TrabajoFinalMulti.Controllers
             return View(listaFinal);
         }
 
+        public  IActionResult Asistencia(int id)
+        {
+            var sesion = _context.Sesiones.Find(id);
+            var listaAsistencia = _context.EstudiantesPorSesions.Include(e =>e.Estudiante).AsNoTracking().Where(e => e.Sesion_Id == id).ToList();
+            var lista = new AsistenciaViewModel()
+            {
+                Sesion = sesion,
+                Estudiantes = listaAsistencia
+            };
+            return View(lista);
+        }
+
         public IActionResult ListaEstudiantes(int id)
         {
             var listaEstudiantes = _context.EstudiantesPorSesions.Include(e => e.Estudiante).AsNoTracking().Where(e => e.Sesion_Id == id);

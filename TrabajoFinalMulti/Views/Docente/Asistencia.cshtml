@@ -1,13 +1,13 @@
-﻿@model TrabajoFinalMulti.ViewModel.SesionesViewModel
+﻿@model TrabajoFinalMulti.ViewModel.AsistenciaViewModel
 @{
-    ViewData["Title"] = "Lista de Sesiones";
+    ViewData["Title"] = "Lista de Alumnos";
     Layout = "~/Views/Shared/_Diseño.cshtml";
 }
 
 <main class="h-full pb-16 overflow-y-auto">
     <div class="container grid px-6 mx-auto">
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            @Model.Curso.Curso_Nombre
+            @Model.Sesion.Tema
         </h2>
         <!-- With avatar -->
         <!-- With actions -->
@@ -16,20 +16,19 @@
         </h4>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
-                @if (Model.Sesiones.Count() > 0)
+                @if (Model.Estudiantes.Count() > 0)
                 {
                     <table id="dataTable" class="w-full whitespace-no-wrap">
                         <thead>
                             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">N°</th>
-                                <th class="px-4 py-3">Tema</th>
-                                <th class="px-4 py-3">Fecha</th>
-                                <th class="px-4 py-3">Opciones</th>
+                                <th class="px-4 py-3">Nombre estudiante</th>
+                                <th class="px-4 py-3">Asistió</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
-                            @foreach (var cur in Model.Sesiones)
+                            @foreach (var cur in Model.Estudiantes)
                             {
                                 <!-- Filas de docentes y estudiantes combinados y ordenados -->
                                 <tr class="text-gray-700 dark:text-gray-400">
@@ -37,7 +36,7 @@
                                         <div class="flex items-center text-sm">
                                             <!-- Avatar with inset shadow -->
                                             <div>
-                                                <p class="font-semibold">@cur.Sesiones_Id</p>
+                                                <p class="font-semibold">@cur.Estudiante_Id</p>
                                             </div>
                                         </div>
                                     </td>
@@ -45,32 +44,17 @@
                                         <div class="flex items-center text-sm">
                                             <!-- Avatar with inset shadow -->
                                             <div>
-                                                <p class="font-semibold">@cur.Tema</p>
+                                                <p class="font-semibold">@cur.Estudiante.Estudiante_Nombre</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        <div class="flex items-center text-sm">
-                                            <!-- Avatar with inset shadow -->
-                                            <div>
-                                                <p class="font-semibold">@cur.Fecha</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">
-                                            <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5
-                                            text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full
-                                            active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                                               aria-label="Edit" asp-action="Asistencia"
-                                               asp-route-id="@cur.Sesiones_Id">
-                                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
-                                                    </path>
-                                                </svg>
-                                            </a>
+                                            <input type="checkbox" asp-for="@cur.Asistio" class="form-checkbox h-5 w-5 text-purple-600 transition duration-150 ease-in-out"
+                                                   aria-label="Asistio" asp-action="EditarEvaluacion" asp-route-id="@cur.EstudiantesPorSesion_Id" />
                                         </div>
                                     </td>
+       
                                 </tr>
                             }
 
