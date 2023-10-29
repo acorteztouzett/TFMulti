@@ -23,5 +23,10 @@ namespace TrabajoFinalMulti.Models
         [ForeignKey("Apoderado")]
         public int? Apoderado_Id { get; set; }
         public Apoderado Apoderado { get; set; }
+
+        public ICollection<EvaluacionPorEstudiante> EvaluacionPorEstudiantes { get; set; }
+        public ICollection<EstudiantesPorCurso> EstudiantesPorCursos { get; set; }
+        public ICollection<EstudiantePorSesion> EstudiantePorSesions { get; set; }
+
     }
 }
