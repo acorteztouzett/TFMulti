@@ -243,12 +243,18 @@
 
                 @if (!string.IsNullOrEmpty(@Model.Docente_Foto))
                 {
-                    var nombreCompleto = $"{Model.Docente_Nombre}_{Model.Docente_Apellido}".ToLower();
-                    var rutaImagen = $"~/FotosUsuarios/FotosDocentes/{nombreCompleto}.jpg";
+                    var rutaImagen = $"~/FotosUsuarios/FotosDocentes/{Model.Docente_Id}.jpg";
                     <div class="mt-4">
                         <img src="@Url.Content(rutaImagen)" alt="Foto del docente" class="block mx-auto" width="200" height="200" />
                     </div>
                 }
+                else
+                {
+                    <div class="mt-4">
+                        <p class="text-white">Sin foto registrada.</p>
+                    </div>
+                }
+
 
                 <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
                     <div>

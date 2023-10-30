@@ -46,7 +46,8 @@ namespace TrabajoFinalMulti.Controllers
 
                     string carpetaUsuarios = "FotosUsuarios";
                     string subcarpeta = viewModel.TipoUsuario == "docente" ? "FotosDocentes" : "FotosEstudiantes";
-                    string nombreArchivo = $"{viewModel.Nombre}_{viewModel.Apellido}".ToLower() + ".jpg"; // O la extensión de archivo correcta
+
+                    string nombreArchivo = viewModel.TipoUsuario == "docente" ? $"{objUsuario.Docente.Max(d => d.Docente_Id) + 1}.jpg" : $"{objUsuario.Estudiante.Max(e => e.Estudiante_Id) + 1}.jpg";
 
                     string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
                     string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
@@ -159,7 +160,7 @@ namespace TrabajoFinalMulti.Controllers
                     {
                         string carpetaUsuarios = "FotosUsuarios";
                         string subcarpeta = "FotosDocentes";
-                        string nombreArchivo = $"{docente.Docente_Nombre}_{docente.Docente_Apellido}".ToLower() + ".jpg";
+                        string nombreArchivo = $"{docente.Docente_Id}.jpg";
 
                         string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
                         string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
@@ -176,7 +177,7 @@ namespace TrabajoFinalMulti.Controllers
                     {
                         string carpetaUsuarios = "FotosUsuarios";
                         string subcarpeta = "FotosDocentes";
-                        string nombreArchivo = $"{docente.Docente_Nombre}_{docente.Docente_Apellido}".ToLower() + ".jpg";
+                        string nombreArchivo = $"{docente.Docente_Id}.jpg";
 
                         string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
 
@@ -236,13 +237,12 @@ namespace TrabajoFinalMulti.Controllers
                 }
                 else
                 {
-
                     // Guardar la nueva foto si se proporciona
                     if (nuevaFoto != null)
                     {
                         string carpetaUsuarios = "FotosUsuarios";
                         string subcarpeta = "FotosEstudiantes";
-                        string nombreArchivo = $"{estudiante.Estudiante_Nombre}_{estudiante.Estudiante_Apellido}".ToLower() + ".jpg";
+                        string nombreArchivo = $"{estudiante.Estudiante_Id}.jpg";
 
                         string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
                         string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
@@ -259,7 +259,7 @@ namespace TrabajoFinalMulti.Controllers
                     {
                         string carpetaUsuarios = "FotosUsuarios";
                         string subcarpeta = "FotosEstudiantes";
-                        string nombreArchivo = $"{estudiante.Estudiante_Nombre} _ {estudiante.Estudiante_Apellido}".ToLower() + ".jpg";
+                        string nombreArchivo = $"{estudiante.Estudiante_Id}.jpg";
 
                         string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
 

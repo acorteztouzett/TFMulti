@@ -18,9 +18,11 @@
         <form method="post" asp-controller="Administrador" asp-action="EditarEstudiante" id="registro-form" enctype="multipart/form-data">
 
             <input type="hidden" asp-for="Estudiante_Id" />
+            <input asp-for="Apoderado_Id" type="hidden" readonly />
             <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 
             <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+
                 <label asp-for="Estudiante_Nombre" class="block  text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Nombre</span>
                     <!-- focus-within sets the color for the icon when input is focused -->
@@ -227,7 +229,7 @@
                         </div>
                         <span asp-validation-for="Estudiante_Estado" class="text-danger"></span>
                     </div>
-                </label>
+                </label>         
 
                 <label class="block text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Foto del usuario (opcional)</span>
@@ -244,10 +246,15 @@
 
                 @if (!string.IsNullOrEmpty(@Model.Estudiante_Foto))
                 {
-                    var nombreCompleto = $"{Model.Estudiante_Nombre}_{Model.Estudiante_Apellido}".ToLower();
-                    var rutaImagen = $"~/FotosUsuarios/FotosEstudiantes/{nombreCompleto}.jpg";
+                    var rutaImagen = $"~/FotosUsuarios/FotosEstudiantes/{Model.Estudiante_Id}.jpg";
                     <div class="mt-4">
                         <img src="@Url.Content(rutaImagen)" alt="Foto del estudiante" class="block mx-auto" width="200" height="200" />
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-4">
+                        <p class="text-white">Sin foto registrada.</p>
                     </div>
                 }
 
