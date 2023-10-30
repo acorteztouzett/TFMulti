@@ -142,7 +142,7 @@ namespace TrabajoFinalMulti.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditarDocente(Docente docente)
+        public IActionResult EditarDocente(Docente docente, IFormFile nuevaFoto)
         {
             if (ModelState.IsValid)
             {
@@ -151,12 +151,49 @@ namespace TrabajoFinalMulti.Controllers
                     ModelState.AddModelError("Docente_Correo", "El correo ya está en uso.");
                     return View(docente); // Devuelve la vista con el modelo para que el usuario pueda corregir
                 }
-                objUsuario.Docente.Update(docente);
-                objUsuario.SaveChanges();
-                return RedirectToAction(nameof(ListaDocentes));
+                else
+                {
+
+                    // Guardar la nueva foto si se proporciona
+                    if (nuevaFoto != null)
+                    {
+                        string carpetaUsuarios = "FotosUsuarios";
+                        string subcarpeta = "FotosDocentes";
+                        string nombreArchivo = $"{docente.Docente_Nombre}_{docente.Docente_Apellido}".ToLower() + ".jpg";
+
+                        string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
+                        string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
+
+                        using (var fileStream = new FileStream(rutaCompleta, FileMode.Create))
+                        {
+                            nuevaFoto.CopyTo(fileStream);
+                        }
+
+                        // Actualizar la propiedad de la foto en el objeto Docente
+                        docente.Docente_Foto = rutaRelativa;
+                    }
+                    else if (string.IsNullOrEmpty(docente.Docente_Foto))
+                    {
+                        string carpetaUsuarios = "FotosUsuarios";
+                        string subcarpeta = "FotosDocentes";
+                        string nombreArchivo = $"{docente.Docente_Nombre}_{docente.Docente_Apellido}".ToLower() + ".jpg";
+
+                        string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
+
+                        docente.Docente_Foto = rutaRelativa;
+                    }
+
+                    // Actualizar otros campos y guardar en la base de datos
+                    objUsuario.Docente.Update(docente);
+                    objUsuario.SaveChanges();
+
+                    return RedirectToAction(nameof(ListaDocentes));
+                }
             }
+
             return View(docente);
         }
+
 
         [HttpGet]
         public IActionResult EliminarDocente(int? id)
@@ -188,19 +225,55 @@ namespace TrabajoFinalMulti.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditarEstudiante(Estudiante estudiante)
+        public IActionResult EditarEstudiante(Estudiante estudiante, IFormFile nuevaFoto)
         {
             if (ModelState.IsValid)
             {
                 if (objUsuario.Estudiante.Any(d => d.Estudiante_Correo == estudiante.Estudiante_Correo && d.Estudiante_Id != estudiante.Estudiante_Id))
                 {
-                    ModelState.AddModelError("Estudiante_Correo", "El correo ya está en uso.");
+                    ModelState.AddModelError("Docente_Correo", "El correo ya está en uso.");
                     return View(estudiante); // Devuelve la vista con el modelo para que el usuario pueda corregir
                 }
-                objUsuario.Estudiante.Update(estudiante);
-                objUsuario.SaveChanges();
-                return RedirectToAction(nameof(ListaEstudiantes));
+                else
+                {
+
+                    // Guardar la nueva foto si se proporciona
+                    if (nuevaFoto != null)
+                    {
+                        string carpetaUsuarios = "FotosUsuarios";
+                        string subcarpeta = "FotosEstudiantes";
+                        string nombreArchivo = $"{estudiante.Estudiante_Nombre}_{estudiante.Estudiante_Apellido}".ToLower() + ".jpg";
+
+                        string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
+                        string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
+
+                        using (var fileStream = new FileStream(rutaCompleta, FileMode.Create))
+                        {
+                            nuevaFoto.CopyTo(fileStream);
+                        }
+
+                        // Actualizar la propiedad de la foto en el objeto Docente
+                        estudiante.Estudiante_Foto = rutaRelativa;
+                    }
+                    else if (string.IsNullOrEmpty(estudiante.Estudiante_Foto))
+                    {
+                        string carpetaUsuarios = "FotosUsuarios";
+                        string subcarpeta = "FotosEstudiantes";
+                        string nombreArchivo = $"{estudiante.Estudiante_Nombre} _ {estudiante.Estudiante_Apellido}".ToLower() + ".jpg";
+
+                        string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
+
+                        estudiante.Estudiante_Foto = rutaRelativa;
+                    }
+
+                    // Actualizar otros campos y guardar en la base de datos
+                    objUsuario.Estudiante.Update(estudiante);
+                    objUsuario.SaveChanges();
+
+                    return RedirectToAction(nameof(ListaEstudiantes));
+                }
             }
+
             return View(estudiante);
         }
 
