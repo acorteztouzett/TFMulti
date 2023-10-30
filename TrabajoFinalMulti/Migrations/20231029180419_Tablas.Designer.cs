@@ -12,8 +12,8 @@ using TrabajoFinalMulti.Data;
 namespace TrabajoFinalMulti.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231029001855_DatabaseUpdate")]
-    partial class DatabaseUpdate
+    [Migration("20231029180419_Tablas")]
+    partial class Tablas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,12 +129,34 @@ namespace TrabajoFinalMulti.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Docente_Id"));
 
+                    b.Property<string>("Docente_Apellido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Docente_Celular")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Docente_Contraseña")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Docente_Correo")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Docente_DNI")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Docente_Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Docente_FechaNacimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Docente_Foto")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Docente_Nombre")
@@ -157,12 +179,34 @@ namespace TrabajoFinalMulti.Migrations
                     b.Property<int?>("Apoderado_Id")
                         .HasColumnType("int");
 
+                    b.Property<string>("Estudiante_Apellido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estudiante_Celular")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Estudiante_Contraseña")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Estudiante_Correo")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estudiante_DNI")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estudiante_Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Estudiante_FechaNacimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Estudiante_Foto")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Estudiante_Nombre")

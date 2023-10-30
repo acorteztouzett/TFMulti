@@ -27,8 +27,13 @@
                             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">N°</th>
                                 <th class="px-4 py-3">Nombre</th>
+                                <th class="px-4 py-3">Apellido</th>
+                                <th class="px-4 py-3">Fecha de Nacimiento</th>
+                                <th class="px-4 py-3">DNI</th>
+                                <th class="px-4 py-3">Celular</th>
                                 <th class="px-4 py-3">Correo</th>
                                 <th class="px-4 py-3">Contraseña</th>
+                                <th class="px-4 py-3">Estado</th>
                                 <th class="px-4 py-3">Opciones</th>
                             </tr>
                         </thead>
@@ -55,6 +60,18 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        @item.Docente_Apellido
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        @item.Docente_FechaNacimiento.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        @item.Docente_DNI
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        @item.Docente_Celular
+                                    </td>
                                     <td class="px-4 py-3 text-xs">
                                         <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                                             @item.Docente_Correo
@@ -63,10 +80,13 @@
                                     <td class="px-4 py-3 text-sm">
                                         @item.Docente_Contraseña
                                     </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        @item.Docente_Estado
+                                    </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">
 
-                                            <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                            <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                                                aria-label="Edit" asp-action="EditarDocente" asp-route-id="@item.Docente_Id">
                                                 <svg class="w-5 h-5"
                                                      aria-hidden="true"
@@ -76,8 +96,7 @@
                                                 </svg>
                                             </a>
 
-
-                                            <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                            <a a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-full active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-purple"
                                                aria-label="Delete" asp-action="EliminarDocente" asp-route-id="@item.Docente_Id">
                                                 <svg class="w-5 h-5"
                                                      aria-hidden="true"

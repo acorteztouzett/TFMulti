@@ -526,6 +526,113 @@
                                     </div>
                                 </label>
 
+                                <label asp-for="Docente_Apellido" class="block  text-sm">
+                                    <span class="text-gray-700 dark:text-gray-400">Apellido</span>
+                                    <!-- focus-within sets the color for the icon when input is focused -->
+                                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                                    <input asp-for="Docente_Apellido" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                                               placeholder="Apellido del docente"
+                                               type="text"
+                                           id="Apellido" required />
+                                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                                            <svg class="w-5 h-5"
+                                                 aria-hidden="true"
+                                                 fill="none"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round"
+                                                 stroke-width="2"
+                                                 viewBox="0 0 24 24"
+                                                 stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                        </div>
+
+                                    <span asp-validation-for="Docente_Apellido" class="text-danger"></span>
+
+                                    </div>
+                                </label>
+
+                            <label asp-for="Docente_FechaNacimiento" class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Fecha de nacimiento del docente</span>
+                                <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                                    @* Formatear la fecha para que se muestre solo la fecha en el campo de entrada *@
+                                    @{
+                                        var formattedDate = Model.Docente_FechaNacimiento.ToString("yyyy-MM-dd");
+                                    }
+                                    <input asp-for="Docente_FechaNacimiento" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                                           placeholder="Fecha de nacimiento del docente"
+                                           type="date"
+                                           id="FechaNacimiento"
+                                           name="FechaNacimiento" required
+                                           value="@formattedDate" />
+                                    <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                                        <svg class="w-5 h-5"
+                                             aria-hidden
+                                             fill="none"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             stroke-width="2"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                    <span asp-validation-for="Docente_FechaNacimiento" class="text-danger"></span>
+                                </div>
+                            </label>
+
+
+                            <label asp-for="Docente_DNI" class="block  text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">DNI</span>
+                                <!-- focus-within sets the color for the icon when input is focused -->
+                                <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                                    <input asp-for="Docente_DNI" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                                           placeholder="DNI del docente"
+                                           type="text"
+                                           id="DNI" required />
+                                    <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                                        <svg class="w-5 h-5"
+                                             aria-hidden="true"
+                                             fill="none"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             stroke-width="2"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+
+                                    <span asp-validation-for="Docente_DNI" class="text-danger"></span>
+
+                                </div>
+                            </label>
+
+                            <label asp-for="Docente_Celular" class="block  text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Celular</span>
+                                <!-- focus-within sets the color for the icon when input is focused -->
+                                <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                                    <input asp-for="Docente_Celular" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                                           placeholder="Celular del docente"
+                                           type="text"
+                                           id="Celular" required />
+                                    <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                                        <svg class="w-5 h-5"
+                                             aria-hidden="true"
+                                             fill="none"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             stroke-width="2"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+
+                                    <span asp-validation-for="Docente_Celular" class="text-danger"></span>
+
+                                </div>
+                            </label>
 
                                 <label asp-for="Docente_Correo" class="block mt-4 text-sm">
                                     <span class="text-gray-700 dark:text-gray-400">Correo</span>
@@ -586,6 +693,49 @@
                                 <span asp-validation-for="Docente_Contraseña" class="text-red-600"></span>
                                 <div class="mt-2" id="password-feedback"></div>
                                 </label>
+
+                            <label asp-for="Docente_Estado" class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Estado del docente</span>
+                                <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                                    <select asp-for="Docente_Estado" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-select" name="Estado">
+                                        <option value="">Seleccionar estado del docente</option>
+                                        <option value="Activo">Activo</option>
+                                        <option value="Inactivo">Inactivo</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                                        <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                    <span asp-validation-for="Docente_Estado" class="text-danger"></span>
+                                </div>
+                            </label>
+
+                            <label asp-for="Docente_Foto" class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Foto del docente (opcional)</span>
+                                <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                                    <input asp-for="Docente_Foto" type="file" accept="image/*" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input" name="Foto" />
+
+                                    <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                                        <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+
+                                    <span asp-validation-for="Docente_Foto" class="text-danger"></span>
+                                </div>
+                            </label>
+
+                            <!-- Mostrar la foto actual si hay una ruta -->
+                            @if (!string.IsNullOrEmpty(@Model.Docente_Foto))
+                            {
+                                var nombreCompleto = $"{Model.Docente_Nombre}_{Model.Docente_Apellido}".ToLower();
+                                var rutaImagen = $"FotosUsuarios/FotosDocentes/{nombreCompleto}.jpg";
+                                <div class="mt-4">
+                                    <img src="@Url.Content(rutaImagen)" alt="Foto del docente" class="block max-w-xs mx-auto" />
+                                </div>
+                            }
+
 
                                 <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
                                     <div>

@@ -3,15 +3,19 @@
 <div class="w-full overflow-x-auto">
     @if (Model.Count() > 0)
     {
-        var numeroSecuencial = 1; // Inicializa el número secuencial en 1
-
+        var numeroSecuencial = 1;
         <table id="dataTable" class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                     <th class="px-4 py-3">N°</th>
                     <th class="px-4 py-3">Nombre</th>
+                    <th class="px-4 py-3">Apellido</th>
+                    <th class="px-4 py-3">Fecha de Nacimiento</th>
+                    <th class="px-4 py-3">DNI</th>
+                    <th class="px-4 py-3">Celular</th>
                     <th class="px-4 py-3">Correo</th>
                     <th class="px-4 py-3">Contraseña</th>
+                    <th class="px-4 py-3">Estado</th>
                     <th class="px-4 py-3">Apoderado</th>
                     <th class="px-4 py-3">Opciones</th>
                 </tr>
@@ -35,9 +39,21 @@
                                 <!-- Avatar with inset shadow -->
                                 <div>
                                     <p class="font-semibold">@item.Estudiante_Nombre</p>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">Docente</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">Estudiante</p>
                                 </div>
                             </div>
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            @item.Estudiante_Apellido
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            @item.Estudiante_FechaNacimiento.ToString("dd/MM/yyyy")
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            @item.Estudiante_DNI
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            @item.Estudiante_Celular
                         </td>
                         <td class="px-4 py-3 text-xs">
                             <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
@@ -48,12 +64,15 @@
                             @item.Estudiante_Contraseña
                         </td>
                         <td class="px-4 py-3 text-sm">
-                            <a class="btn btn-info text-black" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id" style="background-color: yellow;">Ver Información</a>
+                            @item.Estudiante_Estado
+                        </td>
+                        <td class="px-4 py-3 text-sm">
+                            <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id">Modificar</a>
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center space-x-4 text-sm">
 
-                                <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                                    aria-label="Edit" asp-action="EditarEstudiante" asp-route-id="@item.Estudiante_Id">
                                     <svg class="w-5 h-5"
                                          aria-hidden="true"
@@ -63,8 +82,7 @@
                                     </svg>
                                 </a>
 
-
-                                <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                                <a a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-full active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-purple"
                                    aria-label="Delete" asp-action="EliminarEstudiante" asp-route-id="@item.Estudiante_Id">
                                     <svg class="w-5 h-5"
                                          aria-hidden="true"
@@ -84,6 +102,8 @@
 
             </tbody>
         </table>
+
+        
     }
     else
     {
