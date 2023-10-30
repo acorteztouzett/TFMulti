@@ -426,11 +426,25 @@
         const buscarBtn = document.getElementById('buscarBtn');
         const dataTable = document.getElementById('dataTable');
 
+        // Recupera el valor de vistaActual del layout
+        const vistaActual = "@ViewBag.VistaActual";
+
         buscarBtn.addEventListener('click', function () {
             const searchTerm = searchInput.value;
 
-            // Realiza una solicitud Ajax al controlador para buscar docentes
-            fetch(`/Administrador/BuscarDocente?term=${searchTerm}`)
+            // Define la URL de búsqueda en función del tipo
+            let url;
+            if (vistaActual === "docentes") {
+                url = `/Administrador/BuscarDocente?term=${searchTerm}`;
+            } else if (vistaActual === "estudiantes") {
+                url = `/Administrador/BuscarEstudiante?term=${searchTerm}`;
+            } else {
+                // Realiza una búsqueda genérica
+                url = `/Buscar?term=${searchTerm}`;
+            }
+
+            // Realiza una solicitud Ajax al controlador para buscar
+            fetch(url)
                 .then(response => response.text())
                 .then(data => {
                     // Crea un elemento div para contener la nueva tabla
