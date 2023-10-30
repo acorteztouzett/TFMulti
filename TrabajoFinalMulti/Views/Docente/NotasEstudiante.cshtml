@@ -1,4 +1,4 @@
-﻿@model TrabajoFinalMulti.ViewModel.AsistenciaViewModel
+﻿@model TrabajoFinalMulti.ViewModel.NotasViewModel
 @{
     ViewData["Title"] = "Lista de Alumnos";
     Layout = "~/Views/Shared/_Diseño.cshtml";
@@ -7,96 +7,70 @@
 <main class="h-full pb-16 overflow-y-auto">
     <div class="container grid px-6 mx-auto">
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            @Model.Sesion.Tema
+            @Model.Estudiante_Nombre
         </h2>
         <!-- With avatar -->
         <!-- With actions -->
         <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-            Lista de Sesiones
+            Lista de Notas
         </h4>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
-                @if (Model.Estudiantes.Count() > 0)
+                @if (Model.NotasEstudiante.Count() > 0)
                 {
                     <table id="dataTable" class="w-full whitespace-no-wrap">
                         <thead>
                             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">N°</th>
-                                <th class="px-4 py-3">Nombre estudiante</th>
-                                <th class="px-4 py-3">Asistió</th>
+                                <th class="px-4 py-3">Prueba</th>
+                                <th class="px-4 py-3">Nota</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            <form method="post" asp-action="RegistrarAsistencia" id="registro-form">
-                                <input type="hidden" asp-for="Sesion.Sesiones_Id" name="Sesion.Sesiones_Id"
-                                       value="@Model.Sesion.Sesiones_Id">
-                                <input type="hidden" asp-for="Sesion.Sesiones_Id" name="Sesion.Sesiones_Id"
-                                       value="@Model.Sesion.Sesiones_Id">
-                                <input type="hidden" asp-for="Sesion.Tema" name="Sesion.Tema" value="@Model.Sesion.Tema">
-                                <input type="hidden" asp-for="Sesion.Fecha" name="Sesion.Fecha" value="@Model.Sesion.Fecha">
+                            <form method="post" asp-action="RegistrarNotas" id="registro-form">
+                                <input type="hidden" asp-for="Estudiante_Id" name="Estudiante_Id"
+                                       value="@Model.Estudiante_Id">
+                                <input type="hidden" asp-for="Estudiante_Nombre" name="Estudiante_Nombre"
+                                       value="@Model.Estudiante_Nombre">
                                 <input type="hidden" asp-for="Curso_Id" name="Curso_Id" value="@Model.Curso_Id">
-                                @for (int i = 0; i < Model.Estudiantes.Count(); i++)
+                                @for (int i = 0; i < Model.NotasEstudiante.Count(); i++)
                                 {
-                                    var cur = Model.Estudiantes.ElementAt(i);
-                                    <input type="hidden"
-                                           name="Estudiantes[@i].EstudiantesPorSesion_Id"
-                                           value="@cur.EstudiantesPorSesion_Id">
-                                    <input type="hidden" name="Estudiantes[@i].Sesion_Id"
-                                           value="@cur.Sesion_Id">
-                                    <input type="hidden" name="Estudiantes[@i].Estudiante_Id"
-                                           value="@cur.Estudiante_Id">
+                                    var cur = Model.NotasEstudiante.ElementAt(i);
+                                    <input type="hidden" name="NotasEstudiante[@i].Evaluacion_Id" value="@cur.Evaluacion_Id">
+                                    <input type="hidden" name="NotasEstudiante[@i].Estudiante_Id" value="@cur.Estudiante_Id">
+                                    <input type="hidden" name="NotasEstudiante[@i].EvaluacionPorEstudiante_Id" value="@cur.EvaluacionPorEstudiante_Id">
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
-                                        <input type="hidden"
-                                               name="EstudiantesPorSesion[@cur.EstudiantesPorSesion_Id].Estudiante.Estudiante_Id"
-                                               value="@cur.Estudiante.Estudiante_Id">
                                         <div class="flex items-center text-sm">
                                             <div>
-                                                <p class="font-semibold">@cur.Estudiante.Estudiante_Id</p>
+                                                <p class="font-semibold">@cur.Evaluacion_Id</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         <div class="flex items-center text-sm">
                                             <div>
-                                                <p class="font-semibold">@cur.Estudiante.Estudiante_Nombre</p>
+                                                <p class="font-semibold">@cur.Evaluacion.Nombre</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         <div class="flex items-center space-x-4 text-sm">
-                                                @if (@cur.Asistio)
-                                                {
-                                                <input type="checkbox"
-                                                       name="Estudiantes[@i].Asistio"
-                                                       value="true"
-                                                       checked
-                                                       class="form-checkbox h-5 w-5 text-purple-600 transition duration-150 ease-in-out"
-                                                       aria-label="Asistio" />
-                                                }
-                                                else
-                                                {
-                                                <input type="checkbox"
-                                                       name="Estudiantes[@i].Asistio"
-                                                       value="true"
-                                                       class="form-checkbox h-5 w-5 text-purple-600 transition duration-150 ease-in-out"
-                                                       aria-label="Asistio" />
-                                                }
+                                            <input type="number" name="NotasEstudiante[@i].Nota" value="@cur.Nota"
+                                                   class="w-16 border rounded p-1 text-center" aria-label="Nota" />
                                         </div>
                                     </td>
                                 </tr>
                                 }
                             <button type="submit"
                                     class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                                Guardar Asistencia
+                                Guardar Notas
                             </button>
                             </form>
-                            <br />
-                            <br />
+                            <br /><br />
                         </tbody>
                     </table>
                 }
-
             </div>
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                 <span class="flex items-center col-span-3">

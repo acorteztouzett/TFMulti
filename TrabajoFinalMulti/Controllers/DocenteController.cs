@@ -43,16 +43,33 @@ namespace TrabajoFinalMulti.Controllers
             return View(listaFinal);
         }
 
-        public  IActionResult Asistencia(int id)
+        public IActionResult Asistencia(int id)
         {
             var sesion = _context.Sesiones.Find(id);
-            var listaAsistencia = _context.EstudiantesPorSesions.Include(e =>e.Estudiante).AsNoTracking().Where(e => e.Sesion_Id == id).ToList();
+            var listaAsistencia = _context.EstudiantesPorSesions.Include(e => e.Estudiante).AsNoTracking().Where(e => e.Sesion_Id == id).ToList();
             var lista = new AsistenciaViewModel()
             {
+                Curso_Id = sesion.Curso_Id,
                 Sesion = sesion,
                 Estudiantes = listaAsistencia
             };
             return View(lista);
+        }
+
+        [HttpPost]
+        public IActionResult RegistrarAsistencia(AsistenciaViewModel asistenciaView)
+        {
+            if (ModelState.IsValid)
+            {
+                //Console.WriteLine(asistenciaView.Estudiantes.Count);
+                foreach (var asistencia in asistenciaView.Estudiantes)
+                {
+                    _context.EstudiantesPorSesions.Update(asistencia);
+                }
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ListaSesiones", new { id = asistenciaView.Curso_Id });
         }
 
         public IActionResult ListaEstudiantes(int id)
@@ -62,9 +79,54 @@ namespace TrabajoFinalMulti.Controllers
             return View(listaEstudiantes);
         }
 
-        public IActionResult EditarEvaluacion(int id)
+        public IActionResult ListaEstudiantesCurso(int id)
         {
-            return View();
+            var listaEstudiantes = _context.EstudiantesPorCursos.Include(e => e.Estudiante)
+            .AsNoTracking()
+            .Where(e => e.Curso_Id == id).ToList();
+
+            return View(listaEstudiantes);
+        }
+
+        public IActionResult NotasEstudiante(int id)
+        {
+            var estudianteCurso = _context.EstudiantesPorCursos.Include(e => e.Estudiante).FirstOrDefault(e => e.EstudiantesPorCurso_Id == id);
+
+            var evalucionesCurso = _context.Evaluaciones.Where(e => e.Curso_Id == estudianteCurso.Curso_Id).ToList();
+
+            var evaluacionIds = evalucionesCurso.Select(ec => ec.Evaluacion_Id).ToList();
+
+            var lista = _context.EvaluacionPorEstudiantes
+                .Include(e => e.Estudiante)
+                .Include(e => e.Evaluacion)
+                .AsNoTracking()
+                .Where(e => evaluacionIds.Contains(e.Evaluacion_Id) && e.Estudiante_Id == estudianteCurso.Estudiante_Id)
+                .ToList();
+
+            NotasViewModel notasView = new()
+            {
+                Curso_Id = estudianteCurso.Curso_Id,
+                Estudiante_Id = estudianteCurso.Estudiante_Id,
+                Estudiante_Nombre = estudianteCurso.Estudiante.Estudiante_Nombre,
+                NotasEstudiante = lista
+            };
+
+            return View(notasView);
+        }
+
+        public IActionResult RegistrarNotas(NotasViewModel notasView)
+        {
+            if (ModelState.IsValid)
+            {
+                //Console.WriteLine(asistenciaView.Estudiantes.Count);
+                foreach (var asistencia in notasView.NotasEstudiante)
+                {
+                    _context.EvaluacionPorEstudiantes.Update(asistencia);
+                }
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ListaEstudiantesCurso", new { id = notasView.Curso_Id });
         }
 
         public IActionResult ListaEvaluaciones(int id)
