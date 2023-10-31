@@ -46,9 +46,18 @@ namespace TrabajoFinalMulti.Controllers
 
                     string carpetaUsuarios = "FotosUsuarios";
                     string subcarpeta = viewModel.TipoUsuario == "docente" ? "FotosDocentes" : "FotosEstudiantes";
+                    
+                    int nuevoId = 1;
 
-                    string nombreArchivo = viewModel.TipoUsuario == "docente" ? $"{objUsuario.Docente.Max(d => d.Docente_Id) + 1}.jpg" : $"{objUsuario.Estudiante.Max(e => e.Estudiante_Id) + 1}.jpg";
-
+                    if (viewModel.TipoUsuario == "docente" && objUsuario.Docente.Any())
+                    {
+                        nuevoId = objUsuario.Docente.Max(d => d.Docente_Id) + 1;
+                    }
+                    else if (viewModel.TipoUsuario == "estudiante" && objUsuario.Estudiante.Any())
+                    {
+                        nuevoId = objUsuario.Estudiante.Max(e => e.Estudiante_Id) + 1;
+                    }
+                    string nombreArchivo = $"{nuevoId}.jpg";
                     string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
                     string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
 
