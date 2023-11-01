@@ -41,9 +41,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 14V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 0 0 0-2h-1v-2a2 2 0 0 0 2-2ZM4 2h2v12H4V2Zm8 16H3a1 1 0 0 1 0-2h9v2Z" />
                             </svg>
                         </div>
-
-                        <span asp-validation-for="Curso.Curso_Nombre" class="text-danger"></span>
-
+                        <span asp-validation-for="Curso.Curso_Nombre" style="color: red;"></span>
                     </div>
                 </label>
 
@@ -68,19 +66,16 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-
-                        <span asp-validation-for="Curso.Cantidad_Horas" class="text-danger"></span>
-
+                        <span asp-validation-for="Curso.Cantidad_Horas" style="color: red;"></span>
                     </div>
                 </label>
 
                 <label asp-for="Curso.Docente" class="block  text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Docente encargado</span>
-                    <!-- focus-within sets the color for the icon when input is focused -->
                     <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                         <div class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input">
                             @Html.DropDownListFor(u => u.Curso.Docente_Id, Model.ListaDocentes, "--Lista de docentes--",
-                            new {@class = "form-control"})
+                            new {@class = "form-control", required = "required"})
                         </div>
                         <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                             <svg class="w-5 h-5"
@@ -94,19 +89,38 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </div>
-
-                        <span asp-validation-for="Curso.Docente" class="text-danger"></span>
-
                     </div>
                 </label>
 
-                <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
+                <label asp-for="Curso.Aula" class="block  text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Aula de clases</span>
+                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                        <div class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input">
+                            @Html.DropDownListFor(u => u.Curso.Aula_Id, Model.ListaAulas, "--Lista de aulas--",
+                            new {@class = "form-control", required = "required"})
+                        </div>
+                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                            <svg class="w-5 h-5"
+                                 aria-hidden="true"
+                                 fill="none"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 stroke-width="2"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </label>
+
+                <div class="mt-4 flex justify-between flex-row flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
                     <div>
                         <button type="submit" class=" px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                             Registrar Curso
                         </button>
+                        <a asp-controller="Administrador" asp-action="ListaCursos" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Regresar</a>
                     </div>
-
                 </div>
             </div>
         </form>

@@ -14,10 +14,15 @@ namespace TrabajoFinalMulti.Models
         [ForeignKey("Docente")]
         public int Docente_Id { get; set; }
         public Docente Docente { get; set; }
-        public ICollection<Evaluacion> Evaluacions{ get; set; }
-        public ICollection<EstudiantesPorCurso> EstudiantesPorCursos { get; set; }
-        public ICollection<Sesion> Sesiones { get; set; }
 
+        [ForeignKey("Aula")]
+        public int Aula_Id { get; set; }
+        public Aula Aula { get; set; }
+
+
+        public ICollection<Evaluacion> Evaluacions { get; set; }
+        //public ICollection<EstudiantesPorCurso> EstudiantesPorCursos { get; set; }
+        public ICollection<Sesion> Sesiones { get; set; }
 
 
     }

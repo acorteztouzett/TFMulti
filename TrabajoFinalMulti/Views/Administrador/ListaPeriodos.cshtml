@@ -1,38 +1,40 @@
-﻿@model IEnumerable<TrabajoFinalMulti.Models.Curso>
+﻿@model IEnumerable<TrabajoFinalMulti.Models.Periodo>
+
 @{
-    ViewData["Title"] = "Lista de cursos";
+    ViewData["Title"] = "Lista de Periodos";
     Layout = "~/Views/Shared/_Diseño.cshtml";
 }
 
 <main class="h-full pb-16 overflow-y-auto">
     <div class="container grid px-6 mx-auto">
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            Cursos Registrados
+            Periodos Registrados
         </h2>
         <!-- With avatar -->
         <!-- With actions -->
         <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-            Lista de Cursos
+            Lista de Periodos
         </h4>
+
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
                 @if (Model.Count() > 0)
                 {
+                    var numeroSecuencial = 1; 
+
                     <table id="dataTable" class="w-full whitespace-no-wrap">
                         <thead>
                             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">N°</th>
-                                <th class="px-4 py-3">Nombre</th>
-                                <th class="px-4 py-3">Docente</th>                               
-                                <th class="px-4 py-3">Nivel Educativo</th>                               
-                                <th class="px-4 py-3">Grado</th>                              
-                                <th class="px-4 py-3">Estudiantes</th>                              
+                                <th class="px-4 py-3">Año del Periodo</th>
+                                <th class="px-4 py-3">Fecha Inicio</th>
+                                <th class="px-4 py-3">Fecha Fin</th>
                                 <th class="px-4 py-3">Opciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
-                            @foreach (var cur in Model)
+                            @foreach (var item in Model)
                             {
                                 <!-- Filas de docentes y estudiantes combinados y ordenados -->
                                 <tr class="text-gray-700 dark:text-gray-400">
@@ -40,44 +42,24 @@
                                         <div class="flex items-center text-sm">
                                             <!-- Avatar with inset shadow -->
                                             <div>
-                                                <p class="font-semibold">@cur.Curso_Id</p>
+                                                <p class="font-semibold">@numeroSecuencial</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        <div class="flex items-center text-sm">
-                                            <!-- Avatar with inset shadow -->
-                                            <div>
-                                                <p class="font-semibold">@cur.Curso_Nombre</p>
-                                                <p class="text-xs text-gray-600 dark:text-gray-400">Curso</p>
-                                            </div>
-                                        </div>
+                                        @item.Periodo_Año
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        @cur.Docente.Docente_Nombre @cur.Docente.Docente_Apellido
+                                        @item.Periodo_FechaInicio.ToString("dd/MM/yyyy")
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        @cur.Aula.Aula_NivelEducativo
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        @cur.Aula.Aula_Grado
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                                           aria-label="Edit" asp-action="AdministrarEstudiantes" asp-route-id="@cur.Curso_Id">
-                                            <svg class="w-5 h-5"
-                                                 aria-hidden="true"
-                                                 fill="currentColor"
-                                                 viewBox="0 0 20 20">
-                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                                            </svg>
-                                        </a>
+                                        @item.Periodo_FechaFin.ToString("dd/MM/yyyy")
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">
 
                                             <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                                               aria-label="Edit" asp-action="EditarCurso" asp-route-id="@cur.Curso_Id">
+                                               aria-label="Edit" asp-action="EditarPeriodo" asp-route-id="@item.Periodo_Id">
                                                 <svg class="w-5 h-5"
                                                      aria-hidden="true"
                                                      fill="currentColor"
@@ -87,7 +69,7 @@
                                             </a>
 
                                             <a a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-full active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-purple"
-                                               aria-label="Delete" asp-action="BorrarCurso" asp-route-id="@cur.Curso_Id">
+                                               aria-label="Delete" asp-action="BorrarPeriodo" asp-route-id="@item.Periodo_Id">
                                                 <svg class="w-5 h-5"
                                                      aria-hidden="true"
                                                      fill="currentColor"
@@ -101,14 +83,16 @@
                                         </div>
                                     </td>
                                 </tr>
+                                numeroSecuencial++;
                             }
 
                         </tbody>
                     </table>
                 }
-
             </div>
-            
         </div>
     </div>
 </main>
+
+
+

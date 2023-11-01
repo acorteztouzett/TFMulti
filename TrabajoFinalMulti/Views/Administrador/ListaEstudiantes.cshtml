@@ -111,9 +111,22 @@
                                     <td class="px-4 py-3 text-sm">
                                         @item.Estudiante_Estado
                                     </td>
+                                    <!--
                                     <td class="px-4 py-3 text-sm">
                                         <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id">Modificar</a>
                                     </td>
+                                    -->
+                                    <td class="px-4 py-3 text-sm">
+                                        @if (item.Apoderado == null)
+                                        {
+                                            <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id">Añadir</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id">@item.Apoderado.Apoderado_Parentesco</a>
+                                        }
+                                    </td>
+
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">
 
@@ -182,26 +195,16 @@
                                 </button>
                             </li>
                             <li>
-                                <button class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                    3
-                                </button>
-                            </li>
-                            <li>
-                                <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                    4
-                                </button>
-                            </li>
-                            <li>
                                 <span class="px-3 py-1">...</span>
                             </li>
                             <li>
                                 <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                    8
+                                    5
                                 </button>
                             </li>
                             <li>
                                 <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                                    9
+                                    6
                                 </button>
                             </li>
                             <li>

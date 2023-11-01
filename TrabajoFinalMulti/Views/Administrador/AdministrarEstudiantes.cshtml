@@ -1,0 +1,66 @@
+﻿@model TrabajoFinalMulti.ViewModel.CursoEstudianteVM
+@{
+    ViewData["Title"] = "Administrar Estudiantes";
+    Layout = "~/Views/Shared/_Diseño.cshtml";
+}
+
+<br />
+<br />
+<h3 class="text-center">Administrar estudiantes para el curso</h3>
+<div class="row">
+    <form method="post" asp-action="AdministrarEstudiantes">
+
+        <!--Importante para el método AdministrarEtiquetas-->
+        <input type="hidden" asp-for="Curso.Curso_Id" />
+        <input type="hidden" asp-for="EstudiantesPorCurso.Curso_Id" />
+
+
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-12 mt-4">
+                <div class="row">
+                    <div class="col-4">
+                        <label for="etiquetas">Estudiantes</label>
+                    </div>
+                    <div class="col-8">
+                        @Html.DropDownListFor(u => u.EstudiantesPorCurso.Estudiante_Id, Model.ListaEstudiantes, "--Seleccionar Estudiantes--",
+                        new { @class = "form-control"})
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-3">
+                <a asp-action="ListaCursos">Volver a lista</a>
+            </div>
+            <div class="col-5 offset-4">
+                <button type="submit" class="btn btn-primary form-control">Asociar Estudiante a Curso</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <form method="post" action="EliminarEtiquetas">
+            <!--Importante para el método AdministrarEtiquetas-->
+            <input type="hidden" asp-for="@Model.Curso.Curso_Id" />
+            <div class="row text-right">
+                <div class="col-12 text-right h4 text-primary">
+                    Estudiantes asociados a este curso
+                </div>
+            </div>
+            @foreach (var item in Model.ListaEstudiantesPorCurso)
+            {
+                <div class="row pb-2">
+                    <div class="col-8 text-right" style="font-size:24px;">@item.Estudiante.Estudiante_Nombre @item.Estudiante.Estudiante_Apellido</div>
+                    <div class="col-4">
+                        <button asp-action="EliminarEtiquetas" type="submit" class="btn btn-danger form-control" asp-route-idEtiqueta="@item.">Eliminar Etiqueta</button>
+                    </div>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+

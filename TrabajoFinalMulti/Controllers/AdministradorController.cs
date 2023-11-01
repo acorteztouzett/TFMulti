@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
 using TrabajoFinalMulti.ViewModel;
@@ -218,7 +219,10 @@ namespace TrabajoFinalMulti.Controllers
         //LISTAR ESTUDIANTES:
         public IActionResult ListaEstudiantes()
         {
-            List<Estudiante> listaEstudiantes = objUsuario.Estudiante.ToList();
+            //List<Estudiante> listaEstudiantes = objUsuario.Estudiante.ToList();
+            List<Estudiante> listaEstudiantes = objUsuario.Estudiante
+            .Include(e => e.Apoderado) //incluir Apoderado
+            .ToList();
             return View(listaEstudiantes);
         }
 
@@ -411,6 +415,7 @@ namespace TrabajoFinalMulti.Controllers
         {
             var cursos = objUsuario.Curso
                 .Include(c => c.Docente) // Esto carga el docente relacionado
+                .Include(c => c.Aula)
                 .ToList();
 
             return View(cursos);
@@ -419,14 +424,22 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult RegistrarCurso()
         {
-            CursoDocenteVM cursoDocente = new CursoDocenteVM();
-            cursoDocente.ListaDocentes = objUsuario.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            CursoDocenteVM cursoDocenteAula = new CursoDocenteVM();
+            cursoDocenteAula.ListaDocentes = objUsuario.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
                 Text = i.Docente_Nombre,
                 Value = i.Docente_Id.ToString()
             });
-            return View(cursoDocente);
+
+            cursoDocenteAula.ListaAulas = objUsuario.Aula.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = $"{i.Aula_NivelEducativo} - {i.Aula_Grado}",
+                Value = i.Aula_Id.ToString()
+            });
+
+            return View(cursoDocenteAula);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RegistrarCurso(Curso curso)
@@ -437,14 +450,23 @@ namespace TrabajoFinalMulti.Controllers
                 objUsuario.SaveChanges();
                 return RedirectToAction(nameof(ListaCursos));
             }
-            CursoDocenteVM cursoDocente = new CursoDocenteVM();
-            cursoDocente.ListaDocentes = objUsuario.Docente.Select(i => new SelectListItem
+
+            CursoDocenteVM cursoDocenteAula = new CursoDocenteVM();
+            cursoDocenteAula.ListaDocentes = objUsuario.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
                 Text = i.Docente_Nombre,
                 Value = i.Docente_Id.ToString()
             });
-            return View(cursoDocente);
+
+            cursoDocenteAula.ListaAulas = objUsuario.Aula.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = $"{i.Aula_NivelEducativo} - {i.Aula_Grado}",
+                Value = i.Aula_Id.ToString()
+            });
+
+            return View(cursoDocenteAula);
         }
+        [HttpGet]
         public IActionResult EditarCurso(int? id)
         {
             if (id == null)
@@ -546,5 +568,223 @@ namespace TrabajoFinalMulti.Controllers
             objUsuario.SaveChanges();
             return RedirectToAction(nameof(ListaAnuncioInformativo));
         }
+
+        /*------------------------PERIODO--------------------------------------*/
+        public IActionResult ListaPeriodos()
+        {
+            List<Periodo> listaPeriodos = objUsuario.Periodo.OrderBy(p => p.Periodo_Año).ToList();
+            return View(listaPeriodos);
+        }
+
+        [HttpGet]
+        public IActionResult RegistrarPeriodo()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrarPeriodo(Periodo periodo)
+        {
+            if (ModelState.IsValid)
+            {
+                objUsuario.Periodo.Add(periodo);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaPeriodos));
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditarPeriodo(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            var periodo = objUsuario.Periodo.FirstOrDefault(c => c.Periodo_Id == id);
+            return View(periodo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarPeriodo(Periodo periodo)
+        {
+            if (ModelState.IsValid)
+            {
+                objUsuario.Periodo.Update(periodo);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaPeriodos));
+            }
+            return View(periodo);
+        }
+
+        [HttpGet]
+        public IActionResult BorrarPeriodo(int? id)
+        {
+            var periodo = objUsuario.Periodo.FirstOrDefault(c => c.Periodo_Id == id);
+            objUsuario.Periodo.Remove(periodo);
+            objUsuario.SaveChanges();
+            return RedirectToAction(nameof(ListaPeriodos));
+        }
+
+
+        /*------------------------CREAR AULA Y ASIGNARLO A UN PERIODO--------------------------------------*/
+        public IActionResult ListaAulas()
+        {
+            var aulas = objUsuario.Aula.Include(p => p.Periodo).ToList();
+
+            return View(aulas);
+        }
+
+        [HttpGet]
+        public IActionResult RegistrarAula()
+        {
+            AulaPeriodoVM aulaPeriodo = new AulaPeriodoVM();
+            aulaPeriodo.ListaPeriodos = objUsuario.Periodo.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = i.Periodo_Año,
+                Value = i.Periodo_Id.ToString()
+            });
+            
+            return View(aulaPeriodo);
+        }
+ 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RegistrarAula(Aula aula)
+        {
+            if (ModelState.IsValid)
+            {
+                objUsuario.Aula.Add(aula);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaAulas));
+            }
+            AulaPeriodoVM aulaPeriodo = new AulaPeriodoVM();
+            aulaPeriodo.ListaPeriodos = objUsuario.Periodo.Select(i => new SelectListItem
+            {
+                Text = i.Periodo_Año,
+                Value = i.Periodo_Id.ToString()
+            });
+            return View(aulaPeriodo);
+        }
+
+        [HttpGet]
+        public IActionResult EditarAula(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            AulaPeriodoVM aulaPeriodo = new AulaPeriodoVM();
+            aulaPeriodo.ListaPeriodos = objUsuario.Periodo.Select(i => new SelectListItem
+            {
+                Text = i.Periodo_Año,
+                Value = i.Periodo_Id.ToString()
+            });
+
+            aulaPeriodo.Aula = objUsuario.Aula.FirstOrDefault(c => c.Aula_Id == id);
+            if (aulaPeriodo == null)
+            {
+                return NotFound();
+            }
+            return View(aulaPeriodo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarAula(AulaPeriodoVM aulaPeriodoVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                // El modelo no es válido, devuelve la vista con los errores
+                return View(aulaPeriodoVM);
+            }
+
+            if (aulaPeriodoVM.Aula.Aula_Id == 0)
+            {
+                return View(aulaPeriodoVM.Aula);
+            }
+            else
+            {
+                objUsuario.Aula.Update(aulaPeriodoVM.Aula);
+                objUsuario.SaveChanges();
+                return RedirectToAction(nameof(ListaAulas));
+            }
+        }
+
+        [HttpGet]
+        public IActionResult BorrarAula(int? id)
+        {
+            var aula = objUsuario.Aula.FirstOrDefault(c => c.Aula_Id == id);
+            objUsuario.Aula.Remove(aula);
+            objUsuario.SaveChanges();
+            return RedirectToAction(nameof(ListaAulas));
+        }
+
+
+        /*-------------------------------ADMINISTRAR ESTUDIANTES-------------------------------*/
+        [HttpGet]
+        public IActionResult AdministrarEstudiantes(int id)
+        {
+            CursoEstudianteVM cursoEstudiantes = new CursoEstudianteVM
+            {
+                ListaEstudiantesPorCurso = objUsuario.EstudiantesPorCursos.Include(e => e.Estudiante).
+                Include(a => a.Curso).Where(a => a.Curso_Id == id),
+
+                EstudiantesPorCurso = new EstudiantesPorCurso()
+                {
+                    Curso_Id = id
+                },
+                Curso = objUsuario.Curso.FirstOrDefault(a => a.Curso_Id == id)
+            };
+
+            List<int> listaTemporalEstudiantesCurso = cursoEstudiantes.ListaEstudiantesPorCurso.
+                Select(e => e.Estudiante_Id).ToList();
+
+            //Obtener todas las etiquetas cuyos id's no estén en la listaTemporal
+            //Crear un NOT IN usando LINQ
+            var listaTemporal = objUsuario.Estudiante.Where(e => !listaTemporalEstudiantesCurso.
+            Contains(e.Estudiante_Id)).ToList();
+
+            //Crear lista de etiquetas para el dropdown
+            cursoEstudiantes.ListaEstudiantes = listaTemporal.Select(i => new SelectListItem
+            {
+                Text = $"{i.Estudiante_Apellido} {i.Estudiante_Nombre}",
+                Value = i.Estudiante_Id.ToString()
+            });
+
+            return View(cursoEstudiantes);
+        }
+        
+        /*
+        [HttpPost]
+        public IActionResult AdministrarEtiquetas(ArticuloEtiquetaVM articuloEtiquetas)
+        {
+            if (articuloEtiquetas.ArticuloEtiqueta.Articulo_Id != 0 &&
+                articuloEtiquetas.ArticuloEtiqueta.Etiqueta_Id != 0)
+            {
+                _contexto.ArticuloEtiqueta.Add(articuloEtiquetas.ArticuloEtiqueta);
+                _contexto.SaveChanges();
+            }
+            return RedirectToAction(nameof(AdministrarEtiquetas), new
+            {
+                @id = articuloEtiquetas.ArticuloEtiqueta.Articulo_Id
+            });
+        }
+
+        [HttpPost]
+        public IActionResult EliminarEtiquetas(int idEtiqueta, ArticuloEtiquetaVM articuloEtiquetas)
+        {
+            int idArticulo = articuloEtiquetas.Articulo.Articulo_Id;
+            ArticuloEtiqueta articuloEtiqueta = _contexto.ArticuloEtiqueta.FirstOrDefault(
+                    u => u.Etiqueta_Id == idEtiqueta && u.Articulo_Id == idArticulo
+                );
+
+            _contexto.ArticuloEtiqueta.Remove(articuloEtiqueta);
+            _contexto.SaveChanges();
+
+            return RedirectToAction(nameof(AdministrarEtiquetas), new { @id = idArticulo });
+        }*/
     }
 }

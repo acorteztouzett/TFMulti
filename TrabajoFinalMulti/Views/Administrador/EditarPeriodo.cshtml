@@ -1,0 +1,101 @@
+﻿@model TrabajoFinalMulti.Models.Periodo
+@{
+    ViewData["Title"] = "Editar Periodo";
+    Layout = "~/Views/Shared/_Diseño.cshtml";
+}
+
+<main class="h-full pb-16 overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Editar
+        </h2>
+        <!-- CTA -
+        <!-- General elements -->
+        <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+            Periodo
+        </h4>
+
+        <form method="post" asp-action="EditarPeriodo" id="registro-form">
+            <input type="hidden" asp-for="Periodo_Id" />
+
+            <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+
+                <label asp-for="Periodo_Año" class="block  text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Año del Periodo</span>
+                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                        <input asp-for="Periodo_Año" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                               placeholder="Año del Periodo"
+                               type="number" />
+                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                            <svg class="w-5 h-5"
+                                 aria-hidden="true"
+                                 fill="none"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 stroke-width="2"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Periodo_Año" class="text-danger"></span>
+                </label>
+
+                <label asp-for="Periodo_FechaInicio" class="block  text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Fecha de inicio del Periodo</span>
+                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                        <input asp-for="Periodo_FechaInicio" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                               placeholder="Fecha de inicio del Periodo"
+                               type="date" />
+                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                            <svg class="w-5 h-5"
+                                 aria-hidden="true"
+                                 fill="none"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 stroke-width="2"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Periodo_FechaInicio" class="text-danger"></span>
+                </label>
+
+                <label asp-for="Periodo_FechaFin" class="block  text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Fecha de fin del Periodo</span>
+                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                        <input asp-for="Periodo_FechaFin" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                               placeholder="Fecha de fin del Periodo"
+                               type="date" />
+                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                            <svg class="w-5 h-5"
+                                 aria-hidden="true"
+                                 fill="none"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 stroke-width="2"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Periodo_FechaFin" class="text-danger"></span>
+                </label>
+
+                <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
+                    <div>
+                        <button type="submit" class=" px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                            Guardar cambios
+                        </button>
+                        <a asp-controller="Administrador" asp-action="ListaPeriodos" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Regresar</a>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</main>
