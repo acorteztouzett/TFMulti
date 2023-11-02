@@ -76,7 +76,9 @@
                     <!-- focus-within sets the color for the icon when input is focused -->
                     <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                         <div class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input">
-                            <select asp-for="Apoderado.Apoderado_Parentesco" asp-items="@(new SelectList(new List<string> { "Padre", "Madre", "Abuelo", "Abuela", "Tío", "Tía", "Hermano", "Hermana", "Otros" }))" class="form-control" required disabled="@(Model.Apoderado != null && !string.IsNullOrEmpty(Model.Apoderado.Apoderado_Parentesco))">
+                            <select class="bg-gray-800 outline-none text-black text-sm block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-gray-300 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                    asp-for="Apoderado.Apoderado_Parentesco" 
+                            asp-items="@(new SelectList(new List<string> { "Padre", "Madre", "Abuelo", "Abuela", "Tío", "Tía", "Hermano", "Hermana", "Otros" }))" class="form-control" required disabled="@(Model.Apoderado != null && !string.IsNullOrEmpty(Model.Apoderado.Apoderado_Parentesco))">
                                 <option value="">Selecciona un parentesco</option>
                             </select>
                         </div>

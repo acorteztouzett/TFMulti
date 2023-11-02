@@ -100,26 +100,38 @@
                                     <td class="px-4 py-3 text-sm">
                                         @item.Estudiante_Celular
                                     </td>
-                                    <td class="px-4 py-3 text-xs">
-                                        <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                            @item.Estudiante_Correo
-                                        </span>
+                                    <td class="px-4 py-3 text-sm">
+                                        @item.Estudiante_Correo                                        
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         @item.Estudiante_Contraseña
                                     </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        @item.Estudiante_Estado
+                                    <td class="px-4 py-3 text-xs">
+                                        <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                            @item.Estudiante_Estado
+                                        </span>
                                     </td>
                                     <!--
                                     <td class="px-4 py-3 text-sm">
                                         <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id">Modificar</a>
                                     </td>
                                     -->
-                                    <td class="px-4 py-3 text-sm">
+                                    <td class="flex justify-center px-4 py-4 text-sm">
                                         @if (item.Apoderado == null)
                                         {
-                                            <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id">Añadir</a>
+                                            <div class="flex justify-center space-x-4 text-sm">
+
+                                                <a class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="RegistrarApoderado" asp-route-id="@item.Estudiante_Id">
+                                                    <svg class="w-5 h-5"
+                                                         aria-hidden="true"
+                                                         fill="none"
+                                                         viewBox="0 0 24 24"
+                                                         stroke-width="1.5" 
+                                                         stroke="currentColor">
+                                                        <path d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
                                         }
                                         else
                                         {
