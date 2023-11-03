@@ -74,8 +74,10 @@
                     <span class="text-gray-700 dark:text-gray-400">Docente encargado</span>
                     <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                         <div class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input">
-                            @Html.DropDownListFor(u => u.Curso.Docente_Id, Model.ListaDocentes, "--Lista de docentes--",
-                            new {@class = "form-control", required = "required"})
+                            <select class="bg-gray-800 outline-none text-black text-sm block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-gray-300 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                @Html.DropDownListFor(u => u.Curso.Docente_Id, Model.ListaDocentes, "--Lista de docentes--",
+                                new {@class = "form-control", required = "required"})
+                             </select>
                         </div>
                         <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                             <svg class="w-5 h-5"
@@ -96,8 +98,10 @@
                     <span class="text-gray-700 dark:text-gray-400">Aula de clases</span>
                     <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                         <div class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input">
-                            @Html.DropDownListFor(u => u.Curso.Aula_Id, Model.ListaAulas, "--Lista de aulas--",
-                            new {@class = "form-control", required = "required"})
+                            <select class="bg-gray-800 outline-none text-black text-sm block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-gray-300 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                @Html.DropDownListFor(u => u.Curso.Aula_Id, Model.ListaAulas, "--Lista de aulas--",
+                                new {@class = "form-control", required = "required"})
+                            </select>
                         </div>
                         <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
                             <svg class="w-5 h-5"

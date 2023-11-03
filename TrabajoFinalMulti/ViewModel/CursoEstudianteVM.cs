@@ -9,5 +9,8 @@ namespace TrabajoFinalMulti.ViewModel
         public Curso Curso { get; set; }
         public IEnumerable<EstudiantesPorCurso> ListaEstudiantesPorCurso { get; set; }
         public IEnumerable<SelectListItem> ListaEstudiantes { get; set; }
+
+        public int Aforo { get; set; }
+
     }
 }

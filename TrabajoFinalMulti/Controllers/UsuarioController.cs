@@ -10,11 +10,11 @@ namespace TrabajoFinalMulti.Controllers
 {
     public class UsuarioController : Controller
     {
-        public readonly ApplicationDbContext objUsuario;
+        public readonly ApplicationDbContext _context;
 
         public UsuarioController(ApplicationDbContext dbContext)
         {
-            objUsuario = dbContext;
+            _context = dbContext;
         }
 
         //Login
@@ -44,13 +44,13 @@ namespace TrabajoFinalMulti.Controllers
             if (HttpContext.Session.GetInt32("Key") == null || HttpContext.Session.GetInt32("Key") < 3)
             {
                 // Verificar las credenciales ingresadas en la tabla de Administrador
-                var admin = objUsuario.Administrador.SingleOrDefault(a => a.Admin_Correo == viewModel.Correo && EF.Functions.Collate(a.Admin_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
+                var admin = _context.Administrador.SingleOrDefault(a => a.Admin_Correo == viewModel.Correo && EF.Functions.Collate(a.Admin_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
 
                 // Verificar las credenciales ingresadas en la tabla de Docente
-                var docente = objUsuario.Docente.SingleOrDefault(d => d.Docente_Correo == viewModel.Correo && EF.Functions.Collate(d.Docente_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
+                var docente = _context.Docente.SingleOrDefault(d => d.Docente_Correo == viewModel.Correo && EF.Functions.Collate(d.Docente_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
 
                 // Verificar las credenciales ingresadas en la tabla de Estudiante
-                var estudiante = objUsuario.Estudiante.SingleOrDefault(e => e.Estudiante_Correo == viewModel.Correo && EF.Functions.Collate(e.Estudiante_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
+                var estudiante = _context.Estudiante.SingleOrDefault(e => e.Estudiante_Correo == viewModel.Correo && EF.Functions.Collate(e.Estudiante_Contraseña, "SQL_Latin1_General_CP1_CS_AS") == viewModel.Contraseña);
 
                 // Comprobar si las credenciales coinciden en alguna de las tablas
                 if (admin != null)
@@ -94,7 +94,7 @@ namespace TrabajoFinalMulti.Controllers
         [HttpPost]
         public IActionResult Perfil(int model = 0)
         {
-            var estudiante = objUsuario.Estudiante.SingleOrDefault(e => e.Estudiante_Id == model);
+            var estudiante = _context.Estudiante.SingleOrDefault(e => e.Estudiante_Id == model);
             return View(estudiante);
         }
 
@@ -111,13 +111,13 @@ namespace TrabajoFinalMulti.Controllers
             if (ModelState.IsValid)
             {
                 var objeto = JsonConvert.DeserializeObject<Estudiante>(HttpContext.Session.GetString("SUsuario"));
-                var estudiante = objUsuario.Estudiante.SingleOrDefault(a => a.Estudiante_Id == objeto.Estudiante_Id);
+                var estudiante = _context.Estudiante.SingleOrDefault(a => a.Estudiante_Id == objeto.Estudiante_Id);
                 estudiante.Estudiante_Nombre = viewmodel.Nombre;
                 estudiante.Estudiante_Correo = viewmodel.Correo;
                 estudiante.Estudiante_Contraseña = viewmodel.Contraseña;
 
-                objUsuario.Estudiante.Update(estudiante);
-                objUsuario.SaveChanges();
+                _context.Estudiante.Update(estudiante);
+                _context.SaveChanges();
 
                 HttpContext.Session.Clear();
                 HttpContext.Session.SetString("SUsuario", JsonConvert.SerializeObject(estudiante));
@@ -130,13 +130,13 @@ namespace TrabajoFinalMulti.Controllers
             if (ModelState.IsValid)
             {
                 var objeto = JsonConvert.DeserializeObject<Docente>(HttpContext.Session.GetString("SDocente"));
-                var docente = objUsuario.Docente.SingleOrDefault(a => a.Docente_Id == objeto.Docente_Id);
+                var docente = _context.Docente.SingleOrDefault(a => a.Docente_Id == objeto.Docente_Id);
                 docente.Docente_Nombre = viewmodel.Nombre;
                 docente.Docente_Correo = viewmodel.Correo;
                 docente.Docente_Contraseña = viewmodel.Contraseña;
 
-                objUsuario.Docente.Update(docente);
-                objUsuario.SaveChanges();
+                _context.Docente.Update(docente);
+                _context.SaveChanges();
 
                 HttpContext.Session.Clear();
                 HttpContext.Session.SetString("SDocente", JsonConvert.SerializeObject(docente));

@@ -11,11 +11,11 @@ namespace TrabajoFinalMulti.Controllers
 {
     public class AdministradorController : Controller
     {
-        public readonly ApplicationDbContext objUsuario;
+        public readonly ApplicationDbContext _context;
 
         public AdministradorController(ApplicationDbContext dbContext)
         {
-            objUsuario = dbContext;
+            _context = dbContext;
         }
 
         /*-------------------REGISTRAR USUARIOS (DOCENTE O ESTUDIANTE)-------------------------------*/
@@ -33,8 +33,8 @@ namespace TrabajoFinalMulti.Controllers
             if (ModelState.IsValid)
             {
                 // Verificar si el correo ya está en uso
-                if (objUsuario.Docente.Any(d => d.Docente_Correo == viewModel.Correo) ||
-                    objUsuario.Estudiante.Any(e => e.Estudiante_Correo == viewModel.Correo))
+                if (_context.Docente.Any(d => d.Docente_Correo == viewModel.Correo) ||
+                    _context.Estudiante.Any(e => e.Estudiante_Correo == viewModel.Correo))
                 {
                     ModelState.AddModelError("Correo", "El correo ya está en uso.");
                 }
@@ -50,13 +50,13 @@ namespace TrabajoFinalMulti.Controllers
                     
                     int nuevoId = 1;
 
-                    if (viewModel.TipoUsuario == "docente" && objUsuario.Docente.Any())
+                    if (viewModel.TipoUsuario == "docente" && _context.Docente.Any())
                     {
-                        nuevoId = objUsuario.Docente.Max(d => d.Docente_Id) + 1;
+                        nuevoId = _context.Docente.Max(d => d.Docente_Id) + 1;
                     }
-                    else if (viewModel.TipoUsuario == "estudiante" && objUsuario.Estudiante.Any())
+                    else if (viewModel.TipoUsuario == "estudiante" && _context.Estudiante.Any())
                     {
-                        nuevoId = objUsuario.Estudiante.Max(e => e.Estudiante_Id) + 1;
+                        nuevoId = _context.Estudiante.Max(e => e.Estudiante_Id) + 1;
                     }
                     string nombreArchivo = $"{nuevoId}.jpg";
                     string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
@@ -89,8 +89,8 @@ namespace TrabajoFinalMulti.Controllers
                             Docente_Foto = rutaRelativa,
                             Docente_Estado = "Activo",
                         };
-                        objUsuario.Docente.Add(docente);
-                        objUsuario.SaveChanges();
+                        _context.Docente.Add(docente);
+                        _context.SaveChanges();
 
                         return RedirectToAction("ListaDocentes", "Administrador");
                     }
@@ -108,8 +108,8 @@ namespace TrabajoFinalMulti.Controllers
                             Estudiante_Foto = rutaRelativa,
                             Estudiante_Estado = "Activo",
                         };
-                        objUsuario.Estudiante.Add(estudiante);
-                        objUsuario.SaveChanges();
+                        _context.Estudiante.Add(estudiante);
+                        _context.SaveChanges();
 
                         return RedirectToAction("ListaEstudiantes", "Administrador");
                     }
@@ -136,7 +136,7 @@ namespace TrabajoFinalMulti.Controllers
         //LISTAR DOCENTES:
         public IActionResult ListaDocentes()
         {
-            List<Docente> listaDocentes = objUsuario.Docente.ToList();
+            List<Docente> listaDocentes = _context.Docente.ToList();
             return View(listaDocentes);
         }
 
@@ -147,7 +147,7 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            var docente = objUsuario.Docente.FirstOrDefault(c => c.Docente_Id == id);
+            var docente = _context.Docente.FirstOrDefault(c => c.Docente_Id == id);
             return View(docente);
         }
 
@@ -157,7 +157,7 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (objUsuario.Docente.Any(d => d.Docente_Correo == docente.Docente_Correo && d.Docente_Id != docente.Docente_Id))
+                if (_context.Docente.Any(d => d.Docente_Correo == docente.Docente_Correo && d.Docente_Id != docente.Docente_Id))
                 {
                     ModelState.AddModelError("Docente_Correo", "El correo ya está en uso.");
                     return View(docente); // Devuelve la vista con el modelo para que el usuario pueda corregir
@@ -195,8 +195,8 @@ namespace TrabajoFinalMulti.Controllers
                     }
 
                     // Actualizar otros campos y guardar en la base de datos
-                    objUsuario.Docente.Update(docente);
-                    objUsuario.SaveChanges();
+                    _context.Docente.Update(docente);
+                    _context.SaveChanges();
 
                     return RedirectToAction(nameof(ListaDocentes));
                 }
@@ -209,9 +209,9 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult EliminarDocente(int? id)
         {
-            var docente = objUsuario.Docente.FirstOrDefault(c => c.Docente_Id == id);
-            objUsuario.Docente.Remove(docente);
-            objUsuario.SaveChanges();
+            var docente = _context.Docente.FirstOrDefault(c => c.Docente_Id == id);
+            _context.Docente.Remove(docente);
+            _context.SaveChanges();
             return RedirectToAction("ListaDocentes", "Administrador");
         }
 
@@ -219,8 +219,8 @@ namespace TrabajoFinalMulti.Controllers
         //LISTAR ESTUDIANTES:
         public IActionResult ListaEstudiantes()
         {
-            //List<Estudiante> listaEstudiantes = objUsuario.Estudiante.ToList();
-            List<Estudiante> listaEstudiantes = objUsuario.Estudiante
+            //List<Estudiante> listaEstudiantes = _context.Estudiante.ToList();
+            List<Estudiante> listaEstudiantes = _context.Estudiante
             .Include(e => e.Apoderado) //incluir Apoderado
             .ToList();
             return View(listaEstudiantes);
@@ -233,7 +233,7 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            var estudiante = objUsuario.Estudiante.FirstOrDefault(c => c.Estudiante_Id == id);
+            var estudiante = _context.Estudiante.FirstOrDefault(c => c.Estudiante_Id == id);
             return View(estudiante);
         }
 
@@ -243,7 +243,7 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (objUsuario.Estudiante.Any(d => d.Estudiante_Correo == estudiante.Estudiante_Correo && d.Estudiante_Id != estudiante.Estudiante_Id))
+                if (_context.Estudiante.Any(d => d.Estudiante_Correo == estudiante.Estudiante_Correo && d.Estudiante_Id != estudiante.Estudiante_Id))
                 {
                     ModelState.AddModelError("Docente_Correo", "El correo ya está en uso.");
                     return View(estudiante); // Devuelve la vista con el modelo para que el usuario pueda corregir
@@ -280,8 +280,8 @@ namespace TrabajoFinalMulti.Controllers
                     }
 
                     // Actualizar otros campos y guardar en la base de datos
-                    objUsuario.Estudiante.Update(estudiante);
-                    objUsuario.SaveChanges();
+                    _context.Estudiante.Update(estudiante);
+                    _context.SaveChanges();
 
                     return RedirectToAction(nameof(ListaEstudiantes));
                 }
@@ -293,9 +293,9 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult EliminarEstudiante(int? id)
         {
-            var estudiante = objUsuario.Estudiante.FirstOrDefault(c => c.Estudiante_Id == id);
-            objUsuario.Estudiante.Remove(estudiante);
-            objUsuario.SaveChanges();
+            var estudiante = _context.Estudiante.FirstOrDefault(c => c.Estudiante_Id == id);
+            _context.Estudiante.Remove(estudiante);
+            _context.SaveChanges();
             return RedirectToAction("ListaEstudiantes", "Administrador");
         }
 
@@ -307,7 +307,7 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            var estudiante = objUsuario.Estudiante.Include(d => d.Apoderado).FirstOrDefault(u => u.Estudiante_Id == id);
+            var estudiante = _context.Estudiante.Include(d => d.Apoderado).FirstOrDefault(u => u.Estudiante_Id == id);
             if (estudiante == null)
             {
                 return NotFound();
@@ -322,13 +322,13 @@ namespace TrabajoFinalMulti.Controllers
             if (estudiante.Apoderado.Apoderado_Id == 0)
             {
                 // Agrega el apoderado a la base de datos
-                objUsuario.Apoderado.Add(estudiante.Apoderado);
-                objUsuario.SaveChanges();
+                _context.Apoderado.Add(estudiante.Apoderado);
+                _context.SaveChanges();
 
                 // Actualiza la referencia del apoderado en el estudiante
-                var estudianteBd = objUsuario.Estudiante.FirstOrDefault(u => u.Estudiante_Id == estudiante.Estudiante_Id);
+                var estudianteBd = _context.Estudiante.FirstOrDefault(u => u.Estudiante_Id == estudiante.Estudiante_Id);
                 estudianteBd.Apoderado_Id = estudiante.Apoderado.Apoderado_Id;
-                objUsuario.SaveChanges();             
+                _context.SaveChanges();             
             }
             return RedirectToAction(nameof(ListaEstudiantes));
         }  
@@ -341,7 +341,7 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            var apoderado = objUsuario.Apoderado.FirstOrDefault(c => c.Apoderado_Id == id);
+            var apoderado = _context.Apoderado.FirstOrDefault(c => c.Apoderado_Id == id);
             return View(apoderado);
         }
 
@@ -350,8 +350,8 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                objUsuario.Apoderado.Update(apoderado);
-                objUsuario.SaveChanges();
+                _context.Apoderado.Update(apoderado);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaEstudiantes));
             }
 
@@ -361,19 +361,19 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult EliminarApoderado(int? id)
         {
-            var apoderado = objUsuario.Apoderado.FirstOrDefault(c => c.Apoderado_Id == id);
+            var apoderado = _context.Apoderado.FirstOrDefault(c => c.Apoderado_Id == id);
 
             if (apoderado != null)
             {
                 // Obten los estudiantes relacionados y establece Apoderado_Id a null
-                var estudiantesRelacionados = objUsuario.Estudiante.Where(e => e.Apoderado_Id == id);
+                var estudiantesRelacionados = _context.Estudiante.Where(e => e.Apoderado_Id == id);
                 foreach (var estudiante in estudiantesRelacionados)
                 {
                     estudiante.Apoderado_Id = null;
                 }
 
-                objUsuario.Apoderado.Remove(apoderado);
-                objUsuario.SaveChanges();
+                _context.Apoderado.Remove(apoderado);
+                _context.SaveChanges();
             }
 
             return RedirectToAction("ListaEstudiantes", "Administrador");
@@ -385,7 +385,7 @@ namespace TrabajoFinalMulti.Controllers
         public IActionResult BuscarDocente(string term)
         {
             // Realiza la búsqueda en tu base de datos y obtiene los resultados
-            var resultados = objUsuario.Docente
+            var resultados = _context.Docente
                 .Where(u => u.Docente_Nombre.Contains(term))
                 .ToList();
 
@@ -396,7 +396,7 @@ namespace TrabajoFinalMulti.Controllers
         public IActionResult BuscarEstudiante(string term)
         {
             // Realiza la búsqueda en tu base de datos y obtiene los resultados
-            var resultados = objUsuario.Estudiante
+            var resultados = _context.Estudiante
                 .Where(u => u.Estudiante_Nombre.Contains(term))
                 .ToList();
 
@@ -407,13 +407,13 @@ namespace TrabajoFinalMulti.Controllers
         /*------------------------CREAR CURSOS Y ASIGNARLOS A UN DOCENTE--------------------------------------*/
         /*public IActionResult ListaCursos()
         {
-            List<Curso> listaCursos = objUsuario.Curso.ToList();
+            List<Curso> listaCursos = _context.Curso.ToList();
             return View(listaCursos);
         }*/
 
         public IActionResult ListaCursos()
         {
-            var cursos = objUsuario.Curso
+            var cursos = _context.Curso
                 .Include(c => c.Docente) // Esto carga el docente relacionado
                 .Include(c => c.Aula)
                 .ToList();
@@ -425,13 +425,13 @@ namespace TrabajoFinalMulti.Controllers
         public IActionResult RegistrarCurso()
         {
             CursoDocenteVM cursoDocenteAula = new CursoDocenteVM();
-            cursoDocenteAula.ListaDocentes = objUsuario.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            cursoDocenteAula.ListaDocentes = _context.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
-                Text = i.Docente_Nombre,
+                Text = $"{i.Docente_Nombre} {i.Docente_Apellido}",
                 Value = i.Docente_Id.ToString()
             });
 
-            cursoDocenteAula.ListaAulas = objUsuario.Aula.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            cursoDocenteAula.ListaAulas = _context.Aula.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
                 Text = $"{i.Aula_NivelEducativo} - {i.Aula_Grado}",
                 Value = i.Aula_Id.ToString()
@@ -446,19 +446,19 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                objUsuario.Curso.Add(curso);
-                objUsuario.SaveChanges();
+                _context.Curso.Add(curso);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaCursos));
             }
 
             CursoDocenteVM cursoDocenteAula = new CursoDocenteVM();
-            cursoDocenteAula.ListaDocentes = objUsuario.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            cursoDocenteAula.ListaDocentes = _context.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
-                Text = i.Docente_Nombre,
+                Text = $"{i.Docente_Nombre} {i.Docente_Apellido}",
                 Value = i.Docente_Id.ToString()
             });
 
-            cursoDocenteAula.ListaAulas = objUsuario.Aula.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            cursoDocenteAula.ListaAulas = _context.Aula.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
                 Text = $"{i.Aula_NivelEducativo} - {i.Aula_Grado}",
                 Value = i.Aula_Id.ToString()
@@ -473,20 +473,29 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            CursoDocenteVM cursoDocente = new CursoDocenteVM();
-            cursoDocente.ListaDocentes = objUsuario.Docente.Select(i => new SelectListItem
+
+            CursoDocenteVM cursoDocenteAula = new CursoDocenteVM();
+            cursoDocenteAula.ListaDocentes = _context.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
-                Text = i.Docente_Nombre,
+                Text = $"{i.Docente_Nombre} {i.Docente_Apellido}",
                 Value = i.Docente_Id.ToString()
             });
 
-            cursoDocente.Curso = objUsuario.Curso.FirstOrDefault(c => c.Curso_Id == id);
-            if (cursoDocente == null)
+            cursoDocenteAula.ListaAulas = _context.Aula.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            {
+                Text = $"{i.Aula_NivelEducativo}  {i.Aula_Grado}",
+                Value = i.Aula_Id.ToString()
+            });
+
+
+            cursoDocenteAula.Curso = _context.Curso.FirstOrDefault(c => c.Curso_Id == id);
+            if (cursoDocenteAula == null)
             {
                 return NotFound();
             }
-            return View(cursoDocente);
+            return View(cursoDocenteAula);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditarCurso(CursoDocenteVM cursoDocenteVM)
@@ -497,8 +506,8 @@ namespace TrabajoFinalMulti.Controllers
             }
             else
             {
-                objUsuario.Curso.Update(cursoDocenteVM.Curso);
-                objUsuario.SaveChanges();
+                _context.Curso.Update(cursoDocenteVM.Curso);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaCursos));
             }
         }
@@ -506,16 +515,16 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult BorrarCurso(int? id)
         {
-            var curso = objUsuario.Curso.FirstOrDefault(c => c.Curso_Id == id);
-            objUsuario.Curso.Remove(curso);
-            objUsuario.SaveChanges();
+            var curso = _context.Curso.FirstOrDefault(c => c.Curso_Id == id);
+            _context.Curso.Remove(curso);
+            _context.SaveChanges();
             return RedirectToAction(nameof(ListaCursos));
         }
 
         /*------------------------ANUNCIOS INFORMATIVOS--------------------------------------*/
         public IActionResult ListaAnuncioInformativo()
         {
-            List<AnuncioInformativo> listaAnuncioInformativo = objUsuario.AnuncioInformativo.ToList();
+            List<AnuncioInformativo> listaAnuncioInformativo = _context.AnuncioInformativo.ToList();
             return View(listaAnuncioInformativo);
         }
         [HttpGet]
@@ -529,8 +538,8 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                objUsuario.AnuncioInformativo.Add(anuncio);
-                objUsuario.SaveChanges();
+                _context.AnuncioInformativo.Add(anuncio);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaAnuncioInformativo));
             }
             return View();
@@ -543,7 +552,7 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            var anuncio = objUsuario.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
+            var anuncio = _context.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
             return View(anuncio);
         }
 
@@ -553,8 +562,8 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                objUsuario.AnuncioInformativo.Update(anuncio);
-                objUsuario.SaveChanges();
+                _context.AnuncioInformativo.Update(anuncio);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaAnuncioInformativo));
             }
             return View(anuncio);
@@ -563,16 +572,16 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult BorrarAnuncioInformativo(int? id)
         {
-            var anuncio = objUsuario.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
-            objUsuario.AnuncioInformativo.Remove(anuncio);
-            objUsuario.SaveChanges();
+            var anuncio = _context.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
+            _context.AnuncioInformativo.Remove(anuncio);
+            _context.SaveChanges();
             return RedirectToAction(nameof(ListaAnuncioInformativo));
         }
 
         /*------------------------PERIODO--------------------------------------*/
         public IActionResult ListaPeriodos()
         {
-            List<Periodo> listaPeriodos = objUsuario.Periodo.OrderBy(p => p.Periodo_Año).ToList();
+            List<Periodo> listaPeriodos = _context.Periodo.OrderBy(p => p.Periodo_Año).ToList();
             return View(listaPeriodos);
         }
 
@@ -588,8 +597,8 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                objUsuario.Periodo.Add(periodo);
-                objUsuario.SaveChanges();
+                _context.Periodo.Add(periodo);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaPeriodos));
             }
             return View();
@@ -602,7 +611,7 @@ namespace TrabajoFinalMulti.Controllers
             {
                 return View();
             }
-            var periodo = objUsuario.Periodo.FirstOrDefault(c => c.Periodo_Id == id);
+            var periodo = _context.Periodo.FirstOrDefault(c => c.Periodo_Id == id);
             return View(periodo);
         }
 
@@ -612,8 +621,8 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                objUsuario.Periodo.Update(periodo);
-                objUsuario.SaveChanges();
+                _context.Periodo.Update(periodo);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaPeriodos));
             }
             return View(periodo);
@@ -622,9 +631,9 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult BorrarPeriodo(int? id)
         {
-            var periodo = objUsuario.Periodo.FirstOrDefault(c => c.Periodo_Id == id);
-            objUsuario.Periodo.Remove(periodo);
-            objUsuario.SaveChanges();
+            var periodo = _context.Periodo.FirstOrDefault(c => c.Periodo_Id == id);
+            _context.Periodo.Remove(periodo);
+            _context.SaveChanges();
             return RedirectToAction(nameof(ListaPeriodos));
         }
 
@@ -632,7 +641,7 @@ namespace TrabajoFinalMulti.Controllers
         /*------------------------CREAR AULA Y ASIGNARLO A UN PERIODO--------------------------------------*/
         public IActionResult ListaAulas()
         {
-            var aulas = objUsuario.Aula.Include(p => p.Periodo).ToList();
+            var aulas = _context.Aula.Include(p => p.Periodo).ToList();
 
             return View(aulas);
         }
@@ -641,7 +650,7 @@ namespace TrabajoFinalMulti.Controllers
         public IActionResult RegistrarAula()
         {
             AulaPeriodoVM aulaPeriodo = new AulaPeriodoVM();
-            aulaPeriodo.ListaPeriodos = objUsuario.Periodo.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+            aulaPeriodo.ListaPeriodos = _context.Periodo.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
             {
                 Text = i.Periodo_Año,
                 Value = i.Periodo_Id.ToString()
@@ -656,12 +665,12 @@ namespace TrabajoFinalMulti.Controllers
         {
             if (ModelState.IsValid)
             {
-                objUsuario.Aula.Add(aula);
-                objUsuario.SaveChanges();
+                _context.Aula.Add(aula);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaAulas));
             }
             AulaPeriodoVM aulaPeriodo = new AulaPeriodoVM();
-            aulaPeriodo.ListaPeriodos = objUsuario.Periodo.Select(i => new SelectListItem
+            aulaPeriodo.ListaPeriodos = _context.Periodo.Select(i => new SelectListItem
             {
                 Text = i.Periodo_Año,
                 Value = i.Periodo_Id.ToString()
@@ -677,13 +686,13 @@ namespace TrabajoFinalMulti.Controllers
                 return View();
             }
             AulaPeriodoVM aulaPeriodo = new AulaPeriodoVM();
-            aulaPeriodo.ListaPeriodos = objUsuario.Periodo.Select(i => new SelectListItem
+            aulaPeriodo.ListaPeriodos = _context.Periodo.Select(i => new SelectListItem
             {
                 Text = i.Periodo_Año,
                 Value = i.Periodo_Id.ToString()
             });
 
-            aulaPeriodo.Aula = objUsuario.Aula.FirstOrDefault(c => c.Aula_Id == id);
+            aulaPeriodo.Aula = _context.Aula.FirstOrDefault(c => c.Aula_Id == id);
             if (aulaPeriodo == null)
             {
                 return NotFound();
@@ -707,8 +716,8 @@ namespace TrabajoFinalMulti.Controllers
             }
             else
             {
-                objUsuario.Aula.Update(aulaPeriodoVM.Aula);
-                objUsuario.SaveChanges();
+                _context.Aula.Update(aulaPeriodoVM.Aula);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(ListaAulas));
             }
         }
@@ -716,27 +725,27 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult BorrarAula(int? id)
         {
-            var aula = objUsuario.Aula.FirstOrDefault(c => c.Aula_Id == id);
-            objUsuario.Aula.Remove(aula);
-            objUsuario.SaveChanges();
+            var aula = _context.Aula.FirstOrDefault(c => c.Aula_Id == id);
+            _context.Aula.Remove(aula);
+            _context.SaveChanges();
             return RedirectToAction(nameof(ListaAulas));
         }
 
 
         /*-------------------------------ADMINISTRAR ESTUDIANTES-------------------------------*/
-        [HttpGet]
+        /*[HttpGet]
         public IActionResult AdministrarEstudiantes(int id)
         {
             CursoEstudianteVM cursoEstudiantes = new CursoEstudianteVM
             {
-                ListaEstudiantesPorCurso = objUsuario.EstudiantesPorCursos.Include(e => e.Estudiante).
+                ListaEstudiantesPorCurso = _context.EstudiantesPorCursos.Include(e => e.Estudiante).
                 Include(a => a.Curso).Where(a => a.Curso_Id == id),
 
                 EstudiantesPorCurso = new EstudiantesPorCurso()
                 {
                     Curso_Id = id
                 },
-                Curso = objUsuario.Curso.FirstOrDefault(a => a.Curso_Id == id)
+                Curso = _context.Curso.FirstOrDefault(a => a.Curso_Id == id)
             };
 
             List<int> listaTemporalEstudiantesCurso = cursoEstudiantes.ListaEstudiantesPorCurso.
@@ -744,7 +753,7 @@ namespace TrabajoFinalMulti.Controllers
 
             //Obtener todas las etiquetas cuyos id's no estén en la listaTemporal
             //Crear un NOT IN usando LINQ
-            var listaTemporal = objUsuario.Estudiante.Where(e => !listaTemporalEstudiantesCurso.
+            var listaTemporal = _context.Estudiante.Where(e => !listaTemporalEstudiantesCurso.
             Contains(e.Estudiante_Id)).ToList();
 
             //Crear lista de etiquetas para el dropdown
@@ -755,36 +764,87 @@ namespace TrabajoFinalMulti.Controllers
             });
 
             return View(cursoEstudiantes);
-        }
-        
-        /*
-        [HttpPost]
-        public IActionResult AdministrarEtiquetas(ArticuloEtiquetaVM articuloEtiquetas)
+        }*/
+
+        [HttpGet]
+        public IActionResult AdministrarEstudiantes(int id)
         {
-            if (articuloEtiquetas.ArticuloEtiqueta.Articulo_Id != 0 &&
-                articuloEtiquetas.ArticuloEtiqueta.Etiqueta_Id != 0)
+            Curso curso = _context.Curso.Include(c => c.Aula).FirstOrDefault(a => a.Curso_Id == id);
+
+            if (curso != null)
             {
-                _contexto.ArticuloEtiqueta.Add(articuloEtiquetas.ArticuloEtiqueta);
-                _contexto.SaveChanges();
+                CursoEstudianteVM cursoEstudiantes = new CursoEstudianteVM
+                {
+                    ListaEstudiantesPorCurso = _context.EstudiantesPorCursos.Include(e => e.Estudiante)
+                        .Include(a => a.Curso).Where(a => a.Curso_Id == id),
+
+                    EstudiantesPorCurso = new EstudiantesPorCurso()
+                    {
+                        Curso_Id = id
+                    },
+                    Curso = curso,
+                    Aforo = curso.Aula != null ? curso.Aula.Aula_Aforo : 0 // Obtener el aforo del aula
+                };
+
+                List<int> listaTemporalEstudiantesCurso = cursoEstudiantes.ListaEstudiantesPorCurso
+                    .Select(e => e.Estudiante_Id).ToList();
+
+                // Obtener todas las etiquetas cuyos ID no estén en la listaTemporal
+                // Crear un NOT IN usando LINQ
+                var listaTemporal = _context.Estudiante.Where(e => !listaTemporalEstudiantesCurso
+                    .Contains(e.Estudiante_Id)).ToList();
+
+                // Crear lista de etiquetas para el dropdown
+                cursoEstudiantes.ListaEstudiantes = listaTemporal.Select(i => new SelectListItem
+                {
+                    Text = $"{i.Estudiante_Apellido} {i.Estudiante_Nombre}",
+                    Value = i.Estudiante_Id.ToString()
+                });
+
+                return View(cursoEstudiantes);
             }
-            return RedirectToAction(nameof(AdministrarEtiquetas), new
+            else
             {
-                @id = articuloEtiquetas.ArticuloEtiqueta.Articulo_Id
+                // Manejar el caso en el que no se encuentra el curso
+                return NotFound(); // Puedes personalizar esto según tus necesidades
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AdministrarEstudiantes(CursoEstudianteVM cursoEstudiantes)
+        {
+
+            if (cursoEstudiantes.EstudiantesPorCurso.Curso_Id != 0 &&
+                cursoEstudiantes.EstudiantesPorCurso.Estudiante_Id != 0)
+            {
+                _context.EstudiantesPorCursos.Add(cursoEstudiantes.EstudiantesPorCurso);
+                _context.SaveChanges();
+
+            }
+            return RedirectToAction(nameof(AdministrarEstudiantes), new
+            {
+                @id = cursoEstudiantes.EstudiantesPorCurso.Curso_Id
             });
         }
 
+
         [HttpPost]
-        public IActionResult EliminarEtiquetas(int idEtiqueta, ArticuloEtiquetaVM articuloEtiquetas)
+        public IActionResult EliminarEstudiantes(int idEstudiante, CursoEstudianteVM cursoEstudiantes)
         {
-            int idArticulo = articuloEtiquetas.Articulo.Articulo_Id;
-            ArticuloEtiqueta articuloEtiqueta = _contexto.ArticuloEtiqueta.FirstOrDefault(
-                    u => u.Etiqueta_Id == idEtiqueta && u.Articulo_Id == idArticulo
-                );
+            int idCurso = cursoEstudiantes.Curso.Curso_Id;
 
-            _contexto.ArticuloEtiqueta.Remove(articuloEtiqueta);
-            _contexto.SaveChanges();
+            EstudiantesPorCurso cursoEstudiante = _context.EstudiantesPorCursos.FirstOrDefault(
+                u => u.Estudiante_Id == idEstudiante && u.Curso_Id == idCurso
+            );
 
-            return RedirectToAction(nameof(AdministrarEtiquetas), new { @id = idArticulo });
-        }*/
+            if (cursoEstudiante != null)
+            {
+                _context.EstudiantesPorCursos.Remove(cursoEstudiante);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction(nameof(AdministrarEstudiantes), new { id = idCurso });
+        }
+
     }
 }
