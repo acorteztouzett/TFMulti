@@ -34,7 +34,7 @@
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
-                            @foreach (var item in Model)
+                            @foreach (var item in Model.OrderBy(aula => aula.Aula_NivelEducativo).ThenBy(aula => aula.Aula_Grado))
                             {
                                 <!-- Filas de docentes y estudiantes combinados y ordenados -->
                                 <tr class="text-gray-700 dark:text-gray-400">
