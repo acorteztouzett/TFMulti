@@ -93,6 +93,30 @@ namespace TrabajoFinalMulti.Migrations
                     b.ToTable("Apoderado");
                 });
 
+            modelBuilder.Entity("TrabajoFinalMulti.Models.Asesoria", b =>
+                {
+                    b.Property<int>("Asesoria_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Asesoria_Id"));
+
+                    b.Property<int>("Curso_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Fecha")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tema")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Asesoria_Id");
+
+                    b.HasIndex("Curso_Id");
+
+                    b.ToTable("Asesorias");
+                });
+
             modelBuilder.Entity("TrabajoFinalMulti.Models.Aula", b =>
                 {
                     b.Property<int>("Aula_Id")
@@ -400,6 +424,17 @@ namespace TrabajoFinalMulti.Migrations
                     b.HasIndex("Curso_Id");
 
                     b.ToTable("Sesiones");
+                });
+
+            modelBuilder.Entity("TrabajoFinalMulti.Models.Asesoria", b =>
+                {
+                    b.HasOne("TrabajoFinalMulti.Models.Curso", "Curso")
+                        .WithMany()
+                        .HasForeignKey("Curso_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
                 });
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Aula", b =>
