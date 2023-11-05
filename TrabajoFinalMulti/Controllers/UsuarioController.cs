@@ -69,7 +69,7 @@ namespace TrabajoFinalMulti.Controllers
                 {
                     // Credenciales válidas para Estudiante, redirigir a la página correspondiente
                     HttpContext.Session.SetString("SUsuario", JsonConvert.SerializeObject(estudiante));
-                    return RedirectToAction("Privacy", "Home");
+                    return RedirectToAction("Index", "Estudiante");
                 }
                 else
                 {

@@ -8,5 +8,9 @@ namespace TrabajoFinalMulti.Controllers
         {
             return View();
         }
+        public IActionResult EditarPerfil()
+        {
+            return View();
+        }
     }
 }

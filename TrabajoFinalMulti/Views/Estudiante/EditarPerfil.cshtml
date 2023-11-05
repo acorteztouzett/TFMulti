@@ -1,0 +1,76 @@
+﻿@model Estudiante
+
+@{
+    ViewData["Title"] = "Editar Perfil";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<main class="h-full pb-16 overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Editar
+        </h2>
+        <!-- CTA -
+        <!-- General elements -->
+        <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+            Estudiante
+        </h4>
+        <form method="post" id="registro-form" enctype="multipart/form-data">
+
+            <input type="hidden" name="Estudiante_Id" />
+            <input type="hidden" name="Apoderado_Id" readonly />
+            <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+
+                <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Nombre</span>
+                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                        <input name="Estudiante_Nombre" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                               placeholder="Nombre del estudiante"
+                               type="text"
+                               id="Nombre" required />
+                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                            <svg class="w-5 h-5"
+                                 aria-hidden="true"
+                                 fill="none"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 stroke-width="2"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </label>
+
+                <!-- Repite las etiquetas para otros campos como Apellido, FechaNacimiento, DNI, Celular, Correo, Contraseña, Estado, y Foto según sea necesario -->
+
+                <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Foto del usuario (opcional)</span>
+                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
+                        <input type="file" accept="image/*" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input" name="nuevaFoto" />
+
+                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
+                            <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </label>
+
+                <!-- Mostrar imagen del estudiante si existe -->
+                <div class="mt-4">
+                    <img src="" alt="Foto del estudiante" class="block mx-auto" width="200" height="200" />
+                </div>
+
+                <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
+                    <div>
+                        <button type="submit" class=" px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active-bg-purple-600 hover-bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
