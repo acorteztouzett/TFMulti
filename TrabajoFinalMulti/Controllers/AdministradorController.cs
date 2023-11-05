@@ -386,7 +386,7 @@ namespace TrabajoFinalMulti.Controllers
         {
             // Realiza la búsqueda en tu base de datos y obtiene los resultados
             var resultados = _context.Docente
-                .Where(u => u.Docente_Nombre.Contains(term))
+                .Where(u => u.Docente_Nombre.Contains(term) || u.Docente_Apellido.Contains(term))
                 .ToList();
 
             return PartialView("_TablaDocentes", resultados);
@@ -397,7 +397,7 @@ namespace TrabajoFinalMulti.Controllers
         {
             // Realiza la búsqueda en tu base de datos y obtiene los resultados
             var resultados = _context.Estudiante
-                .Where(u => u.Estudiante_Nombre.Contains(term))
+                .Where(u => u.Estudiante_Nombre.Contains(term) || u.Estudiante_Apellido.Contains(term))
                 .ToList();
 
             return PartialView("_TablaEstudiantes", resultados);
