@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
 using TrabajoFinalMulti.ViewModel;
@@ -13,12 +14,15 @@ namespace TrabajoFinalMulti.Controllers
         {
             _context = dbContext;
         }
+        
         public IActionResult Index()
         {
-            return View();
+            var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(HttpContext.Session.GetString("SUsuario"));
+            var cursosEstudiante = _context.Curso.Where(e => e.Aula_Id == objEstudiante.EstudiantesPorCurso_Id).ToList();
+            return View(cursosEstudiante);
         }
-
-        public IActionResult ListaCursos(int id)
+        /*        
+        public IActionResult Index(int id)
         {
             var curso = _context.Curso.Find(id);
             var listaCursos = _context.Sesiones.Where(e => e.Curso_Id == id).ToList();
@@ -29,8 +33,24 @@ namespace TrabajoFinalMulti.Controllers
             };
             Console.WriteLine(listaFinal);
             return View(listaFinal);
+        }*/
+        public IActionResult EditarPerfil(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+            var estudiante = _context.Estudiante.FirstOrDefault(c => c.Estudiante_Id == id);
+            return View(estudiante);
         }
-        public IActionResult ListaEvaluaciones(int id)
+
+        public IActionResult VerHorario()
+        {
+            
+            return View();
+        }
+
+        public IActionResult VerEvaluaciones(int id)
         {
             var curso = _context.Curso.Find(id);
             var listaEvaluaciones = _context.Evaluaciones.Where(e => e.Curso_Id == id);
@@ -50,12 +70,19 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(listaNotas);
         }
-        public IActionResult ListaAnuncioInformativo()
+        public IActionResult VerAnuncio()
         {
             List<AnuncioInformativo> listaAnuncioInformativo = _context.AnuncioInformativo.ToList();
             return View(listaAnuncioInformativo);
         }
-        public IActionResult ListaSesiones(int id)
+        
+        public IActionResult SolicitarAsesoria(Asesoria asesoria)
+        {
+            _context.Asesorias.Add(asesoria);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        /*public IActionResult ListaSesiones(int id)
         {
             var curso = _context.Curso.Find(id);
             var listaSesiones = _context.Sesiones.Where(e => e.Curso_Id == id).ToList();
@@ -65,19 +92,15 @@ namespace TrabajoFinalMulti.Controllers
                 Sesiones = listaSesiones
             };
             return View(listaFinal);
-        }
-        public IActionResult AsistenciaPorSesion(int id)
+        }*/
+
+        /*public IActionResult AsistenciaPorSesion(int id)
         {
             var listaAsistencia = _context.EstudiantesPorSesions.Where(e => e.Sesion_Id == id).ToList();
             return View(listaAsistencia);
-        }
-        [HttpPost]
-        public IActionResult SolicitarAsesoria(Asesoria asesoria)
-        {
-            _context.Asesorias.Add(asesoria);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        }*/
+
+
     }
 }
 

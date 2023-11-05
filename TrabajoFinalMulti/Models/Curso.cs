@@ -19,9 +19,9 @@ namespace TrabajoFinalMulti.Models
         public int Aula_Id { get; set; }
         public Aula Aula { get; set; }
 
-
+        
         public ICollection<Evaluacion> Evaluacions { get; set; }
-        //public ICollection<EstudiantesPorCurso> EstudiantesPorCursos { get; set; }
+        public ICollection<EstudiantesPorCurso> EstudiantesPorCursos { get; set; }
         public ICollection<Sesion> Sesiones { get; set; }
 
 

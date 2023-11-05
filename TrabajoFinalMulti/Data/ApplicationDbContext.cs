@@ -32,6 +32,7 @@ namespace TrabajoFinalMulti.Data
         public DbSet<EstudiantePorSesion> EstudiantesPorSesions { get; set; }
         public DbSet<Sesion> Sesiones { get; set;}
         public DbSet<Asesoria> Asesorias { get; set; }
+        public DbSet<Horario> Horario { get; set; }
 
     }
 }

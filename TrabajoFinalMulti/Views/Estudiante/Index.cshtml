@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<TrabajoFinalMulti.Models.Curso>
 @{
-    ViewData["Title"] = "Lista de cursos";
-    Layout = "~/Views/Shared/DiseñoEstudiante.cshtml";
+    ViewData["Title"] = "Estudiante";
+    Layout = "~/Views/Shared/_DiseñoEstudiante.cshtml";
 }
 
 <main class="h-full pb-16 overflow-y-auto">
@@ -14,55 +14,83 @@
         </h4>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
-                <table id="dataTable" class="w-full whitespace-no-wrap">
-                    <thead>
-                        <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                            <th class="px-4 py-3">N°</th>
-                            <th class="px-4 py-3">Nombre</th>
-                            <th class="px-4 py-3">Cantidad Horas</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                        <tr class="text-gray-700 dark:text-gray-400">
-                            <td class="px-4 py-3">
-                                <div class="flex items-center text-sm">
-                                    <div>
-                                        <p class="font-semibold">Curso Id</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                <div class="flex items-center text-sm">
-                                    <div>
-                                        <p class="font-semibold">Curso Nombre</p>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400">Curso</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                <div class="flex items-center text-sm">
-                                    <div>
-                                        <p class="font-semibold">Cantidad Horas</p>
-                                    </div>
-                                </div>
-                            </td>
-                            
-                        </tr>
-                    </tbody>
-                </table>
+                @if (Model.Count() > 0)
+                {
+                    <table id="dataTable" class="w-full whitespace-no-wrap">
+                        <thead>
+                            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                <th class="px-4 py-3">N°</th>
+                                <th class="px-4 py-3">Nombre</th>
+                                <th class="px-4 py-3">Cantidad de Horas</th>
+                                <th class="px-4 py-3">Aula</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+
+                            @foreach (var cur in Model)
+                            {
+                                <!-- Filas de docentes y estudiantes combinados y ordenados -->
+                                <tr class="text-gray-700 dark:text-gray-400">
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                <p class="font-semibold">@cur.Curso_Id</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                <p class="font-semibold">@cur.Curso_Nombre</p>
+                                                <p class="text-xs text-gray-600 dark:text-gray-400">Curso</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                <p class="font-semibold">@cur.Cantidad_Horas</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                <p class="font-semibold">@cur.Aula</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                }
+
             </div>
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-                <span class="flex items-cenutr col-span-3">
+                <span class="flex items-center col-span-3">
                     Página 1-2 de 100
                 </span>
                 <span class="col-span-2"></span>
+                <!-- Pagination -->
                 <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                     <nav aria-label="Table navigation">
                         <ul class="inline-flex items-center">
                             <li>
-                                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
-                                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                                        <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+                                        aria-label="Previous">
+                                    <svg class="w-4 h-4 fill-current"
+                                         aria-hidden="true"
+                                         viewBox="0 0 20 20">
+                                        <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                              clip-rule="evenodd"
+                                              fill-rule="evenodd"></path>
                                     </svg>
                                 </button>
                             </li>
@@ -100,9 +128,14 @@
                                 </button>
                             </li>
                             <li>
-                                <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-                                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                                        <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010-1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                                <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                                        aria-label="Next">
+                                    <svg class="w-4 h-4 fill-current"
+                                         aria-hidden="true"
+                                         viewBox="0 0 20 20">
+                                        <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                              clip-rule="evenodd"
+                                              fill-rule="evenodd"></path>
                                     </svg>
                                 </button>
                             </li>
