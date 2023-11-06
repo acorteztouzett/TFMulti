@@ -320,7 +320,10 @@ namespace TrabajoFinalMulti.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("EstudiantesPorCurso_Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EstudiantesPorCurso_Id"));
 
                     b.HasKey("Estudiante_Id", "Curso_Id");
 
@@ -377,6 +380,28 @@ namespace TrabajoFinalMulti.Migrations
                     b.HasIndex("Evaluacion_Id");
 
                     b.ToTable("EvaluacionPorEstudiantes");
+                });
+
+            modelBuilder.Entity("TrabajoFinalMulti.Models.Horario", b =>
+                {
+                    b.Property<int>("Horario_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Horario_Id"));
+
+                    b.Property<string>("Dia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Hora_Fin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Hora_Inicio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Horario_Id");
+
+                    b.ToTable("Horario");
                 });
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Periodo", b =>
@@ -498,7 +523,7 @@ namespace TrabajoFinalMulti.Migrations
             modelBuilder.Entity("TrabajoFinalMulti.Models.EstudiantesPorCurso", b =>
                 {
                     b.HasOne("TrabajoFinalMulti.Models.Curso", "Curso")
-                        .WithMany()
+                        .WithMany("EstudiantesPorCursos")
                         .HasForeignKey("Curso_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -567,6 +592,8 @@ namespace TrabajoFinalMulti.Migrations
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Curso", b =>
                 {
+                    b.Navigation("EstudiantesPorCursos");
+
                     b.Navigation("Evaluacions");
 
                     b.Navigation("Sesiones");

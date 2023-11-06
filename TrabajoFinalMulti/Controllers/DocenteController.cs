@@ -165,6 +165,20 @@ namespace TrabajoFinalMulti.Controllers
                 };
                 _context.Evaluaciones.Add(evaluacion1);
                 _context.SaveChanges();
+
+                var listaEstudiantes = _context.EstudiantesPorCursos.Where(e => e.Curso_Id == evaluacion.Curso_Id).ToList();
+                foreach (var est in listaEstudiantes)
+                {
+                    EvaluacionPorEstudiante estud = new()
+                    {
+                        Nota = 0,
+                        Evaluacion_Id = evaluacion1.Evaluacion_Id,
+                        Estudiante_Id = est.Estudiante_Id
+                    };
+
+                    _context.EvaluacionPorEstudiantes.Add(estud);
+                    _context.SaveChanges();
+                }
             }
 
             return RedirectToAction("ListaEvaluaciones", new { id = evaluacion.Curso_Id });
@@ -173,7 +187,7 @@ namespace TrabajoFinalMulti.Controllers
         public IActionResult ListarEvaluacionesPorAlumno(Evaluacion evu)
         {
             var listaAlumnos = _context.EvaluacionPorEstudiantes
-                .Where(e => e.EvaluacionPorEstudiante_Id == evu.Evaluacion_Id && e.Evaluacion.Curso_Id == evu.Curso.Curso_Id);
+                .Where(e => e.Evaluacion_Id == evu.Evaluacion_Id && e.Evaluacion.Curso_Id == evu.Curso.Curso_Id);
 
             return View(listaAlumnos);
         }

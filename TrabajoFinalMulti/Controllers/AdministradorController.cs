@@ -47,7 +47,7 @@ namespace TrabajoFinalMulti.Controllers
 
                     string carpetaUsuarios = "FotosUsuarios";
                     string subcarpeta = viewModel.TipoUsuario == "docente" ? "FotosDocentes" : "FotosEstudiantes";
-                    
+
                     int nuevoId = 1;
 
                     if (viewModel.TipoUsuario == "docente" && _context.Docente.Any())
@@ -69,7 +69,8 @@ namespace TrabajoFinalMulti.Controllers
                         {
                             viewModel.Foto.CopyTo(fileStream);
                         }
-                    } else
+                    }
+                    else
                     {
                         rutaRelativa = null;
                     }
@@ -328,10 +329,10 @@ namespace TrabajoFinalMulti.Controllers
                 // Actualiza la referencia del apoderado en el estudiante
                 var estudianteBd = _context.Estudiante.FirstOrDefault(u => u.Estudiante_Id == estudiante.Estudiante_Id);
                 estudianteBd.Apoderado_Id = estudiante.Apoderado.Apoderado_Id;
-                _context.SaveChanges();             
+                _context.SaveChanges();
             }
             return RedirectToAction(nameof(ListaEstudiantes));
-        }  
+        }
 
 
         [HttpGet]
@@ -448,8 +449,43 @@ namespace TrabajoFinalMulti.Controllers
             {
                 _context.Curso.Add(curso);
                 _context.SaveChanges();
+
+                int horas = curso.Cantidad_Horas;
+
+                for (int i = 0; i < horas; i++)
+                {
+                    DateOnly temp = DateOnly.FromDateTime(DateTime.Now).AddDays(i * 7);
+                    int clasetemp = i + 1;
+                    Sesion sesion = new()
+                    {
+                        Curso_Id = curso.Curso_Id,
+                        Tema = "Clase " + clasetemp.ToString(),
+                        Fecha = temp.ToString("dd-MM-yyyy")
+                    };
+                    _context.Sesiones.Add(sesion);
+                    _context.SaveChanges();
+
+                    var listaEstudiantes = _context.EstudiantesPorCursos.Where(e => e.Curso_Id == curso.Curso_Id).ToList();
+
+                    foreach (var est in listaEstudiantes)
+                    {
+
+                        EstudiantePorSesion estud = new()
+                        {
+                            Asistio = false,
+                            Sesion_Id = sesion.Sesiones_Id,
+                            Estudiante_Id = est.Estudiante_Id
+                        };
+
+                        _context.EstudiantesPorSesions.Add(estud);
+                        _context.SaveChanges();
+                    }
+                }
+
                 return RedirectToAction(nameof(ListaCursos));
             }
+
+
 
             CursoDocenteVM cursoDocenteAula = new CursoDocenteVM();
             cursoDocenteAula.ListaDocentes = _context.Docente.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
@@ -655,10 +691,10 @@ namespace TrabajoFinalMulti.Controllers
                 Text = i.Periodo_Año,
                 Value = i.Periodo_Id.ToString()
             });
-            
+
             return View(aulaPeriodo);
         }
- 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RegistrarAula(Aula aula)
@@ -817,8 +853,30 @@ namespace TrabajoFinalMulti.Controllers
             if (cursoEstudiantes.EstudiantesPorCurso.Curso_Id != 0 &&
                 cursoEstudiantes.EstudiantesPorCurso.Estudiante_Id != 0)
             {
-                _context.EstudiantesPorCursos.Add(cursoEstudiantes.EstudiantesPorCurso);
+                EstudiantesPorCurso estudiantesPorCurso = new()
+                {
+                    Estudiante_Id = cursoEstudiantes.EstudiantesPorCurso.Estudiante_Id,
+                    Curso_Id = cursoEstudiantes.EstudiantesPorCurso.Curso_Id
+                };
+
+                _context.EstudiantesPorCursos.Add(estudiantesPorCurso);
                 _context.SaveChanges();
+
+                var listasesiones = _context.Sesiones.Where(e => e.Curso_Id == cursoEstudiantes.EstudiantesPorCurso.Curso_Id).ToList();
+
+                foreach (var ses in listasesiones)
+                {
+
+                    EstudiantePorSesion estud = new()
+                    {
+                        Asistio = false,
+                        Sesion_Id = ses.Sesiones_Id,
+                        Estudiante_Id = cursoEstudiantes.EstudiantesPorCurso.Estudiante_Id
+                    };
+
+                    _context.EstudiantesPorSesions.Add(estud);
+                    _context.SaveChanges();
+                }
 
             }
             return RedirectToAction(nameof(AdministrarEstudiantes), new

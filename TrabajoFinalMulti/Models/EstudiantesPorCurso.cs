@@ -7,6 +7,7 @@ namespace TrabajoFinalMulti.Models
     {
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EstudiantesPorCurso_Id { get; set; }
 
         [ForeignKey("Curso")]
