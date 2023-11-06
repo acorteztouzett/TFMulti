@@ -1,26 +1,28 @@
-﻿
+﻿@model TrabajoFinalMulti.ViewModel.ListaEvaluacionesViewModel
 @{
-    ViewData["Title"] = "Anuncios Informativos";
+    ViewData["Title"] = "Lista de Evaluaciones";
     Layout = "~/Views/Shared/_DiseñoEstudiante.cshtml";
 }
+
 <main class="h-full pb-16 overflow-y-auto">
     <div class="container grid px-6 mx-auto">
-
+        
         <!-- With avatar -->
         <!-- With actions -->
         <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-            Anuncios
+            Lista de Evaluaciones
         </h4>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
-                @if (Model.AnuncioInformativo.Count() > 0)
+                @if (Model.Evaluaciones.Count() > 0)
                 {
                     <table id="dataTable" class="w-full whitespace-no-wrap">
                         <thead>
                             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                <th class="px-4 py-3">Anuncio_URL</th>
+                                <th class="px-4 py-3">Nombre</th>
                                 
-
+                                <th class="px-4 py-3">Fecha</th>
+                                
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -37,14 +39,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        <div class="flex items-center text-sm">
-                                            <!-- Avatar with inset shadow -->
-                                            <div>
-                                                <p class="font-semibold">@cur.Curso</p>
-                                            </div>
-                                        </div>
-                                    </td>
+                                   
                                     <td class="px-4 py-3 text-sm">
                                         <div class="flex items-center text-sm">
                                             <!-- Avatar with inset shadow -->
@@ -53,8 +48,8 @@
                                             </div>
                                         </div>
                                     </td>
-
-
+                                    
+                                    
                                 </tr>
                             }
 
@@ -130,4 +125,3 @@
         </div>
     </div>
 </main>
-

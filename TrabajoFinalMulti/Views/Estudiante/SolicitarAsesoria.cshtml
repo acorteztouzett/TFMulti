@@ -1,86 +1,147 @@
-﻿@model TrabajoFinalMulti.Models.Asesoria
+﻿@model TrabajoFinalMulti.ViewModel.AsesoriaViewModel
 @{
     ViewData["Title"] = "Lista de Evaluaciones";
     Layout = "~/Views/Shared/_DiseñoEstudiante.cshtml";
 }
+
 <main class="h-full pb-16 overflow-y-auto">
-    <div class="container px-6 mx-auto grid">
+    <div class="container grid px-6 mx-auto">
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            Crear
+            @Model.Curso.Curso_Nombre
         </h2>
-        <!-- CTA -
-        <!-- General elements -->
+        <!-- With avatar -->
+        <!-- With actions -->
         <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-            Evaluación
+            Lista de Asesorias y Talleres
         </h4>
+        <div class="flex justify-between mb-4">
+            <a class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+               aria-label="Edit" asp-action="CrearAsesoria" asp-route-id="@Model.Curso.Curso_Id">
+                Nuevo Registro
+            </a>
+        </div>
+        <div class="w-full overflow-hidden rounded-lg shadow-xs">
+            <div class="w-full overflow-x-auto">
+                @if (Model.Asesorias.Count() > 0)
+                {
+                    <table id="dataTable" class="w-full whitespace-no-wrap">
+                        <thead>
+                            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                <th class="px-4 py-3">N°</th>
+                                <th class="px-4 py-3">Nombre del registro</th>
+                                <th class="px-4 py-3">Fecha</th>
+                                <th class="px-4 py-3">Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
-        <form method="post" asp-action="SolicitarAsesoria" id="registro-form">
-            <input type="hidden" name="Curso_Id" value="@Model.Curso_Id">
-            <p>@Model.Curso_Id</p>
-            <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-                <label asp-for="Tema" class="block text-sm">
-                    <span class="text-gray-700 dark:text-gray-400">Nombre de la Evaluacion</span>
-                    <!-- focus-within sets the color for the icon when input is focused -->
-                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
-                        <input asp-for="Tema" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                               placeholder="Tema"
-                               type="text"
-                               id="Nombre"
-                               name="Tema" required />
-                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
-                            <svg class="w-5 h-5"
-                                 aria-hidden="true"
-                                 fill="none"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round"
-                                 stroke-width="2"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z" />
-                            </svg>
-                        </div>
-                        <span asp-validation-for="Tema" class="text-danger"></span>
+                            @foreach (var cur in Model.Asesorias)
+                            {
+                                <!-- Filas de docentes y estudiantes combinados y ordenados -->
+                                <tr class="text-gray-700 dark:text-gray-400">
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                <p class="font-semibold">@cur.Asesoria_Id</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                <p class="font-semibold">@cur.Tema</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                <p class="font-semibold">@cur.Fecha</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center space-x-4 text-sm">
+                                            
 
-                    </div>
-                </label>
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
 
-                <label asp-for="Fecha" class="block mt-4 text-sm">
-                    <span class="text-gray-700 dark:text-gray-400">Fecha de la asesoria</span>
-                    <!-- focus-within sets the color for the icon when input is focused -->
-                    <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
-                        <input asp-for="Fecha" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                               placeholder="Fecha de la Evaluacion"
-                               type="text"
-                               id="Fecha"
-                               name="Fecha" required />
-                        <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
-                            <svg class="w-5 h-5"
-                                 aria-hidden="true"
-                                 fill="none"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round"
-                                 stroke-width="2"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"></path>
-                            </svg>
-                        </div>
+                        </tbody>
+                    </table>
+                }
 
-                        <span asp-validation-for="Fecha" class="text-red-600"></span>
-
-                    </div>
-                </label>
-
-                <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
-                    <div>
-                        <button type="submit" class=" px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                            Crear
-                        </button>
-                    </div>
-
-                </div>
             </div>
-        </form>
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+                <span class="flex items-center col-span-3">
+                    Página 1-2 de 100
+                </span>
+                <span class="col-span-2"></span>
+                <!-- Pagination -->
+                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                    <nav aria-label="Table navigation">
+                        <ul class="inline-flex items-center">
+                            <li>
+                                <button class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
+                                        aria-label="Previous">
+                                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                        <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                              clip-rule="evenodd" fill-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    1
+                                </button>
+                            </li>
+                            <li>
+                                <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    2
+                                </button>
+                            </li>
+                            <li>
+                                <button class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    3
+                                </button>
+                            </li>
+                            <li>
+                                <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    4
+                                </button>
+                            </li>
+                            <li>
+                                <span class="px-3 py-1">...</span>
+                            </li>
+                            <li>
+                                <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    8
+                                </button>
+                            </li>
+                            <li>
+                                <button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    9
+                                </button>
+                            </li>
+                            <li>
+                                <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                                        aria-label="Next">
+                                    <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                        <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                              clip-rule="evenodd" fill-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </span>
+            </div>
+        </div>
     </div>
 </main>
