@@ -58,10 +58,18 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(listaNotas);
         }
-        public IActionResult ListaAnuncioInformativo()
+        public IActionResult VerHorario(int id)
         {
-            List<AnuncioInformativo> listaAnuncioInformativo = _context.AnuncioInformativo.ToList();
-            return View(listaAnuncioInformativo);
+            var curso = _context.Curso.Find(id);
+            var listaHorario = _context.Horario.Where(e => e.Curso_Id == id);
+
+            var listaCompleta = new HorarioViewModel()
+            {
+                Curso = curso,
+                Horarios = listaHorario
+            };
+
+            return View(listaCompleta);
         }
         public IActionResult ListaSesiones(int id)
         {

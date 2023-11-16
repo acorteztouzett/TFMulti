@@ -390,6 +390,9 @@ namespace TrabajoFinalMulti.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Horario_Id"));
 
+                    b.Property<int>("Curso_Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("Dia")
                         .HasColumnType("nvarchar(max)");
 
@@ -400,6 +403,8 @@ namespace TrabajoFinalMulti.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Horario_Id");
+
+                    b.HasIndex("Curso_Id");
 
                     b.ToTable("Horario");
                 });
@@ -567,6 +572,17 @@ namespace TrabajoFinalMulti.Migrations
                     b.Navigation("Estudiante");
 
                     b.Navigation("Evaluacion");
+                });
+
+            modelBuilder.Entity("TrabajoFinalMulti.Models.Horario", b =>
+                {
+                    b.HasOne("TrabajoFinalMulti.Models.Curso", "Curso")
+                        .WithMany()
+                        .HasForeignKey("Curso_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Curso");
                 });
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Sesion", b =>
