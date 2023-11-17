@@ -30,5 +30,7 @@ namespace TrabajoFinalMulti.Models
 
         public List<Curso> Curso { get; set; }
 
+        public ICollection<Horario> Horarios { get; set; }
+
     }
 }

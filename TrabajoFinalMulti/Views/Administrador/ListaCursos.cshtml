@@ -25,7 +25,8 @@
                                 <th class="px-4 py-3">Nombre</th>
                                 <th class="px-4 py-3">Docente</th>                               
                                 <th class="px-4 py-3">Nivel Educativo</th>                               
-                                <th class="px-4 py-3">Grado</th>                              
+                                <th class="px-4 py-3">Grado</th>                            
+                                <th class="px-4 py-3">Horario</th>                            
                                 <th class="px-4 py-3">Estudiantes</th>                              
                                 <th class="px-4 py-3">Opciones</th>
                             </tr>
@@ -61,6 +62,9 @@
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         @cur.Aula.Aula_Grado
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="AdministrarHorarios" asp-route-id="@cur.Curso_Id">Horario</a>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         <a class="px-3 py-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" asp-action="AdministrarEstudiantes" asp-route-id="@cur.Curso_Id">Administrar</a>

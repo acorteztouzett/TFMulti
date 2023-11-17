@@ -11,7 +11,6 @@ namespace TrabajoFinalMulti.Data
         public DbSet<Administrador> Administrador { get; set; }
         public DbSet<Docente> Docente { get; set; }
         public DbSet<Estudiante> Estudiante { get; set; }  
-        public DbSet<AnuncioInformativo> AnuncioInformativo { get; set; }
         public DbSet<Periodo> Periodo { get; set; }
         public DbSet<Aula> Aula { get; set; }
         public DbSet<Curso> Curso { get; set; }
@@ -32,6 +31,8 @@ namespace TrabajoFinalMulti.Data
         public DbSet<EstudiantePorSesion> EstudiantesPorSesions { get; set; }
         public DbSet<Sesion> Sesiones { get; set;}
         public DbSet<Asesoria> Asesorias { get; set; }
+
+
         public DbSet<Horario> Horario { get; set; }
 
     }

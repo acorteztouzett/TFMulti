@@ -24,6 +24,6 @@ namespace TrabajoFinalMulti.Models
         public ICollection<EstudiantesPorCurso> EstudiantesPorCursos { get; set; }
         public ICollection<Sesion> Sesiones { get; set; }
 
-
+        public ICollection<Horario> Horarios { get; set; }
     }
 }

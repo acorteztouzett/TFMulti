@@ -43,23 +43,6 @@ namespace TrabajoFinalMulti.Migrations
                     b.ToTable("Administrador");
                 });
 
-            modelBuilder.Entity("TrabajoFinalMulti.Models.AnuncioInformativo", b =>
-                {
-                    b.Property<int>("Anuncio_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Anuncio_Id"));
-
-                    b.Property<string>("Anuncio_URL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Anuncio_Id");
-
-                    b.ToTable("AnuncioInformativo");
-                });
-
             modelBuilder.Entity("TrabajoFinalMulti.Models.Apoderado", b =>
                 {
                     b.Property<int>("Apoderado_Id")
@@ -390,19 +373,31 @@ namespace TrabajoFinalMulti.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Horario_Id"));
 
-                    b.Property<int>("Curso_Id")
+                    b.Property<int>("Aula_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Curso_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Dia")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Hora_Fin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Hora_Inicio")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Horario_Id");
+
+                    b.HasIndex("Aula_Id");
 
                     b.HasIndex("Curso_Id");
 
@@ -576,11 +571,17 @@ namespace TrabajoFinalMulti.Migrations
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Horario", b =>
                 {
-                    b.HasOne("TrabajoFinalMulti.Models.Curso", "Curso")
-                        .WithMany()
-                        .HasForeignKey("Curso_Id")
+                    b.HasOne("TrabajoFinalMulti.Models.Aula", "Aula")
+                        .WithMany("Horarios")
+                        .HasForeignKey("Aula_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("TrabajoFinalMulti.Models.Curso", "Curso")
+                        .WithMany("Horarios")
+                        .HasForeignKey("Curso_Id");
+
+                    b.Navigation("Aula");
 
                     b.Navigation("Curso");
                 });
@@ -604,6 +605,8 @@ namespace TrabajoFinalMulti.Migrations
             modelBuilder.Entity("TrabajoFinalMulti.Models.Aula", b =>
                 {
                     b.Navigation("Curso");
+
+                    b.Navigation("Horarios");
                 });
 
             modelBuilder.Entity("TrabajoFinalMulti.Models.Curso", b =>
@@ -611,6 +614,8 @@ namespace TrabajoFinalMulti.Migrations
                     b.Navigation("EstudiantesPorCursos");
 
                     b.Navigation("Evaluacions");
+
+                    b.Navigation("Horarios");
 
                     b.Navigation("Sesiones");
                 });

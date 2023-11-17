@@ -502,6 +502,7 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(cursoDocenteAula);
         }
+
         [HttpGet]
         public IActionResult EditarCurso(int? id)
         {
@@ -557,62 +558,6 @@ namespace TrabajoFinalMulti.Controllers
             return RedirectToAction(nameof(ListaCursos));
         }
 
-        /*------------------------ANUNCIOS INFORMATIVOS--------------------------------------*/
-        public IActionResult ListaAnuncioInformativo()
-        {
-            List<AnuncioInformativo> listaAnuncioInformativo = _context.AnuncioInformativo.ToList();
-            return View(listaAnuncioInformativo);
-        }
-        [HttpGet]
-        public IActionResult RegistrarAnuncioInformativo()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RegistrarAnuncioInformativo(AnuncioInformativo anuncio)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.AnuncioInformativo.Add(anuncio);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(ListaAnuncioInformativo));
-            }
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult EditarAnuncioInformativo(int? id)
-        {
-            if (id == null)
-            {
-                return View();
-            }
-            var anuncio = _context.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
-            return View(anuncio);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditarAnuncioInformativo(AnuncioInformativo anuncio)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.AnuncioInformativo.Update(anuncio);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(ListaAnuncioInformativo));
-            }
-            return View(anuncio);
-        }
-
-        [HttpGet]
-        public IActionResult BorrarAnuncioInformativo(int? id)
-        {
-            var anuncio = _context.AnuncioInformativo.FirstOrDefault(c => c.Anuncio_Id == id);
-            _context.AnuncioInformativo.Remove(anuncio);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(ListaAnuncioInformativo));
-        }
 
         /*------------------------PERIODO--------------------------------------*/
         public IActionResult ListaPeriodos()
@@ -703,8 +648,14 @@ namespace TrabajoFinalMulti.Controllers
             {
                 _context.Aula.Add(aula);
                 _context.SaveChanges();
+
+                // Llama al método para generar y guardar los horarios
+                GenerarYGuardarHorarios(aula.Aula_Id);
+
                 return RedirectToAction(nameof(ListaAulas));
             }
+
+
             AulaPeriodoVM aulaPeriodo = new AulaPeriodoVM();
             aulaPeriodo.ListaPeriodos = _context.Periodo.Select(i => new SelectListItem
             {
@@ -713,6 +664,37 @@ namespace TrabajoFinalMulti.Controllers
             });
             return View(aulaPeriodo);
         }
+
+        private void GenerarYGuardarHorarios(int aulaId)
+        {
+            // Define tus parámetros de horarios aquí, como días, horas, etc.
+            string[] diasSemana = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes" };
+            string[] horasInicio = { "8:00 am", "9:00 am", "10:00 am", "11:00 am", "12:00 pm" };
+            string[] horasFin = { "9:00 am", "10:00 am", "11:00 am", "12:00 pm", "1:00 pm" };
+
+            // Genera y guarda los horarios
+            foreach (var dia in diasSemana)
+            {
+                for (int i = 0; i < horasInicio.Length; i++)
+                {
+                    var horario = new Horario
+                    {
+                        Aula_Id = aulaId,
+                        Dia = dia,
+                        Hora_Inicio = horasInicio[i],
+                        Hora_Fin = horasFin[i],
+                        Estado = "Disponible",
+                        Curso_Id = null // Deja el Curso_Id como nulo
+                    };
+
+                    _context.Horario.Add(horario);
+                }
+            }
+
+            _context.SaveChanges();
+        }
+
+
 
         [HttpGet]
         public IActionResult EditarAula(int? id)
@@ -902,6 +884,70 @@ namespace TrabajoFinalMulti.Controllers
             }
 
             return RedirectToAction(nameof(AdministrarEstudiantes), new { id = idCurso });
+        }
+
+
+        /*-------------------------------ADMINISTRAR HORARIOS-------------------------------*/
+        [HttpGet]
+        public IActionResult AdministrarHorarios(int id)
+        {
+            // Obtener información del curso
+            var curso = _context.Curso
+                .Include(c => c.Aula) // Asegúrate de incluir la relación con Aula
+                .FirstOrDefault(c => c.Curso_Id == id);
+
+            if (curso == null)
+            {
+                return NotFound(); // Manejar el caso en el que no se encuentra el curso
+            }
+
+            // Obtener los horarios según el ID del aula
+            var horarios = _context.Horario
+                .Where(h => h.Aula_Id == curso.Aula_Id)
+                .ToList();
+
+            // Crear una instancia del ViewModel con la información necesaria
+            var modelo = new HorarioCursoViewModel
+            {
+                Curso = curso,
+                Aula = curso.Aula,
+                ListaHorarios = horarios
+            };
+
+            // Retornar la vista con el modelo
+            return View(modelo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AdministrarHorarios(HorarioCursoViewModel modelo)
+        {
+            if (modelo.HorarioSeleccionado > 0)
+            {
+                var horarioSeleccionado = _context.Horario.Find(modelo.HorarioSeleccionado);
+
+                if (horarioSeleccionado != null && horarioSeleccionado.Estado != "Ocupado")
+                {
+                    horarioSeleccionado.Estado = "Ocupado";
+                    horarioSeleccionado.Curso_Id = modelo.Curso.Curso_Id;
+                    _context.SaveChanges();
+                }
+            }
+            else if (modelo.EliminarHorario > 0)
+            {
+                var horarioAEliminar = _context.Horario.Find(modelo.EliminarHorario);
+
+                if (horarioAEliminar != null && horarioAEliminar.Curso_Id == modelo.Curso.Curso_Id)
+                {
+                    horarioAEliminar.Curso_Id = null;
+                    horarioAEliminar.Estado = "Disponible";
+                    _context.SaveChanges();
+                }
+            }
+
+            // Resto del código...
+
+            return RedirectToAction(nameof(ListaCursos));
         }
 
     }

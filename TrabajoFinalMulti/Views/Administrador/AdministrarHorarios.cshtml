@@ -1,0 +1,116 @@
+﻿@model TrabajoFinalMulti.ViewModel.HorarioCursoViewModel
+@{
+    ViewData["Title"] = "Administrar Horarios";
+    Layout = "~/Views/Shared/_Diseño.cshtml";
+}
+
+<main class="h-full pb-16 overflow-y-auto">
+    <div class="container grid px-6 mx-auto">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Horario para el curso @Model.Curso.Curso_Nombre del aula @Model.Aula.Aula_Nombre
+        </h2>
+
+        <form method="post" asp-action="AdministrarHorarios">
+
+            <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+
+                <input type="hidden" asp-for="Curso.Curso_Id" />
+                <input type="hidden" asp-for="Aula.Aula_Id" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="w-full overflow-hidden rounded-lg shadow-xs">
+
+                    <div class="w-full overflow-x-auto">
+                        @if (Model != null && Model.Aula != null && Model.Aula.Horarios != null && Model.Aula.Horarios.Count > 0)
+                        {
+
+                            <table class="w-full whitespace-no-wrap">
+                                <thead>
+                                    <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                        <th class="px-4 py-3">Id Horario</th>
+                                        <th class="px-4 py-3">Día</th>
+                                        <th class="px-4 py-3">Hora de Incio</th>
+                                        <th class="px-4 py-3">Hora de Fin</th>
+                                        <th class="px-4 py-3">Seleccionar</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                                    @foreach (var horario in Model.Aula.Horarios)
+                                    {
+                                        <tr class="text-gray-700 dark:text-gray-400">
+                                            <td class="px-4 py-3 text-sm">
+                                                @horario.Horario_Id
+                                            </td>
+                                            <td class="px-4 py-3 text-sm">
+                                                @horario.Dia
+                                            </td>
+                                            <td class="px-4 py-3 text-sm">
+                                                @horario.Hora_Inicio
+                                            </td>
+                                            <td class="px-4 py-3 text-sm">
+                                                @horario.Hora_Fin
+                                            </td>
+                                            <td class="px-4 py-3 text-sm">
+                                                <input type="radio" name="HorarioSeleccionado" value="@horario.Horario_Id"
+                                                @(horario.Estado == "Ocupado" || horario.Curso_Id == Model.Curso.Curso_Id ? "disabled" : "")
+                                                @(horario.Estado == "Ocupado" ? "checked" : "")
+                                                       style="width: 20px; height: 20px;" />
+                                                <span style="color: yellow; font-size: 14px;">@horario.Estado</span>
+                                                @if (horario.Curso_Id != null && horario.Curso_Id == Model.Curso.Curso_Id)
+                                                {
+                                                    <button type="submit" name="EliminarHorario" value="@horario.Horario_Id"
+                                                            class="px-2 py-1 ml-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+                                                        Eliminar
+                                                    </button>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p>No hay horarios disponibles.</p>
+                        }
+                    </div>
+                </div>
+
+                @if (Model != null && Model.Curso != null && Model.Curso.Cantidad_Horas > 0)
+                {
+                    var horariosOcupados = Model.Aula.Horarios.Count(h => h.Curso_Id == Model.Curso.Curso_Id);
+                    var disponible = Model.Curso.Cantidad_Horas - horariosOcupados;
+
+                    @if (disponible > 0)
+                    {
+                        <div class="mt-4">
+                            <button type="submit" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                                Guardar Horarios
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mt-4">
+                            <p style="color: red;">El curso ya ha alcanzado el límite de horarios.</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="mt-4">
+                        <button type="submit" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                            Guardar Horarios
+                        </button>
+                    </div>
+                }
+
+            </div>
+
+        </form>
+
+    </div>
+</main>
+

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text;
 using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
 using TrabajoFinalMulti.ViewModel;
@@ -58,6 +60,8 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(listaNotas);
         }
+
+        /*
         public IActionResult VerHorario(int id)
         {
             var curso = _context.Curso.Find(id);
@@ -71,6 +75,9 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(listaCompleta);
         }
+
+        */
+
         public IActionResult ListaSesiones(int id)
         {
             var curso = _context.Curso.Find(id);
@@ -134,6 +141,50 @@ namespace TrabajoFinalMulti.Controllers
 
             return RedirectToAction("SolicitarAsesoria", new { id = asesoria.Curso_Id });
         }
-    
+
+        public IActionResult VerHorario()
+        {
+            // Obtén el estudiante actualmente autenticado (asegúrate de haber configurado la autenticación)
+            var estudiante = ObtenerEstudianteActual(); // Debes implementar ObtenerEstudianteActual según tu lógica
+
+            // Obtén los cursos asociados al estudiante
+            var cursosEstudiante = _context.EstudiantesPorCursos
+                .Include(e => e.Curso) // Asegúrate de incluir la relación con el curso
+                .Where(e => e.Estudiante_Id == estudiante.Estudiante_Id)
+                .Select(e => e.Curso)
+                .ToList();
+
+            // Luego, puedes enviar la información a la vista
+            var modelo = new HorarioViewModel
+            {
+                Estudiante = estudiante,
+                CursosEstudiante = cursosEstudiante,
+            };
+
+            return View(modelo);
+        }
+
+        private Estudiante ObtenerEstudianteActual()
+        {
+            // Verifica si hay algún identificador de estudiante en la sesión
+            if (HttpContext.Session.TryGetValue("EstudianteId", out var estudianteIdBytes))
+            {
+                var estudianteId = Encoding.UTF8.GetString(estudianteIdBytes);
+
+                // Convierte el identificador a entero (asumiendo que es un entero)
+                if (int.TryParse(estudianteId, out int estudianteIdInt))
+                {
+                    // Busca al estudiante en la base de datos por el identificador almacenado en la sesión
+                    var estudiante = _context.Estudiante.FirstOrDefault(e => e.Estudiante_Id == estudianteIdInt);
+
+                    return estudiante;
+                }
+            }
+
+            // Retorna null si no hay identificador de estudiante en la sesión o si la conversión falla
+            return null;
+        }
+
+
     }
 }
