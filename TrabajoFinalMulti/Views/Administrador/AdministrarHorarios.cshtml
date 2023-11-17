@@ -9,7 +9,12 @@
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Horario para el curso @Model.Curso.Curso_Nombre del aula @Model.Aula.Aula_Nombre
         </h2>
+        @if (Model != null && Model.Curso != null)
+        {
+            <h4><font color="#0099cc">La cantidad de horas del curso es: @Model.Curso.Cantidad_Horas</font></h4>
+        }
 
+        
         <form method="post" asp-action="AdministrarHorarios">
 
             <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
