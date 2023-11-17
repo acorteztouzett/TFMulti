@@ -56,6 +56,7 @@ namespace TrabajoFinalMulti.Controllers
                 if (admin != null)
                 {
                     // Credenciales válidas para Administrador, redirigir a la página correspondiente
+                    HttpContext.Session.SetString("SAdmin", JsonConvert.SerializeObject(admin));
                     return RedirectToAction("RegistrarUsuario", "Administrador");
                 }
                 else if (docente != null)
@@ -104,7 +105,8 @@ namespace TrabajoFinalMulti.Controllers
         {
             // Redirige al usuario a la página de inicio o a donde desees después de cerrar sesión.
             return RedirectToAction("Login");
-        }      
+        }
+
 
         public IActionResult ActualizarUsuario(ActualizarViewModel viewmodel)
         {

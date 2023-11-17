@@ -16,13 +16,30 @@ namespace TrabajoFinalMulti.Controllers
         {
             _context = dbContext;
         }
+
         [HttpGet]
         public IActionResult Index()
         {
-            var objDocente = JsonConvert.DeserializeObject<Docente>(HttpContext.Session.GetString("SDocente"));
+            // Verifica si hay un Docente en la sesión
+            var docenteString = HttpContext.Session.GetString("SDocente");
+
+            if (string.IsNullOrEmpty(docenteString))
+            {
+                // No hay información de Docente en la sesión, redirige a una vista de no encontrado
+                return RedirectToAction("NoEncontrado");
+            }
+
+            // Hay información de Docente en la sesión, continúa con la lógica actual
+            var objDocente = JsonConvert.DeserializeObject<Docente>(docenteString);
             var cursosDocente = _context.Curso.Where(e => e.Docente_Id == objDocente.Docente_Id).ToList();
             return View(cursosDocente);
         }
+
+        public IActionResult NoEncontrado()
+        {
+            return View("~/Views/Shared/Error.cshtml");
+        }
+
 
         public IActionResult DetalleCurso(int id)
         {
@@ -191,5 +208,36 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(listaAlumnos);
         }
+
+
+        /*-----------------------------HORARIO DE DOCENTE------------------------------*/
+        [HttpGet]
+        public IActionResult VerHorarioDocente()
+        {
+            var objDocente = JsonConvert.DeserializeObject<Docente>(HttpContext.Session.GetString("SDocente"));
+
+            // Obtén los cursos del docente
+            var cursosDocente = _context.Curso
+                .Where(c => c.Docente_Id == objDocente.Docente_Id)
+                .ToList();
+
+            // Obtén los horarios para cada curso del docente
+            var horariosDocente = new List<Horario>();
+            foreach (var curso in cursosDocente)
+            {
+                var horarios = _context.Horario
+                    .Where(h => h.Curso_Id == curso.Curso_Id)
+                    .ToList();
+
+                horariosDocente.AddRange(horarios);
+            }
+
+            // Pasa los datos del horario a la vista junto con el nombre del docente
+            ViewData["DocenteNombre"] = $"{objDocente.Docente_Nombre} {objDocente.Docente_Apellido}";
+
+            return View(horariosDocente);
+        }
+
+
     }
 }

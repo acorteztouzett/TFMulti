@@ -1,14 +1,14 @@
 ﻿@model List<TrabajoFinalMulti.Models.Horario>
 @{
     ViewData["Title"] = "Horario";
-    Layout = "~/Views/Shared/_DiseñoEstudiante.cshtml";
+    Layout = "~/Views/Shared/_DiseñoDocente.cshtml";
 }
 
 <main class="h-full pb-16 overflow-y-auto">
     <div class="container grid px-6 mx-auto">
 
         <h2 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300 text-center">
-            Horario del Estudiantes
+            Horario del Docente @ViewData["DocenteNombre"]
         </h2>
 
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
@@ -69,7 +69,7 @@
         </div>
         <div class="mt-4 flex justify-between flex-row flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
             <div>
-                <a asp-controller="Estudiante" asp-action="Index" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Regresar</a>
+                <a asp-controller="Docente" asp-action="Index" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">Regresar</a>
             </div>
         </div>
 

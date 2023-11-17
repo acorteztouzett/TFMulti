@@ -16,13 +16,48 @@ namespace TrabajoFinalMulti.Controllers
         {
             _context = dbContext;
         }
-
+        /*
+        [HttpGet]
         public IActionResult Index()
         {
             var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(HttpContext.Session.GetString("SUsuario"));
-            var cursosEstudiante = _context.Curso.Where(e => e.Aula_Id == objEstudiante.Estudiante_Id).ToList();
+
+            // Obtén los cursos del estudiante desde la tabla de unión
+            var cursosEstudiante = _context.EstudiantesPorCursos
+                .Where(e => e.Estudiante_Id == objEstudiante.Estudiante_Id)
+                .Select(e => e.Curso)
+                .ToList();
+
+            return View(cursosEstudiante);
+        }*/
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var estudianteString = HttpContext.Session.GetString("SUsuario");
+
+            if (string.IsNullOrEmpty(estudianteString))
+            {
+                // No hay información de estudiante en la sesión, redirige a una vista de no encontrado
+                return RedirectToAction("NoEncontrado");
+            }
+
+            var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(estudianteString);
+
+            // Obtén los cursos del estudiante desde la tabla de unión
+            var cursosEstudiante = _context.EstudiantesPorCursos
+                .Where(e => e.Estudiante_Id == objEstudiante.Estudiante_Id)
+                .Select(e => e.Curso)
+                .ToList();
+
             return View(cursosEstudiante);
         }
+
+        public IActionResult NoEncontrado()
+        {
+            return View("~/Views/Shared/Error.cshtml");
+        }
+
+
         public IActionResult DetallePorCurso(int id)
         {
             var curso = _context.Curso.Find(id);
@@ -61,23 +96,7 @@ namespace TrabajoFinalMulti.Controllers
             return View(listaNotas);
         }
 
-        /*
-        public IActionResult VerHorario(int id)
-        {
-            var curso = _context.Curso.Find(id);
-            var listaHorario = _context.Horario.Where(e => e.Curso_Id == id);
-
-            var listaCompleta = new HorarioViewModel()
-            {
-                Curso = curso,
-                Horarios = listaHorario
-            };
-
-            return View(listaCompleta);
-        }
-
-        */
-
+       
         public IActionResult ListaSesiones(int id)
         {
             var curso = _context.Curso.Find(id);
@@ -142,49 +161,34 @@ namespace TrabajoFinalMulti.Controllers
             return RedirectToAction("SolicitarAsesoria", new { id = asesoria.Curso_Id });
         }
 
+        /*-----------------------------HORARIO DE ESTUDIANTE------------------------------*/
+        [HttpGet]
         public IActionResult VerHorario()
         {
-            // Obtén el estudiante actualmente autenticado (asegúrate de haber configurado la autenticación)
-            var estudiante = ObtenerEstudianteActual(); // Debes implementar ObtenerEstudianteActual según tu lógica
 
-            // Obtén los cursos asociados al estudiante
+            // Obtén el ID del estudiante desde la sesión
+            var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(HttpContext.Session.GetString("SUsuario"));
+            var estudianteIdVerHorario = objEstudiante.Estudiante_Id;
+
+            // Obtén los cursos del estudiante desde la tabla de unión
             var cursosEstudiante = _context.EstudiantesPorCursos
-                .Include(e => e.Curso) // Asegúrate de incluir la relación con el curso
-                .Where(e => e.Estudiante_Id == estudiante.Estudiante_Id)
+                .Where(e => e.Estudiante_Id == estudianteIdVerHorario)
                 .Select(e => e.Curso)
                 .ToList();
 
-            // Luego, puedes enviar la información a la vista
-            var modelo = new HorarioViewModel
+            // Obtén los horarios para cada curso
+            var horariosDelEstudiante = new List<Horario>();
+            foreach (var curso in cursosEstudiante)
             {
-                Estudiante = estudiante,
-                CursosEstudiante = cursosEstudiante,
-            };
+                var horarios = _context.Horario
+                    .Where(h => h.Curso_Id == curso.Curso_Id)
+                    .ToList();
 
-            return View(modelo);
-        }
-
-        private Estudiante ObtenerEstudianteActual()
-        {
-            // Verifica si hay algún identificador de estudiante en la sesión
-            if (HttpContext.Session.TryGetValue("EstudianteId", out var estudianteIdBytes))
-            {
-                var estudianteId = Encoding.UTF8.GetString(estudianteIdBytes);
-
-                // Convierte el identificador a entero (asumiendo que es un entero)
-                if (int.TryParse(estudianteId, out int estudianteIdInt))
-                {
-                    // Busca al estudiante en la base de datos por el identificador almacenado en la sesión
-                    var estudiante = _context.Estudiante.FirstOrDefault(e => e.Estudiante_Id == estudianteIdInt);
-
-                    return estudiante;
-                }
+                horariosDelEstudiante.AddRange(horarios);
             }
 
-            // Retorna null si no hay identificador de estudiante en la sesión o si la conversión falla
-            return null;
+            return View(horariosDelEstudiante);
         }
-
 
     }
 }

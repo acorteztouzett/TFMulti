@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Linq;
 using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
@@ -23,7 +24,22 @@ namespace TrabajoFinalMulti.Controllers
         [HttpGet]
         public IActionResult RegistrarUsuario()
         {
+            // Verifica si hay un Docente en la sesión
+            var administradorString = HttpContext.Session.GetString("SAdmin");
+
+            if (string.IsNullOrEmpty(administradorString))
+            {
+                // No hay información de Docente en la sesión, redirige a una vista de no encontrado
+                return RedirectToAction("NoEncontrado");
+            }
+
+            // Hay información de Docente en la sesión, continúa con la lógica actual
+            var objAdmin = JsonConvert.DeserializeObject<Administrador>(administradorString);
             return View();
+        }
+        public IActionResult NoEncontrado()
+        {
+            return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpPost]

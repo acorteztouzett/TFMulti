@@ -47,12 +47,10 @@
                 </label>
 
                 <label asp-for="Fecha" class="block mt-4 text-sm">
-                    <span class="text-gray-700 dark:text-gray-400">Fecha de la evaluacion</span>
-                    <!-- focus-within sets the color for the icon when input is focused -->
+                    <span class="text-gray-700 dark:text-gray-400">Fecha de la evaluación</span>
                     <div class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400">
                         <input asp-for="Fecha" class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                               placeholder="Fecha de la Evaluacion"
-                               type="text"
+                               type="date"
                                id="Fecha"
                                name="Fecha" required />
                         <div class="absolute inset-y-0 flex items-center ml-3 pointer-events-none">
@@ -69,9 +67,9 @@
                         </div>
 
                         <span asp-validation-for="Fecha" class="text-red-600"></span>
-
                     </div>
                 </label>
+
 
                 <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
                     <div>
