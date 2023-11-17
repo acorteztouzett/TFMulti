@@ -9,6 +9,9 @@ namespace TrabajoFinalMulti.Models
         public int Curso_Id { get; set; }
         [Required(ErrorMessage = "El nombre es obligatorio")]
         public string Curso_Nombre { get; set; }
+
+        [Required(ErrorMessage = "La cantidad de horas es obligatoria")]
+        [Range(1, int.MaxValue, ErrorMessage = "La cantidad de horas debe ser mayor a 0")]
         public int Cantidad_Horas { get; set; }
 
         [ForeignKey("Docente")]

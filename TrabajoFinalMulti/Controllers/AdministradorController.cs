@@ -711,7 +711,6 @@ namespace TrabajoFinalMulti.Controllers
         }
 
 
-
         [HttpGet]
         public IActionResult EditarAula(int? id)
         {
@@ -767,39 +766,6 @@ namespace TrabajoFinalMulti.Controllers
 
 
         /*-------------------------------ADMINISTRAR ESTUDIANTES-------------------------------*/
-        /*[HttpGet]
-        public IActionResult AdministrarEstudiantes(int id)
-        {
-            CursoEstudianteVM cursoEstudiantes = new CursoEstudianteVM
-            {
-                ListaEstudiantesPorCurso = _context.EstudiantesPorCursos.Include(e => e.Estudiante).
-                Include(a => a.Curso).Where(a => a.Curso_Id == id),
-
-                EstudiantesPorCurso = new EstudiantesPorCurso()
-                {
-                    Curso_Id = id
-                },
-                Curso = _context.Curso.FirstOrDefault(a => a.Curso_Id == id)
-            };
-
-            List<int> listaTemporalEstudiantesCurso = cursoEstudiantes.ListaEstudiantesPorCurso.
-                Select(e => e.Estudiante_Id).ToList();
-
-            //Obtener todas las etiquetas cuyos id's no estén en la listaTemporal
-            //Crear un NOT IN usando LINQ
-            var listaTemporal = _context.Estudiante.Where(e => !listaTemporalEstudiantesCurso.
-            Contains(e.Estudiante_Id)).ToList();
-
-            //Crear lista de etiquetas para el dropdown
-            cursoEstudiantes.ListaEstudiantes = listaTemporal.Select(i => new SelectListItem
-            {
-                Text = $"{i.Estudiante_Apellido} {i.Estudiante_Nombre}",
-                Value = i.Estudiante_Id.ToString()
-            });
-
-            return View(cursoEstudiantes);
-        }*/
-
         [HttpGet]
         public IActionResult AdministrarEstudiantes(int id)
         {
