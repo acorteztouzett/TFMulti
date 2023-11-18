@@ -16,20 +16,6 @@ namespace TrabajoFinalMulti.Controllers
         {
             _context = dbContext;
         }
-        /*
-        [HttpGet]
-        public IActionResult Index()
-        {
-            var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(HttpContext.Session.GetString("SUsuario"));
-
-            // Obtén los cursos del estudiante desde la tabla de unión
-            var cursosEstudiante = _context.EstudiantesPorCursos
-                .Where(e => e.Estudiante_Id == objEstudiante.Estudiante_Id)
-                .Select(e => e.Curso)
-                .ToList();
-
-            return View(cursosEstudiante);
-        }*/
         [HttpGet]
         public IActionResult Index()
         {
@@ -79,11 +65,13 @@ namespace TrabajoFinalMulti.Controllers
         {
             var curso = _context.Curso.Find(id);
             var listaEvaluaciones = _context.Evaluaciones.Where(e => e.Curso_Id == id);
+            var listaNotas= _context.EvaluacionPorEstudiantes.Where(e => e.Evaluacion.Curso_Id == id);
 
             var listaCompleta = new ListaEvaluacionesViewModel()
             {
                 Curso = curso,
-                Evaluaciones = listaEvaluaciones
+                Evaluaciones = listaEvaluaciones,
+                Notas= listaNotas
             };
 
             return View(listaCompleta);
@@ -113,13 +101,6 @@ namespace TrabajoFinalMulti.Controllers
             var listaAsistencia = _context.EstudiantesPorSesions.Where(e => e.Sesion_Id == id).ToList();
             return View(listaAsistencia);
         }
-        /*[HttpPost]
-        public IActionResult SolicitarAsesoria(Asesoria asesoria)
-        {
-            _context.Asesorias.Add(asesoria);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }*/
 
         public IActionResult SolicitarAsesoria(int id)
         {
@@ -190,5 +171,55 @@ namespace TrabajoFinalMulti.Controllers
             return View(horariosDelEstudiante);
         }
 
+        public IActionResult EditarPerfil()
+        {
+            var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(HttpContext.Session.GetString("SUsuario"));
+            var estudianteId = objEstudiante.Estudiante_Id;
+
+            var estudiante = _context.Estudiante.Find(estudianteId);
+
+            return View(estudiante);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditarPerfil(Estudiante estudiante,IFormFile nuevaFoto)
+        {
+            if (ModelState.IsValid)
+            {
+                if (nuevaFoto != null)
+                {
+                    string carpetaUsuarios = "FotosUsuarios";
+                    string subcarpeta = "FotosEstudiantes";
+                    string nombreArchivo = $"{estudiante.Estudiante_Id}.jpg";
+
+                    string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
+                    string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
+
+                    using (var fileStream = new FileStream(rutaCompleta, FileMode.Create))
+                    {
+                        nuevaFoto.CopyTo(fileStream);
+                    }
+
+                    // Actualizar la propiedad de la foto en el objeto Docente
+                    estudiante.Estudiante_Foto = rutaRelativa;
+                }
+                else if (string.IsNullOrEmpty(estudiante.Estudiante_Foto))
+                {
+                    string carpetaUsuarios = "FotosUsuarios";
+                    string subcarpeta = "FotosEstudiantes";
+                    string nombreArchivo = $"{estudiante.Estudiante_Id}.jpg";
+
+                    string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
+
+                    estudiante.Estudiante_Foto = rutaRelativa;
+                }
+
+            }
+
+            _context.Estudiante.Update(estudiante);
+            _context.SaveChanges();
+
+            return View(estudiante);
+        }
     }
 }

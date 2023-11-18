@@ -19,6 +19,9 @@
                aria-label="Edit" asp-action="CrearAsesoria" asp-route-id="@Model.Curso.Curso_Id">
                 Nuevo Registro
             </a>
+            <a onclick="history.back()" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                Regresar
+            </a>
         </div>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
@@ -30,7 +33,6 @@
                                 <th class="px-4 py-3">N°</th>
                                 <th class="px-4 py-3">Nombre del registro</th>
                                 <th class="px-4 py-3">Fecha</th>
-                                <th class="px-4 py-3">Opciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">

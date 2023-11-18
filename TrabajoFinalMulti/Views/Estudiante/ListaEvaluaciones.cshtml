@@ -12,6 +12,13 @@
         <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
             Lista de Evaluaciones
         </h4>
+        <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
+            <div>
+                <a onclick="history.back()" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    Regresar
+                </a>
+            </div>
+        </div>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
                 @if (Model.Evaluaciones.Count() > 0)
@@ -22,15 +29,16 @@
                                 <th class="px-4 py-3">Nombre</th>
                                 
                                 <th class="px-4 py-3">Fecha</th>
+                                <th class="px-4 py-3">Nota</th>
                                 
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
+                            <tr class="text-gray-700 dark:text-gray-400">
                             @foreach (var cur in Model.Evaluaciones)
                             {
                                 <!-- Filas de docentes y estudiantes combinados y ordenados -->
-                                <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
                                             <!-- Avatar with inset shadow -->
@@ -49,9 +57,19 @@
                                         </div>
                                     </td>
                                     
-                                    
-                                </tr>
+
                             }
+                            @foreach(var no in Model.Notas)
+                            {
+                                <td class="px-4 py-3 text-sm">
+                                        <div class="flex items-center text-sm">
+                                            <div>
+                                                <p class="font-semibold">@no.Nota</p>
+                                            </div>
+                                       </div>
+                                </td>
+                            }
+                            </tr>
 
                         </tbody>
                     </table>
@@ -124,4 +142,6 @@
             </div>
         </div>
     </div>
+
 </main>
+
