@@ -7,9 +7,12 @@
 <main class="h-full pb-16 overflow-y-auto">
     <div class="container grid px-6 mx-auto">
 
-        <h2 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300 text-center">
-            Horario del Estudiantes
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Horario 
         </h2>
+        <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+            Estudiante
+        </h4>
 
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
@@ -17,7 +20,7 @@
                 {
                     <table id="dataTable" class="w-full whitespace-no-wrap">
                         <thead>
-                            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                            <tr class="text-xs uppercase bg-purple-600 text-gray-700 dark:text-gray-200">
                                 <th class="px-4 py-3">Hora</th>
                                 <th class="px-4 py-3">Lunes</th>
                                 <th class="px-4 py-3">Martes</th>
@@ -43,11 +46,11 @@
                                     {
                                         var horarioEnCelda = Model.SingleOrDefault(h => h.Hora_Inicio == hora.Split(" - ")[0] && h.Hora_Fin == hora.Split(" - ")[1] && h.Dia == dia);
                                         <td class="px-4 py-3 border-r text-center">
-                                            <div class="flex items-center text-sm">
+                                            <div class="flex items-center justify-center text-sm">
                                                 <div>
                                                     @if (horarioEnCelda != null)
                                                     {
-                                                        <p class="font-semibold">@horarioEnCelda.Curso.Curso_Nombre</p>
+                                                        <p class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">@horarioEnCelda.Curso.Curso_Nombre</p>
                                                     }
                                                     <!-- Si no hay horario, deja la celda en blanco -->
                                                 </div>
