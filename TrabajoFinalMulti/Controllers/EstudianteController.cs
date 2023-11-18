@@ -66,14 +66,12 @@ namespace TrabajoFinalMulti.Controllers
             var curso = _context.Curso.Find(id);
             var listaEvaluaciones = _context.Evaluaciones.Where(e => e.Curso_Id == id);
             var listaNotas= _context.EvaluacionPorEstudiantes.Where(e => e.Evaluacion.Curso_Id == id);
-
             var listaCompleta = new ListaEvaluacionesViewModel()
             {
                 Curso = curso,
                 Evaluaciones = listaEvaluaciones,
                 Notas= listaNotas
             };
-
             return View(listaCompleta);
         }
         public IActionResult ListarEvaluacionesNota(Evaluacion eva)

@@ -21,6 +21,7 @@
         </div>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
+                
                 @if (Model.Evaluaciones.Count() > 0)
                 {
                     <table id="dataTable" class="w-full whitespace-no-wrap">
@@ -34,42 +35,37 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-
-                            <tr class="text-gray-700 dark:text-gray-400">
-                            @foreach (var cur in Model.Evaluaciones)
+                            @for(var i =0; i < Model.Evaluaciones.Count(); i++)
                             {
-                                <!-- Filas de docentes y estudiantes combinados y ordenados -->
-                                    <td class="px-4 py-3">
-                                        <div class="flex items-center text-sm">
-                                            <!-- Avatar with inset shadow -->
-                                            <div>
-                                                <p class="font-semibold">@cur.Nombre</p>
+                                
+                                    <tr class="text-gray-700 dark:text-gray-400">
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center text-sm">
+                                                <div>
+                                                    <p class="font-semibold">@Model.Evaluaciones.ElementAt(i).Nombre</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                   
-                                    <td class="px-4 py-3 text-sm">
-                                        <div class="flex items-center text-sm">
-                                            <!-- Avatar with inset shadow -->
-                                            <div>
-                                                <p class="font-semibold">@cur.Fecha</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    
+                                        </td>
 
-                            }
-                            @foreach(var no in Model.Notas)
-                            {
-                                <td class="px-4 py-3 text-sm">
-                                        <div class="flex items-center text-sm">
-                                            <div>
-                                                <p class="font-semibold">@no.Nota</p>
+                                        <td class="px-4 py-3 text-sm">
+                                            <div class="flex items-center text-sm">
+                                                <div>
+                                                <p class="font-semibold">@Model.Evaluaciones.ElementAt(i).Fecha</p>
+                                                </div>
                                             </div>
-                                       </div>
-                                </td>
+                                        </td>
+                                        <td class="px-4 py-3 text-sm">
+                                            <div class="flex items-center text-sm">
+                                                <div>
+                                                <p class="font-semibold">@Model.Notas.ElementAt(i).Nota</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                
+                                    </tr>
+                                
+                                
                             }
-                            </tr>
 
                         </tbody>
                     </table>
