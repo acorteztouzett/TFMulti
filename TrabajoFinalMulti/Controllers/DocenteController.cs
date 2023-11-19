@@ -218,23 +218,27 @@ namespace TrabajoFinalMulti.Controllers
             return RedirectToAction("ListaEvaluaciones", "Docente");
         }*/
         /*-----------------------------MEJORAR ELIMINAR EVALUACIÓN------------------------------*/
-        [HttpPost]
-        public IActionResult EliminarEvaluacion(int ideva, ListaEvaluacionesViewModel cursoEvaluacion)
+        [HttpGet]
+        public IActionResult EliminarEvaluacion(int ideva)
         {
-            int idCurso = cursoEvaluacion.Curso.Curso_Id;
+            Evaluacion evaluacion = _context.Evaluaciones
+                .Include(e => e.Curso) // incluir la relación con Curso
+                .FirstOrDefault(e => e.Evaluacion_Id == ideva);
 
-            EvaluacionPorCurso cursoEva = _context.EvaluacionPorCursos.FirstOrDefault(
-                u => u.Evaluacion_Id == ideva && u.Curso_Id == idCurso
-            );
-
-            if (cursoEva != null)
+            if (evaluacion != null)
             {
-                _context.EvaluacionPorCursos.Remove(cursoEva);
+                int idCurso = evaluacion.Curso_Id; // Obtén el ID del curso desde la evaluación
+
+                _context.Evaluaciones.Remove(evaluacion);
                 _context.SaveChanges();
+
+                return RedirectToAction("ListaEvaluaciones", "Docente", new { id = idCurso });
             }
 
-            return RedirectToAction("ListaEvaluaciones", "Docente", new { id = idCurso });
+            // Manejar el caso en el que la evaluación no se encuentra
+            return NotFound();
         }
+
 
         /*-----------------------------HORARIO DE DOCENTE------------------------------*/
         [HttpGet]
