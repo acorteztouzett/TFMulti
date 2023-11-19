@@ -187,6 +187,7 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(listaFinal);
         }
+
         public IActionResult EditarPerfil()
         {
             var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(HttpContext.Session.GetString("SUsuario"));
@@ -196,46 +197,18 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(estudiante);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditarPerfil(Estudiante estudiante,IFormFile nuevaFoto)
         {
             if (ModelState.IsValid)
             {
-                if (nuevaFoto != null)
-                {
-                    string carpetaUsuarios = "FotosUsuarios";
-                    string subcarpeta = "FotosEstudiantes";
-                    string nombreArchivo = $"{estudiante.Estudiante_Id}.jpg";
-
-                    string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
-                    string rutaCompleta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", rutaRelativa);
-
-                    using (var fileStream = new FileStream(rutaCompleta, FileMode.Create))
-                    {
-                        nuevaFoto.CopyTo(fileStream);
-                    }
-
-                    // Actualizar la propiedad de la foto en el objeto Docente
-                    estudiante.Estudiante_Foto = rutaRelativa;
-                }
-                else if (string.IsNullOrEmpty(estudiante.Estudiante_Foto))
-                {
-                    string carpetaUsuarios = "FotosUsuarios";
-                    string subcarpeta = "FotosEstudiantes";
-                    string nombreArchivo = $"{estudiante.Estudiante_Id}.jpg";
-
-                    string rutaRelativa = Path.Combine(carpetaUsuarios, subcarpeta, nombreArchivo);
-
-                    estudiante.Estudiante_Foto = rutaRelativa;
-                }
-
+                _context.Estudiante.Update(estudiante);
+                _context.SaveChanges();
             }
-
-            _context.Estudiante.Update(estudiante);
-            _context.SaveChanges();
-
-            return View(estudiante);
+          
+            return RedirectToAction("Index", "Estudiante");
         }
     }
 }

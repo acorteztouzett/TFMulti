@@ -18,7 +18,6 @@
 
         <form method="post" asp-action="NuevaAsesoria" id="registro-form">
             <input type="hidden" name="Curso_Id" value="@Model.Curso_Id">
-            <p>@Model.Curso_Id</p>
             <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <label asp-for="Tema" class="block text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Tema de la asesoria</span>
@@ -80,10 +79,23 @@
                             Crear
                         </button>
                     </div>
-
+                    <a onclick="regresarConId(@Model.Curso_Id)" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                        Regresar
+                    </a>
                 </div>
             </div>
         </form>
     </div>
 </main>
+<script>
+    function regresarConId(cursoId) {
+        // Concatenar el ID del curso a la URL de regreso
+        var urlConId = `/Estudiante/SolicitarAsesoria?id=${cursoId}`;
 
+        // Utilizar history.back() si no quieres modificar la URL
+        // history.back();
+
+        // O redirigir manualmente con la nueva URL
+        window.location.href = urlConId;
+    }
+</script>
