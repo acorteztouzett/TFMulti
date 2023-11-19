@@ -1,24 +1,19 @@
 ﻿@model TrabajoFinalMulti.ViewModel.SesionesViewModel
 @{
-    ViewData["Title"] = "Lista de Asistencia";
+    ViewData["Title"] = "Lista de Asistencias";
     Layout = "~/Views/Shared/_DiseñoEstudiante.cshtml";
 }
 
 <main class="h-full pb-16 overflow-y-auto">
     <div class="container grid px-6 mx-auto">
-
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            @Model.Curso.Curso_Nombre
+        </h2>
         <!-- With avatar -->
         <!-- With actions -->
         <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-            Asistencia
+            Lista de Sesiones
         </h4>
-        <div class="mt-4 flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
-            <div>
-                <a onclick="history.back()" class="px-4 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Regresar
-                </a>
-            </div>
-        </div>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
                 @if (Model.Sesiones.Count() > 0)
@@ -26,50 +21,60 @@
                     <table id="dataTable" class="w-full whitespace-no-wrap">
                         <thead>
                             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                <th class="px-4 py-3">Sesión</th>
+                                <th class="px-4 py-3">N°</th>
+                                <th class="px-4 py-3">Tema</th>
                                 <th class="px-4 py-3">Fecha</th>
                                 <th class="px-4 py-3">Asistencia</th>
-
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
 
-                            <tr class="text-gray-700 dark:text-gray-400">
-                                @foreach (var cur in Model.Sesiones)
-                                {
-                                    <!-- Filas de docentes y estudiantes combinados y ordenados -->
+                            @for (var i=0;i<Model.Sesiones.Count();i++)
+                            {
+                                <!-- Filas de docentes y estudiantes combinados y ordenados -->
+                                <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
                                             <!-- Avatar with inset shadow -->
                                             <div>
-                                                <p class="font-semibold">@cur.Tema</p>
+                                                <p class="font-semibold">@Model.Sesiones.ElementAt(i).Sesiones_Id</p>
                                             </div>
                                         </div>
                                     </td>
-
                                     <td class="px-4 py-3 text-sm">
                                         <div class="flex items-center text-sm">
                                             <!-- Avatar with inset shadow -->
                                             <div>
-                                                <p class="font-semibold">@cur.Fecha</p>
+                                                <p class="font-semibold">@Model.Sesiones.ElementAt(i).Tema</p>
                                             </div>
                                         </div>
                                     </td>
-
-
-                                }
-                                <!-- ACÁ FALTA SACAR LA ASISTENCIA, SE SUPONE QUE SI ASISTIÓ DEBERÍA DECIR ASISTIÓ O SINO NO -->
-                                @foreach (var no in Model.Sesiones)
-                                {
                                     <td class="px-4 py-3 text-sm">
                                         <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
                                             <div>
-                                                <p class="font-semibold">@no.EstudiantePorSesions</p>
+                                                <p class="font-semibold">@Model.Sesiones.ElementAt(i).Fecha</p>
                                             </div>
                                         </div>
                                     </td>
-                                }
-                            </tr>
+                                    <td>
+                                        <div class="flex items-center text-sm">
+                                            <!-- Avatar with inset shadow -->
+                                            <div>
+                                                @if (@Model.Asistencia.ElementAt(i).Asistio == true)
+                                                {
+                                                    <p class="font-semibold">Asistió</p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="font-semibold">No Asistió</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                   
+                                </tr>
+                            }
 
                         </tbody>
                     </table>
@@ -142,5 +147,4 @@
             </div>
         </div>
     </div>
-
 </main>

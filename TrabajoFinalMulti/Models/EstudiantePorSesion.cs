@@ -17,5 +17,6 @@ namespace TrabajoFinalMulti.Models
         public Estudiante Estudiante { get; set; }
 
         public bool Asistio { get; set; }
+
     }
 }

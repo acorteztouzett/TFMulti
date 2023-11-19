@@ -5,5 +5,6 @@ namespace TrabajoFinalMulti.ViewModel
     {
         public Curso Curso { get; set; }
         public IEnumerable<Sesion> Sesiones { get; set; }
+        public IEnumerable<EstudiantePorSesion> Asistencia { get; set; }
     }
 }

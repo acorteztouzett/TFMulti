@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Linq;
 using System.Text;
 using TrabajoFinalMulti.Data;
 using TrabajoFinalMulti.Models;
@@ -168,7 +169,24 @@ namespace TrabajoFinalMulti.Controllers
 
             return View(horariosDelEstudiante);
         }
+        public IActionResult VerAsistencia(int id)
+        {
+            var curso = _context.Curso.Find(id);
+            //Sesiones debe hacer un left join con EstudiantesPorSesiones
 
+            var ListaSesiones = _context.Sesiones.Where(e => e.Curso_Id == id).ToList();
+            var idSesion = ListaSesiones.Select(e => e.Sesiones_Id).ToList();
+            var listaAsistencia= _context.EstudiantesPorSesions.Where(e => idSesion.Contains(e.Sesion_Id)).ToList();
+            
+            var listaFinal = new SesionesViewModel()
+            {
+                Curso = curso,
+                Sesiones=ListaSesiones,
+                Asistencia = listaAsistencia
+            };
+
+            return View(listaFinal);
+        }
         public IActionResult EditarPerfil()
         {
             var objEstudiante = JsonConvert.DeserializeObject<EstudiantesPorCurso>(HttpContext.Session.GetString("SUsuario"));
