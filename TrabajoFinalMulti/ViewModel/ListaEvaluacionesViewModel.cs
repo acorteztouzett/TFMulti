@@ -1,4 +1,5 @@
-﻿using TrabajoFinalMulti.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using TrabajoFinalMulti.Models;
 namespace TrabajoFinalMulti.ViewModel
 {
     public class ListaEvaluacionesViewModel
@@ -6,6 +7,8 @@ namespace TrabajoFinalMulti.ViewModel
         public Curso Curso { get; set; }
         public IEnumerable<Evaluacion> Evaluaciones { get; set; }
         public IEnumerable<EvaluacionPorEstudiante> Notas { get; set; }
+        public EvaluacionPorCurso EvaluacionPorCurso { get; set; }
+        public IEnumerable<SelectListItem> ListaEvaluaciones { get; set; }
     }
 
     public class RegistroEvaluacion

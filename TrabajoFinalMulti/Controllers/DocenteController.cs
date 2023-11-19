@@ -209,6 +209,32 @@ namespace TrabajoFinalMulti.Controllers
             return View(listaAlumnos);
         }
 
+        /*[HttpGet]
+        public IActionResult BorrarEvaluacion(int? id)
+        {
+            var eva = _context.Evaluaciones.FirstOrDefault(c => c.Evaluacion_Id == id);
+            _context.Evaluaciones.Remove(eva);
+            _context.SaveChanges();
+            return RedirectToAction("ListaEvaluaciones", "Docente");
+        }*/
+        /*-----------------------------MEJORAR ELIMINAR EVALUACIÓN------------------------------*/
+        [HttpPost]
+        public IActionResult EliminarEvaluacion(int ideva, ListaEvaluacionesViewModel cursoEvaluacion)
+        {
+            int idCurso = cursoEvaluacion.Curso.Curso_Id;
+
+            EvaluacionPorCurso cursoEva = _context.EvaluacionPorCursos.FirstOrDefault(
+                u => u.Evaluacion_Id == ideva && u.Curso_Id == idCurso
+            );
+
+            if (cursoEva != null)
+            {
+                _context.EvaluacionPorCursos.Remove(cursoEva);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ListaEvaluaciones", "Docente", new { id = idCurso });
+        }
 
         /*-----------------------------HORARIO DE DOCENTE------------------------------*/
         [HttpGet]

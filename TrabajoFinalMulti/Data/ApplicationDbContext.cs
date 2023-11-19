@@ -27,7 +27,7 @@ namespace TrabajoFinalMulti.Data
         }
 
         public DbSet<EvaluacionPorEstudiante> EvaluacionPorEstudiantes { get; set; }
-        
+        public DbSet<EvaluacionPorCurso> EvaluacionPorCursos { get; set; }
         public DbSet<EstudiantePorSesion> EstudiantesPorSesions { get; set; }
         public DbSet<Sesion> Sesiones { get; set;}
         public DbSet<Asesoria> Asesorias { get; set; }
